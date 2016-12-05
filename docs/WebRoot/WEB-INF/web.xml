@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <display-name></display-name>	
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+		<description>UploadServlet</description>
+		<display-name>UploadServlet</display-name>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>base.servlet.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/uploadServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>UserServlet</description>
+		<display-name>UserServlet</display-name>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>base.servlet.UserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserServlet</servlet-name>
+		<url-pattern>/userServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>UserCategoryServlet</description>
+		<display-name>UserCategoryServlet</display-name>
+		<servlet-name>UserCategoryServlet</servlet-name>
+		<servlet-class>base.servlet.UserCategoryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserCategoryServlet</servlet-name>
+		<url-pattern>/userCategoryServlet.do</url-pattern>
+	</servlet-mapping>
+</web-app>
