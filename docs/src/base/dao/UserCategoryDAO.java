@@ -104,4 +104,9 @@ public class UserCategoryDAO extends BaseDAO {
 			looperParent(parent, categorys);
 		}
 	}
+	
+	public boolean checkPermission(int categoryId, int userId){
+		Category category = CategoryDAO.getInstance().load(categoryId);
+		
+	}
 }

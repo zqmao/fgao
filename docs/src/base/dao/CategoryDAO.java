@@ -21,9 +21,9 @@ public class CategoryDAO extends BaseDAO {
 		return dao;
 	}
 
-	public List<Category> list() {
-		String sql = "select * from t_category where id != 0 order by id";
-		List<Category> objs = JDBCUtil.queryObjectList(sql, Category.class);
+	public List<Category> list(int categoryId) {
+		String sql = "select * from t_category where id != 0 and parentId=? order by id";
+		List<Category> objs = JDBCUtil.queryObjectList(sql, Category.class, categoryId);
 		return objs;
 	}
 

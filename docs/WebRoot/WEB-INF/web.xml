@@ -40,4 +40,26 @@
 		<servlet-name>UserCategoryServlet</servlet-name>
 		<url-pattern>/userCategoryServlet.do</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<description>CategoryServlet</description>
+		<display-name>CategoryServlet</display-name>
+		<servlet-name>CategoryServlet</servlet-name>
+		<servlet-class>base.servlet.CategoryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CategoryServlet</servlet-name>
+		<url-pattern>/categoryServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>DocumentServlet</description>
+		<display-name>DocumentServlet</display-name>
+		<servlet-name>DocumentServlet</servlet-name>
+		<servlet-class>base.servlet.DocumentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DocumentServlet</servlet-name>
+		<url-pattern>/documentServlet.do</url-pattern>
+	</servlet-mapping>
 </web-app>

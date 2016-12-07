@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import base.api.User;
 import base.dao.UserDAO;
+import base.util.MdUtil;
 
 import com.alibaba.fastjson.JSON;
 
@@ -29,18 +30,18 @@ public class UserServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("login".equals(sign)) {// 登陆
-			User user = new User();
-			user.setName(request.getParameter("name"));
-			user.setPassword(request.getParameter("password"));
+			String name = request.getParameter("name");
+			String password = request.getParameter("password");
+			password = MdUtil.MD5(password);
 			// 先根据登陆名查找是否存在
-			User dbUser = UserDAO.getInstance().query(user.getName());
+			User dbUser = UserDAO.getInstance().query(name);
 			if (dbUser == null) {
 				responseError("用户名不存在");
 			} else {
-				user = UserDAO.getInstance().login(user);
-				if (user != null) {
-					responseSuccess(JSON.toJSON(user));
-				} else {
+				String dbPassword = dbUser.getPassword();
+				if(dbPassword.equals(password)){
+					responseSuccess(JSON.toJSON(dbUser));
+				}else{
 					responseError("登录失败,密码错误");
 				}
 			}
@@ -51,6 +52,9 @@ public class UserServlet extends BaseServlet {
 		} else if ("add".equals(sign)) {// 注册用户
 			String userStr = (String) request.getParameter("user");
 			User user = JSON.parseObject(userStr, User.class);
+			String password = user.getPassword();
+			password = MdUtil.MD5(password);
+			user.setPassword(password);
 			if (user.getId() == 0) {
 				User dbUser = UserDAO.getInstance().query(user.getName());
 				if (dbUser != null) {
