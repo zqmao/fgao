@@ -24,11 +24,11 @@ public class UserCategoryServlet extends BaseServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		super.doPost(req, resp);
-		if ("listByUser".equals(sign)) {// 登陆
+		if ("listByUser".equals(sign)) {// 根据人员查询有权限的类别
 			String userId = (String) req.getParameter("userId");
 			List<Category> result = UserCategoryDAO.getInstance().listByUser(Integer.parseInt(userId));
 			responseSuccess(result);
-		}else if ("listByCategory".equals(sign)) {// 登陆
+		}else if ("listByCategory".equals(sign)) {// 根据类别查询有权限的人员
 			String categoryId = (String) req.getParameter("categoryId");
 			List<User> result = UserCategoryDAO.getInstance().listByCategory(Integer.parseInt(categoryId));
 			responseSuccess(result);

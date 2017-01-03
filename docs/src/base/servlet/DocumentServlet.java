@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import base.api.Document;
 import base.dao.DocumentDAO;
+import base.dao.UserCategoryDAO;
 
 import com.alibaba.fastjson.JSON;
 
@@ -31,9 +32,13 @@ public class DocumentServlet extends BaseServlet {
 		if ("list".equals(sign)) {// 查询列表
 			String categoryId = (String) request.getParameter("categoryId");
 			String userId = (String) request.getParameter("userId");
-			List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId));
-			System.out.println(JSON.toJSON(result));
-			responseSuccess(JSON.toJSON(result));
+			if(!UserCategoryDAO.getInstance().checkPermission(Integer.parseInt(categoryId), Integer.parseInt(userId))){
+				responseError("无权限");
+			}else{
+				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId));
+				System.out.println(JSON.toJSON(result));
+				responseSuccess(JSON.toJSON(result));
+			}
 		} else if ("add".equals(sign)) {// 添加
 			String param = (String) request.getParameter("document");
 			Document document = JSON.parseObject(param, Document.class);

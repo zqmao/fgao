@@ -33,7 +33,7 @@ public class UserDAO extends BaseDAO {
 	}
 
 	public User query(String name) {
-		String sql = "select * from t_user where name=?";
-		return JDBCUtil.queryObject(sql, User.class, name);
+		String sql = "select * from t_user where loginName=? or name=?";
+		return JDBCUtil.queryObject(sql, User.class, name, name);
 	}
 }

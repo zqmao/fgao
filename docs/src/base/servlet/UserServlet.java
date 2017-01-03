@@ -72,14 +72,6 @@ public class UserServlet extends BaseServlet {
 				UserDAO.getInstance().saveOrUpdate(user);
 				responseSuccess("修改成功");
 			}
-		}else if ("query".equals(sign)) {// 查询
-			String name = (String) request.getParameter("name");
-			User user = UserDAO.getInstance().query(name);
-			if(user != null){
-				responseSuccess(JSON.toJSON(user));
-			}else{
-				responseError("用户名不存在");
-			}
 		}
 	}
 

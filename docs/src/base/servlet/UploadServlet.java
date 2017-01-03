@@ -48,8 +48,7 @@ public class UploadServlet extends BaseServlet {
 							+ request.getLocalPort() + "/"
 							+ request.getContextPath() + "/upload/" + filename;
 					System.out.println(netPath);
-					OutputStream out = new FileOutputStream(new File(path,
-							filename));
+					OutputStream out = new FileOutputStream(new File(path, filename));
 					InputStream in = item.getInputStream();
 					int length = 0;
 					byte[] buf = new byte[1024];

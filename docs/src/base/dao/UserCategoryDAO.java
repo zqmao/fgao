@@ -5,6 +5,7 @@ import java.util.List;
 
 import base.api.Category;
 import base.api.User;
+import base.api.UserCategory;
 import base.util.JDBCUtil;
 
 
@@ -105,8 +106,19 @@ public class UserCategoryDAO extends BaseDAO {
 		}
 	}
 	
+	//检查这个人对这个类别是否有权限（即，对该类别和该类别的父类别）
 	public boolean checkPermission(int categoryId, int userId){
-		Category category = CategoryDAO.getInstance().load(categoryId);
-		
+		//根类别的父
+		if(categoryId == 0){
+			return false;
+		}
+		String sql = "select uc.* from t_user_category uc where uc.userId="+userId+" and uc.categoryId=" + categoryId;
+		List<UserCategory> result = JDBCUtil.queryObjectList(sql, UserCategory.class);
+		if(result != null && result.size() > 0){
+			return true;
+		}else{
+			Category category = CategoryDAO.getInstance().load(categoryId);
+			return checkPermission(category.getParentId(), userId);
+		}
 	}
 }
