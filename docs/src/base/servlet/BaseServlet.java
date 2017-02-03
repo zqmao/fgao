@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import base.api.User;
+
 import com.alibaba.fastjson.JSONObject;
 
 public class BaseServlet extends HttpServlet{
 	
 	protected String sign = "";
+	protected User currentUser = null;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 
@@ -31,6 +34,7 @@ public class BaseServlet extends HttpServlet{
 		resp.setCharacterEncoding("utf-8");
 		resp.setContentType("text/plain");
 		sign = (String) req.getParameter("sign");
+		currentUser = (User)req.getSession().getAttribute("loginUser");
 	}
 	
 	protected void responseSuccess(Object cotent){
