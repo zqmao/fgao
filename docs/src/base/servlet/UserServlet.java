@@ -38,7 +38,7 @@ public class UserServlet extends BaseServlet {
 				responseError("请输入密码");
 				return;
 			}
-			password = MdUtil.MD5(password);
+//			password = MdUtil.MD5(password);
 			// 先根据登陆名查找是否存在
 			User dbUser = UserDAO.getInstance().query(name);
 			if (dbUser == null) {
