@@ -53,16 +53,18 @@ public class BugServlet extends BaseServlet {
 				System.out.println(selectUser);
 				selectUser = Integer.parseInt(select);
 			}
-			//0，全部；1，我创建的；2，我处理的；3，我完成的
+			//0，全部；1，我创建的；2，我处理的；3，我完成的；4，我参与过的
 			List<Bug> result = null;
 			if(option == 0){
 				result = BugDAO.getInstance().list();
 			}else if(option == 1){
 				result = BugDAO.getInstance().listUserCreate(selectUser);
 			}else if(option == 2){
-				result = BugDAO.getInstance().listUserPart(selectUser);
+				result = BugDAO.getInstance().listUserHandle(selectUser);
 			}else if(option == 3){
 				result = BugDAO.getInstance().listUserFinish(selectUser);
+			}else if(option == 4){
+				result = BugDAO.getInstance().listUserPart(selectUser);
 			}
 			
 			int startIndex = (page - 1) * rows;

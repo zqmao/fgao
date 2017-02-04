@@ -15,8 +15,48 @@ PermissionUtil.check(request, response);
 			var first = 1;
 			var option = "";
             $(function() {
-                $("#addBug").dialog("close");
-                $("#passBug").dialog("close");
+                $("#addBug").panel({
+                	title: '添加',
+                	tools:[{
+        				text:'保存',
+        				iconCls:'icon-ok',
+        				handler:function(){
+        					submitAdd();
+        				}
+        			},{
+           				text:'-',
+           				iconCls:'icon-blank',
+           				handler:function(){}
+           			},{
+        				text:'取消',
+        				iconCls:'icon-cancel',
+        				handler:function(){
+        					$("#addBug").panel("close");
+        				}
+        			}]
+                });
+                $("#addBug").panel("open");
+                $("#passBug").panel({
+                	title: '指派',
+                	tools:[{
+        				text:'指派',
+        				iconCls:'icon-ok',
+        				handler:function(){
+        					submitPass();
+        				}
+        			},{
+        				text:'-',
+        				iconCls:'icon-blank',
+        				handler:function(){}
+        			},{
+        				text:'取消',
+        				iconCls:'icon-cancel',
+        				handler:function(){
+        					$("#passBug").panel("close");
+        				}
+        			}]
+                });
+                $("#passBug").panel("close");
                 $("#option").combobox({
 					onSelect: function(record){
 						option = record.value;
@@ -59,36 +99,9 @@ PermissionUtil.check(request, response);
                     	text:'增加',
                         iconCls: 'icon-add',
                         handler: function() {
-                            $("#addBug").form('clear');
+                            $("#addBugForm").form('clear');
                             $("#category").combobox('select', '售后');
-                            $("#addBug").dialog({
-                            	title: '添加',
-                            	buttons:[{
-                    				text:'保存',
-                    				iconCls:'icon-ok',
-                    				handler:function(){
-                    					$('#addBugForm').form('submit', {
-                    					    url:'../bugServlet.do?sign=add',
-                    					    success:function(data){
-                    					    	var data = eval('(' + data + ')');
-                    					    	if(data.result == 0){
-                    					    		alert(data.reason);
-                    					    	}else{
-	                    							$("#addBug").dialog("close");
-	                            					$("#bugGrid").datagrid("reload");
-                    					    	}
-                    					    }
-                    					});
-                    				}
-                    			},{
-                    				text:'取消',
-                    				iconCls:'icon-cancel',
-                    				handler:function(){
-                    					$("#addBug").dialog("close");
-                    				}
-                    			}]
-                            });
-                            $("#addBug").dialog('open');
+                            $("#addBug").panel('open');
                         }
                     }, {
                     	text:'修改',
@@ -102,35 +115,7 @@ PermissionUtil.check(request, response);
                                 $.messager.alert('提示', '只能选择一个。', 'Warning');
                             } else {
                                 var row = $("#bugGrid").datagrid('getChecked');
-                                //$("#addBug").form('clear');
-                                $("#addBug").dialog({
-                                	title: '修改',
-                                	buttons:[{
-                        				text:'保存',
-                        				iconCls:'icon-ok',
-                        				handler:function(){
-                        					$('#addBugForm').form('submit', {
-                        					    url:'../bugServlet.do?sign=add',
-                        					    success:function(data){
-                        					    	var data = eval('(' + data + ')');
-                        					    	if(data.result == 0){
-                        					    		alert(data.reason);
-                        					    	}else{
-    	                    							$("#addBug").dialog("close");
-    	                            					$("#bugGrid").datagrid("reload");
-                        					    	}
-                        					    }
-                        					});
-                        				}
-                        			},{
-                        				text:'取消',
-                        				iconCls:'icon-cancel',
-                        				handler:function(){
-                        					$("#addBug").dialog("close");
-                        				}
-                        			}]
-                                });
-                                $("#addBug").dialog('open');
+                                $("#addBug").panel('open');
                                 $("#addBug").form('load', {
                                 	category: row[0].category,
                                 	title: row[0].title,
@@ -140,33 +125,6 @@ PermissionUtil.check(request, response);
                             }
                         }
                     }, {
-                    	text:'删除',
-                        iconCls: 'icon-remove',
-                        handler: function() {
-                            var ids = getChecked("bugGrid");
-                            var len = ids.length;
-                            if (len == 0) {
-                                $.messager.alert('提示', '至少选择一个。', 'Warning');
-                            } else {
-                                $.messager.confirm('Confirm', '确认要删除选择的项吗？', function(r) {
-                                    if (r) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "../bugServlet.do?sign=delete",
-                                            data: "bugIds=" + ids,
-                                            success: function(msg) {
-                                                $("#bugGrid").datagrid('reload');
-                                            },
-                                            error: function(msg) {
-                                                alert(msg.toString());
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    },
-                    {
                     	text:'完成',
                         iconCls: 'icon-ok',
                         handler: function() {
@@ -221,34 +179,7 @@ PermissionUtil.check(request, response);
                                    		}
                                    	}
                                 });
-                                $("#passBug").dialog({
-                                	title: '指派',
-                                	buttons:[{
-                        				text:'指派',
-                        				iconCls:'icon-ok',
-                        				handler:function(){
-                        					$('#passBugForm').form('submit', {
-                        					    url:'../bugServlet.do?sign=passBug',
-                        					    success:function(data){
-                        					    	var data = eval('(' + data + ')');
-                        					    	if(data.result == 0){
-                        					    		alert(data.reason);
-                        					    	}else{
-    	                    							$("#passBug").dialog("close");
-    	                            					$("#bugGrid").datagrid("reload");
-                        					    	}
-                        					    }
-                        					});
-                        				}
-                        			},{
-                        				text:'取消',
-                        				iconCls:'icon-cancel',
-                        				handler:function(){
-                        					$("#passBug").dialog("close");
-                        				}
-                        			}]
-                                });
-                                $("#passBug").dialog('open');
+                                $("#passBug").panel('open');
                                 $("#passBug").form('load', {
                                     bugId: row[0].id
                                 });
@@ -267,6 +198,38 @@ PermissionUtil.check(request, response);
                 return ids;
             }
             
+            function submitAdd() {
+				$("#addBugForm").form('submit', {
+				    url:"../bugServlet.do?sign=add",
+				    success:function(data){
+				    	var data = eval('(' + data + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+							$("#addBugForm").form('clear');
+				    		$("#category").combobox('select', '售后');
+        					$("#bugGrid").datagrid("reload");
+				    	}
+				    }
+				});
+			}
+			
+			function submitPass() {
+				$("#passBugForm").form('submit', {
+				    url:"../bugServlet.do?sign=passBug",
+				    success:function(data){
+				    	var data = eval('(' + data + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+				    		$("#passBug").panel("close");
+				    		$("#passBugForm").form('clear');
+        					$("#bugGrid").datagrid("reload");
+				    	}
+				    }
+				});
+			}
+            
         </script>
 	</head>
 
@@ -277,14 +240,15 @@ PermissionUtil.check(request, response);
 				<select class="easyui-combobox" id="option" style="width:250px;">
 				    <option value="0">全部</option>
 				    <option value="1">我创建的</option>
-				    <option value="2" selected="selected">我处理的</option>
+				    <option value="2" selected="selected">我正在处理的</option>
 				    <option value="3">我完成的</option>
+				    <option value="4">我参与过的</option>
 				</select>
 		    </div>
 			<table id="bugGrid"></table>
 		</div>
-		<div id="addBug" class="easyui-dialog" data-options="modal:true"
-			title="添加待办" style="width: 30%; height: 40%;padding: 10%;">
+		<div id="addBug" class="easyui-panel" data-options="modal:true"
+			title="添加待办" style="width: 100%; height: 200px;padding: 10px;">
 			<form id="addBugForm" method="post">
 				<input type="hidden" name="bugId" value="" />
 				<div >
@@ -302,28 +266,28 @@ PermissionUtil.check(request, response);
 			    <br/>
 			    <div >
 					<label for="createRemark">描述:</label>
-					<input class="easyui-textbox" type="text" name="createRemark" style="width:80%;height:100px;" data-options="multiline:true" />
+					<input class="easyui-textbox" type="text" name="createRemark" style="width:80%;height:50px;" data-options="multiline:true" />
 			    </div>
 			    
 			</form>
 		</div>
-		<div id="passBug" class="easyui-dialog" data-options="modal:true"
-			title="指派待办" style="width: 30%; height: 400px;padding: 10%;">
+		<div id="passBug" class="easyui-panel" data-options="modal:true"
+			title="指派待办" style="width: 100%; height: 200px;padding: 10px;">
 			<form id="passBugForm" method="post">
 				<input type="hidden" name="bugId" value="" />
 				<div >
 					<label for="currentMan">当前处理人员:</label>
-					<input id="currentMan" class="easyui-validatebox" type="text" disabled="disabled" name="currentMan" style="width:30%;padding: 5px;"/>
+					<input id="currentMan" class="easyui-validatebox" type="text" disabled="disabled" name="currentMan" style="width:30%;"/>
 			    </div>
 			    <br/>
 				<div >
-					<div style="padding-bottom: 10px;">指派给:</div>
+					<label style="padding-bottom: 10px;">指派给:</label>
 					<input id="passUser" name="passUser" />
 			    </div>
 			    <br/>
 			    <div >
-					<div style="padding-bottom: 10px;">描述:</div>
-					<input class="easyui-textbox" type="text" name="remark" style="width:80%;height:100px" data-options="multiline:true" />
+					<label style="padding-bottom: 10px;">描述:</label>
+					<input class="easyui-textbox" type="text" name="remark" style="width:80%;height:50px" data-options="multiline:true" />
 			    </div>
 			    <br/>
 			</form>
