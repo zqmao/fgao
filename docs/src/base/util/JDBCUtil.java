@@ -1,6 +1,5 @@
 package base.util;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +8,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class JDBCUtil {
 
@@ -164,6 +166,29 @@ public class JDBCUtil {
 		return null;
 	}
 	
+	/**
+	 * 查询一个对象，而这个对象的所有属性值存放在数组中
+	 * 
+	 * @param sqlStr
+	 * @param params
+	 *            参数值
+	 * @return
+	 */
+	public static long queryCount(String sqlStr, Object... params) {
+		System.out.println("JDBCUtil SQL: " + sqlStr);
+		try {
+			rs = getResultSet(sqlStr, params);
+			if (rs.next()) {
+				return Long.parseLong(rs.getObject(1).toString());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free(rs, ps, con);
+		}
+		return 0L;
+	}
+	
 	private static ResultSet getResultSet(String sqlStr, Object... params) throws Exception{
 		con = getConnection();
 		ps = con.prepareStatement(sqlStr);
@@ -177,35 +202,11 @@ public class JDBCUtil {
 	private static <T> T getObject(ResultSet rs, Class<T> clazz) throws Exception{
 		ResultSetMetaData rsd = rs.getMetaData();
 		int cols = rsd.getColumnCount();// 所有列数
-		T result = null;
-		try {
-			result = clazz.newInstance();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		}
+		JSONObject obj = new JSONObject();
 		for (int i = 0; i < cols; i++) {
 			String columnName = rsd.getColumnName(i + 1);
-			String columnTypeClassName = rsd.getColumnClassName(i + 1);
-			columnName = columnName.substring(0, 1).toUpperCase() + columnName.substring(1);
-			if(columnTypeClassName.contains("Integer")){
-				Method m = clazz.getMethod("set" + columnName, int.class);
-				m.invoke(result, rs.getInt(i + 1));
-			}else if(columnTypeClassName.contains("Float")){
-				Method m = clazz.getMethod("set" + columnName, float.class);
-				m.invoke(result, rs.getFloat(i + 1));
-			}else if(columnTypeClassName.contains("Long")){
-				Method m = clazz.getMethod("set" + columnName, long.class);
-				m.invoke(result, rs.getLong(i + 1));
-			}else if(columnTypeClassName.contains("Boolean")){
-				Method m = clazz.getMethod("set" + columnName, boolean.class);
-				m.invoke(result, rs.getBoolean(i + 1));
-			}else if(columnTypeClassName.contains("String")){
-				Method m = clazz.getMethod("set" + columnName, String.class);
-				m.invoke(result, rs.getString(i + 1));
-			}
+			obj.put(columnName, rs.getObject(i + 1));
 		}
-		return result;
+		return JSON.parseObject(obj.toJSONString(), clazz);
 	}
 }

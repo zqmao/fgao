@@ -22,34 +22,59 @@ public class BugDAO extends BaseDAO {
 	}
 
 	//全部
-	public List<Bug> list() {
-		String sql = "select * from t_bug order by id desc";
-		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class);
+	public List<Bug> list(int index, int pagesize) {
+		String sql = "select * from t_bug order by id desc limit ?, ? ";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, index, pagesize);
 		return objs;
+	}
+	//全部的总数
+	public long listCount() {
+		String sql = "select count(*) from t_bug order by id desc";
+		return JDBCUtil.queryCount(sql);
 	}
 	//我创建的
-	public List<Bug> listUserCreate(int userId) {
-		String sql = "select * from t_bug where createrId = ? order by id desc";
-		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+	public List<Bug> listUserCreate(int userId, int index, int pagesize) {
+		String sql = "select * from t_bug where createrId = ? order by id desc limit ?, ? ";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId, index, pagesize);
 		return objs;
+	}
+	//我创建的总数
+	public long listUserCreateCount(int userId) {
+		String sql = "select count(*) from t_bug where createrId = ? order by id desc";
+		return JDBCUtil.queryCount(sql, userId);
 	}
 	//我正在处理的
-	public List<Bug> listUserHandle(int userId) {
-		String sql = "SELECT * from t_bug where id in (SELECT bugId from t_bug_operation where id in (select MAX(bo.id) from t_bug_operation bo GROUP BY bugId) and targetId=?) ORDER BY id desc";
-		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+	public List<Bug> listUserHandle(int userId, int index, int pagesize) {
+		String sql = "SELECT * from t_bug where id in (SELECT bugId from t_bug_operation where id in (select MAX(bo.id) from t_bug_operation bo GROUP BY bugId) and targetId=?) ORDER BY id desc limit ?, ? ";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId, index, pagesize);
 		return objs;
+	}
+	//我创建的总数
+	public long listUserHandleCount(int userId) {
+		String sql = "select count(*) from t_bug where id in (SELECT bugId from t_bug_operation where id in (select MAX(bo.id) from t_bug_operation bo GROUP BY bugId) and targetId=?) ORDER BY id desc";
+		return JDBCUtil.queryCount(sql, userId);
 	}
 	//我完成的
-	public List<Bug> listUserFinish(int userId) {
-		String sql = "select * from t_bug where finisherId = ? order by id desc";
-		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+	public List<Bug> listUserFinish(int userId, int index, int pagesize) {
+		String sql = "select * from t_bug where finisherId = ? order by id desc limit ?, ? ";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId, index, pagesize);
 		return objs;
 	}
+	//我完成的总数
+	public long listUserFinishCount(int userId) {
+		String sql = "select count(*) from t_bug where finisherId = ? order by id desc";
+		return JDBCUtil.queryCount(sql, userId);
+	}
 	//我参与的
-	public List<Bug> listUserPart(int userId) {
-		String sql = "select DISTINCT b.* from t_bug_operation bo, t_bug b where b.id=bo.bugId and targetId = ? ORDER BY id desc";
-		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+	public List<Bug> listUserPart(int userId, int index, int pagesize) {
+		String sql = "select DISTINCT b.* from t_bug_operation bo, t_bug b where b.id=bo.bugId and bo.targetId = ? ORDER BY b.id desc limit ?, ? ";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId, index, pagesize);
 		return objs;
+	}
+	//我完成的总数
+	public long listUserPartCount(int userId) {
+		String sql = "select count(DISTINCT b.id) from t_bug_operation bo, t_bug b where b.id=bo.bugId and bo.targetId = ? ORDER BY b.id desc";
+		return JDBCUtil.queryCount(sql, userId);
 	}
 
 	public Bug load(int id) {

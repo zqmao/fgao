@@ -52,31 +52,27 @@ public class BugServlet extends BaseServlet {
 			}else{
 				selectUser = Integer.parseInt(select);
 			}
+			int index = (page - 1) * rows;
 			//0，全部；1，我创建的；2，我处理的；3，我完成的；4，我参与过的
+			long total = 0;
 			List<Bug> result = null;
 			if(option == 0){
-				result = BugDAO.getInstance().list();
+				result = BugDAO.getInstance().list(index, rows);
+				total = BugDAO.getInstance().listCount();
 			}else if(option == 1){
-				result = BugDAO.getInstance().listUserCreate(selectUser);
+				result = BugDAO.getInstance().listUserCreate(selectUser, index, rows);
+				total = BugDAO.getInstance().listUserCreateCount(selectUser);
 			}else if(option == 2){
-				result = BugDAO.getInstance().listUserHandle(selectUser);
+				result = BugDAO.getInstance().listUserHandle(selectUser, index, rows);
+				total = BugDAO.getInstance().listUserHandleCount(selectUser);
 			}else if(option == 3){
-				result = BugDAO.getInstance().listUserFinish(selectUser);
+				result = BugDAO.getInstance().listUserFinish(selectUser, index, rows);
+				total = BugDAO.getInstance().listUserFinishCount(selectUser);
 			}else if(option == 4){
-				result = BugDAO.getInstance().listUserPart(selectUser);
+				result = BugDAO.getInstance().listUserPart(selectUser, index, rows);
+				total = BugDAO.getInstance().listUserPartCount(selectUser);
 			}
-			
-			int startIndex = (page - 1) * rows;
-			int endIndex = page * rows;
-			int total = result.size();
-			if(total < endIndex){
-				endIndex = total;
-			}
-			if(startIndex > endIndex){
-				startIndex = 0;
-			}
-			List<Bug> tempResult = result.subList(startIndex, endIndex);
-			for(Bug bug : tempResult){
+			for(Bug bug : result){
 				List<BugOperation> bugOps = BugOperationDAO.getInstance().list(bug.getId());
 				if(bugOps.size() > 0){
 					BugOperation bugOp = bugOps.get(0);
@@ -88,7 +84,7 @@ public class BugServlet extends BaseServlet {
 			}
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);
-			obj.put("rows", JSON.toJSON(tempResult));
+			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
 		} else if ("add".equals(sign)) {// 增加
 			String category = (String) request.getParameter("category");
