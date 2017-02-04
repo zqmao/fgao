@@ -198,6 +198,17 @@ PermissionUtil.check(request, response);
                 return ids;
             }
             
+            document.onkeydown = function(event_e){
+				if(window.event) {
+					event_e = window.event;
+				}
+				var int_keycode = event_e.charCode||event_e.keyCode;
+				if( int_keycode == '13' ) {
+					submitAdd();
+					return false;
+				}
+			}
+            
             function submitAdd() {
 				$("#addBugForm").form('submit', {
 				    url:"../bugServlet.do?sign=add",
