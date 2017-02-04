@@ -45,17 +45,24 @@ public class BugServlet extends BaseServlet {
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
 			int option = Integer.parseInt(request.getParameter("option"));
-			System.out.println(option);
+			String select = request.getParameter("selectUser");
+			int selectUser = 0;
+			if(select == null || select.length() == 0){
+				selectUser = currentUser.getId();
+			}else{
+				System.out.println(selectUser);
+				selectUser = Integer.parseInt(select);
+			}
 			//0，全部；1，我创建的；2，我处理的；3，我完成的
 			List<Bug> result = null;
 			if(option == 0){
 				result = BugDAO.getInstance().list();
 			}else if(option == 1){
-				result = BugDAO.getInstance().listUserCreate(currentUser.getId());
+				result = BugDAO.getInstance().listUserCreate(selectUser);
 			}else if(option == 2){
-				result = BugDAO.getInstance().listUserPart(currentUser.getId());
+				result = BugDAO.getInstance().listUserPart(selectUser);
 			}else if(option == 3){
-				result = BugDAO.getInstance().listUserFinish(currentUser.getId());
+				result = BugDAO.getInstance().listUserFinish(selectUser);
 			}
 			
 			int startIndex = (page - 1) * rows;
@@ -78,7 +85,6 @@ public class BugServlet extends BaseServlet {
 					bug.setCurrentName("未指派");
 				}
 			}
-			System.out.println(JSON.toJSON(tempResult));
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);
 			obj.put("rows", JSON.toJSON(tempResult));

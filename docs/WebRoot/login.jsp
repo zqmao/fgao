@@ -2,25 +2,38 @@
 <%@page language="java" import="base.api.User"%>
 <% 
 	String backUrl = request.getParameter("backUrl");
+	if(backUrl == null){
+		backUrl = "";
+	}
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录页面</title>
-<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
 	<link rel="stylesheet" type="text/css" href="themes/icon.css" />
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
 		function submit() {
-			$('#login').form('submit', {
-			    url:'/userServlet.do?sign=login',
+			$("#login").form("submit", {
+			    url:"/userServlet.do?sign=login",
 			    success:function(data){
 			    	var data = eval('(' + data + ')');
 			    	if(data.result == 0){
 			    		alert(data.reason);
 			    	}else{
-			    		window.location.href='<%=backUrl%>';
+			    		var backUrl = "<%=backUrl%>";
+			    		if(backUrl === ""){
+			    			if(data.data.admin == 0){
+			    				backUrl = "<%=basePath%>/customer/main.jsp";
+			    			}else{
+			    				backUrl = "<%=basePath%>/admin/main.jsp";
+			    			}
+			    		}
+		    			window.location.href=backUrl;
 			    	}
 			    }
 			});

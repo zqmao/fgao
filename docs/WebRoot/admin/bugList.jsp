@@ -1,39 +1,72 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
+<%@page language="java" import="base.api.User"%>
 <%
-PermissionUtil.check(request, response);
+PermissionUtil.checkAdmin(request, response);
+User currentUser = (User)request.getSession().getAttribute("loginUser");
+int userId = currentUser != null ? currentUser.getId() : 0;
 %>
 
 <html>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>待办事项</title>
-	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="themes/icon.css" />
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
-			var first = 1;
-			var option = "";
+			var first_user = 1;
+			var first_type = 1;
+			var option_user = "0";
+			var option_type = "0";
             $(function() {
                 $("#addBug").dialog("close");
                 $("#passBug").dialog("close");
-                $("#option").combobox({
-					onSelect: function(record){
-						option = record.value;
-						if(first == 0){
+                $("#option_user").combobox({
+                    url:'../userServlet.do?sign=select',
+                    valueField:'id',
+                    textField:'text',
+                    loadFilter: function(data){
+                   		if (data.data){
+                   			$("#option_user").combobox('select', <%=userId%>);
+                   			return data.data;
+                   		} else {
+                   			return data;
+                   		}
+                   	},
+                	onSelect: function(record){
+						option_user = record.id + "";
+						if(first_user == 0){
 							var queryParams =$("#bugGrid").datagrid("options").queryParams;
-							queryParams.option = option;
+							queryParams.selectUser = option_user;
+							$("#bugGrid").datagrid("reload");
+						}else{
+							loadTableData();
+						}
+						first_user = 0;
+					}
+                }
+                );
+                $("#option_type").combobox({
+					onSelect: function(record){
+						option_type = record.value;
+						if(first_type == 0){
+							var queryParams =$("#bugGrid").datagrid("options").queryParams;
+							queryParams.option = option_type;
 							$("#bugGrid").datagrid("reload");
 						}
-						first = 0;
+						first_type = 0;
 					}
 				});
-                $("#bugGrid").datagrid({
+            });
+
+			function loadTableData() {
+				$("#bugGrid").datagrid({
                     selectOnCheck: true,
                     checkOnSelect: true,
                     pagination: true,
-                    url: 'bugServlet.do?sign=list',
-                    queryParams:{option : option},
+                    url: '../bugServlet.do?sign=list',
+                    queryParams:{option : option_type, selectUser : option_user},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '序号', field: 'id', width: 60},
@@ -68,7 +101,7 @@ PermissionUtil.check(request, response);
                     				iconCls:'icon-ok',
                     				handler:function(){
                     					$('#addBugForm').form('submit', {
-                    					    url:'bugServlet.do?sign=add',
+                    					    url:'../bugServlet.do?sign=add',
                     					    success:function(data){
                     					    	var data = eval('(' + data + ')');
                     					    	if(data.result == 0){
@@ -110,7 +143,7 @@ PermissionUtil.check(request, response);
                         				iconCls:'icon-ok',
                         				handler:function(){
                         					$('#addBugForm').form('submit', {
-                        					    url:'bugServlet.do?sign=add',
+                        					    url:'../bugServlet.do?sign=add',
                         					    success:function(data){
                         					    	var data = eval('(' + data + ')');
                         					    	if(data.result == 0){
@@ -152,7 +185,7 @@ PermissionUtil.check(request, response);
                                     if (r) {
                                         $.ajax({
                                             type: "POST",
-                                            url: "bugServlet.do?sign=delete",
+                                            url: "../bugServlet.do?sign=delete",
                                             data: "bugIds=" + ids,
                                             success: function(msg) {
                                                 $("#bugGrid").datagrid('reload');
@@ -173,7 +206,7 @@ PermissionUtil.check(request, response);
                         	var ids = getChecked("bugGrid");
                         	$.ajax({
                                 type: "POST",
-                                url: "bugServlet.do?sign=finish",
+                                url: "../bugServlet.do?sign=finish",
                                 data: "bugIds=" + ids,
                                 success: function(msg) {
                                     $("#bugGrid").datagrid('reload');
@@ -197,13 +230,13 @@ PermissionUtil.check(request, response);
                             } else {
                                 var row = $("#bugGrid").datagrid('getChecked');
                                 $("#passUser").combobox({
-                                    url:'userServlet.do?sign=select',
+                                    url:'../userServlet.do?sign=select',
                                     valueField:'id',
                                     textField:'text',
                                     loadFilter: function(data){
                                     	$.ajax({
                                             type: "POST",
-                                            url: "bugServlet.do?sign=current",
+                                            url: "../bugServlet.do?sign=current",
                                             data: "bugId=" + row[0].id,
                                             success: function(msg) {
                                             	var data = eval('('+msg+')');
@@ -228,7 +261,7 @@ PermissionUtil.check(request, response);
                         				iconCls:'icon-ok',
                         				handler:function(){
                         					$('#passBugForm').form('submit', {
-                        					    url:'bugServlet.do?sign=passBug',
+                        					    url:'../bugServlet.do?sign=passBug',
                         					    success:function(data){
                         					    	var data = eval('(' + data + ')');
                         					    	if(data.result == 0){
@@ -256,8 +289,7 @@ PermissionUtil.check(request, response);
                         }
                     }]
                 });
-            });
-
+			}
             function getChecked(id) {
                 var ids = [];
                 var rows = $('#' + id).datagrid('getChecked');
@@ -272,13 +304,18 @@ PermissionUtil.check(request, response);
 
 	<body class="easyui-layout">
 		<div class="easyui-panel" title="待办列表" style="width: 100%">
+		
 			<div style="padding-left: 5px;padding-top: 10px;padding-bottom: 10px;">
-				<label for="option">筛选:</label>
-				<select class="easyui-combobox" id="option" style="width:250px;">
+				<label for="option_user">筛选:</label>
+				<input id="option_user" />
+		    </div>
+			<div style="padding-left: 5px;padding-top: 10px;padding-bottom: 10px;">
+				<label for="option_type">筛选:</label>
+				<select class="easyui-combobox" id="option_type" style="width:250px;">
 				    <option value="0">全部</option>
-				    <option value="1">我创建的</option>
-				    <option value="2" selected="selected">我处理的</option>
-				    <option value="3">我完成的</option>
+				    <option value="1">他创建的</option>
+				    <option value="2" selected="selected">他处理的</option>
+				    <option value="3">他完成的</option>
 				</select>
 		    </div>
 			<table id="bugGrid"></table>

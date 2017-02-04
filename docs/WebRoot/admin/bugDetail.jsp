@@ -1,22 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
 <%
+	PermissionUtil.checkAdmin(request, response);
 	String bugId = (String)request.getParameter("bugId");
-	PermissionUtil.check(request, response);
 %>
 
 <html>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>待办事项</title>
-	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="themes/icon.css" />
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
             $(function() {
             	$.ajax({
                     type: "POST",
-                    url: "bugServlet.do?sign=detail",
+                    url: "../bugServlet.do?sign=detail",
                     data: "bugId=<%=bugId%>",
                     success: function(msg) {
                     	var data = eval('('+msg+')');
@@ -30,7 +30,7 @@
                             selectOnCheck: true,
                             checkOnSelect: true,
                             pagination: true,
-                            url: 'bugServlet.do?sign=listOperation&bugId=<%=bugId%>',
+                            url: '../bugServlet.do?sign=listOperation&bugId=<%=bugId%>',
                             frozenColumns: [[
                                     {title: '指派人', field: 'operater', width: 100, align: 'center'},
                                     {title: '被指派人', field: 'target', width: 100, align: 'center'},
