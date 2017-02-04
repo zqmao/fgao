@@ -50,7 +50,6 @@ public class BugServlet extends BaseServlet {
 			if(select == null || select.length() == 0){
 				selectUser = currentUser.getId();
 			}else{
-				System.out.println(selectUser);
 				selectUser = Integer.parseInt(select);
 			}
 			//0，全部；1，我创建的；2，我处理的；3，我完成的；4，我参与过的
