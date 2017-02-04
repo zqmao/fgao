@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="base.util.*"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	String bugId = (String)request.getParameter("bugId");
+	PermissionUtil.check(request, response);
 %>
 
 <html>
@@ -16,7 +16,7 @@
             $(function() {
             	$.ajax({
                     type: "POST",
-                    url: "../bugServlet.do?sign=detail",
+                    url: "bugServlet.do?sign=detail",
                     data: "bugId=<%=bugId%>",
                     success: function(msg) {
                     	var data = eval('('+msg+')');
@@ -30,7 +30,7 @@
                             selectOnCheck: true,
                             checkOnSelect: true,
                             pagination: true,
-                            url: '../bugServlet.do?sign=listOperation&bugId=<%=bugId%>',
+                            url: 'bugServlet.do?sign=listOperation&bugId=<%=bugId%>',
                             frozenColumns: [[
                                     {title: '指派人', field: 'operater', width: 100, align: 'center'},
                                     {title: '被指派人', field: 'target', width: 100, align: 'center'},
@@ -81,7 +81,7 @@
 				<input class="easyui-textbox" type="text" id="createRemark" disabled="disabled" style="width:80%;height:100px" data-options="multiline:true" />
 		    </div>
 		    <br/>
-		    <div >
+		    <div>
 				<div>创建情况:</div>
 				<input class="easyui-validatebox" type="text" id="createInfo" disabled="disabled" style="width:80%;padding: 5px;" />
 		    </div>

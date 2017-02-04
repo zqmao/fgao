@@ -22,8 +22,23 @@ public class BugDAO extends BaseDAO {
 	}
 
 	public List<Bug> list() {
-		String sql = "select * from t_bug order by id";
+		String sql = "select * from t_bug order by id desc";
 		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class);
+		return objs;
+	}
+	public List<Bug> listUserCreate(int userId) {
+		String sql = "select * from t_bug where createrId = ? order by id desc";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+		return objs;
+	}
+	public List<Bug> listUserPart(int userId) {
+		String sql = "select b.* from t_bug_operation bo, t_bug b where b.id=bo.bugId and targetId = ? GROUP BY bugId ORDER BY id desc";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
+		return objs;
+	}
+	public List<Bug> listUserFinish(int userId) {
+		String sql = "select * from t_bug where finisherId = ? order by id desc";
+		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, userId);
 		return objs;
 	}
 

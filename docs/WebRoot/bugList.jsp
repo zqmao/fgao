@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="base.util.*"%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+PermissionUtil.check(request, response);
 %>
 
 <html>
@@ -12,21 +12,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
+			var first = 1;
+			var option = "";
             $(function() {
                 $("#addBug").dialog("close");
                 $("#passBug").dialog("close");
-                
+                $("#option").combobox({
+					onSelect: function(record){
+						option = record.value;
+						if(first == 0){
+							var queryParams =$("#bugGrid").datagrid("options").queryParams;
+							queryParams.option = option;
+							$("#bugGrid").datagrid("reload");
+						}
+						first = 0;
+					}
+				});
                 $("#bugGrid").datagrid({
                     selectOnCheck: true,
                     checkOnSelect: true,
                     pagination: true,
-                    url: '../bugServlet.do?sign=list',
+                    url: 'bugServlet.do?sign=list',
+                    queryParams:{option : option},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '序号', field: 'id', width: 60},
                             {title: '类别', field: 'category', width: 120, align: 'center'},
                             {title: '标题', field: 'title', width: 400},
                             {title: '创建者', field: 'createrName', width: 100, align: 'center'},
+                            {title: '当前处理人员', field: 'currentName', width: 100, align: 'center'},
                             {title: '完成者', field: 'finisherName', width: 100, align: 'center'},
                             {title: '详情', field: 'opt', width: 100, align: 'center',
                             	formatter: function(value, rowData, rowIndex) {
@@ -46,6 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         iconCls: 'icon-add',
                         handler: function() {
                             $("#addBug").form('clear');
+                            $("#category").combobox('select', '售后');
                             $("#addBug").dialog({
                             	title: '添加',
                             	buttons:[{
@@ -53,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     				iconCls:'icon-ok',
                     				handler:function(){
                     					$('#addBugForm').form('submit', {
-                    					    url:'../bugServlet.do?sign=add',
+                    					    url:'bugServlet.do?sign=add',
                     					    success:function(data){
                     					    	var data = eval('(' + data + ')');
                     					    	if(data.result == 0){
@@ -87,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 $.messager.alert('提示', '只能选择一个。', 'Warning');
                             } else {
                                 var row = $("#bugGrid").datagrid('getChecked');
-                                $("#addBug").form('clear');
+                                //$("#addBug").form('clear');
                                 $("#addBug").dialog({
                                 	title: '修改',
                                 	buttons:[{
@@ -95,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         				iconCls:'icon-ok',
                         				handler:function(){
                         					$('#addBugForm').form('submit', {
-                        					    url:'../bugServlet.do?sign=add',
+                        					    url:'bugServlet.do?sign=add',
                         					    success:function(data){
                         					    	var data = eval('(' + data + ')');
                         					    	if(data.result == 0){
@@ -137,7 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                     if (r) {
                                         $.ajax({
                                             type: "POST",
-                                            url: "../bugServlet.do?sign=delete",
+                                            url: "bugServlet.do?sign=delete",
                                             data: "bugIds=" + ids,
                                             success: function(msg) {
                                                 $("#bugGrid").datagrid('reload');
@@ -158,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         	var ids = getChecked("bugGrid");
                         	$.ajax({
                                 type: "POST",
-                                url: "../bugServlet.do?sign=finish",
+                                url: "bugServlet.do?sign=finish",
                                 data: "bugIds=" + ids,
                                 success: function(msg) {
                                     $("#bugGrid").datagrid('reload');
@@ -188,7 +203,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                     loadFilter: function(data){
                                     	$.ajax({
                                             type: "POST",
-                                            url: "../bugServlet.do?sign=current",
+                                            url: "bugServlet.do?sign=current",
                                             data: "bugId=" + row[0].id,
                                             success: function(msg) {
                                             	var data = eval('('+msg+')');
@@ -199,6 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                             }
                                         });
                                    		if (data.data){
+                                   			$("#passUser").combobox('select', data.data[0].id);
                                    			return data.data;
                                    		} else {
                                    			return data;
@@ -212,7 +228,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         				iconCls:'icon-ok',
                         				handler:function(){
                         					$('#passBugForm').form('submit', {
-                        					    url:'../bugServlet.do?sign=passBug',
+                        					    url:'bugServlet.do?sign=passBug',
                         					    success:function(data){
                         					    	var data = eval('(' + data + ')');
                         					    	if(data.result == 0){
@@ -256,6 +272,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<body class="easyui-layout">
 		<div class="easyui-panel" title="待办列表" style="width: 100%">
+			<div style="padding-left: 5px;padding-top: 10px;padding-bottom: 10px;">
+				<label for="option">筛选:</label>
+				<select class="easyui-combobox" id="option" style="width:250px;">
+				    <option value="0">全部</option>
+				    <option value="1">我创建的</option>
+				    <option value="2" selected="selected">我处理的</option>
+				    <option value="3">我完成的</option>
+				</select>
+		    </div>
 			<table id="bugGrid"></table>
 		</div>
 		<div id="addBug" class="easyui-dialog" data-options="modal:true"
@@ -264,8 +289,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<input type="hidden" name="bugId" value="" />
 				<div >
 					<label for="category">类别:</label>
-					<select class="easyui-combobox" name="category" style="width:40%;">
-					    <option value="售后" selected="selected">售后</option>
+					<select class="easyui-combobox" id="category" name="category" style="width:40%;">
+					    <option value="售后">售后</option>
 					    <option value="返现">返现</option>
 					</select>
 			    </div>
@@ -277,7 +302,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    <br/>
 			    <div >
 					<label for="createRemark">描述:</label>
-					<input class="easyui-validatebox" type="text" name="createRemark" style="width:80%;padding: 5px;" data-options="required:true" />
+					<input class="easyui-textbox" type="text" name="createRemark" style="width:80%;height:100px;" data-options="multiline:true" />
 			    </div>
 			    
 			</form>

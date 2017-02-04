@@ -38,16 +38,46 @@ public class BugServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
+			if(currentUser == null){
+				responseError("需要登录");
+				return;
+			}
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			List<Bug> result = BugDAO.getInstance().list();
+			int option = Integer.parseInt(request.getParameter("option"));
+			System.out.println(option);
+			//0，全部；1，我创建的；2，我处理的；3，我完成的
+			List<Bug> result = null;
+			if(option == 0){
+				result = BugDAO.getInstance().list();
+			}else if(option == 1){
+				result = BugDAO.getInstance().listUserCreate(currentUser.getId());
+			}else if(option == 2){
+				result = BugDAO.getInstance().listUserPart(currentUser.getId());
+			}else if(option == 3){
+				result = BugDAO.getInstance().listUserFinish(currentUser.getId());
+			}
+			
 			int startIndex = (page - 1) * rows;
 			int endIndex = page * rows;
 			int total = result.size();
 			if(total < endIndex){
 				endIndex = total;
 			}
+			if(startIndex > endIndex){
+				startIndex = 0;
+			}
 			List<Bug> tempResult = result.subList(startIndex, endIndex);
+			for(Bug bug : tempResult){
+				List<BugOperation> bugOps = BugOperationDAO.getInstance().list(bug.getId());
+				if(bugOps.size() > 0){
+					BugOperation bugOp = bugOps.get(0);
+					User user = UserDAO.getInstance().load(bugOp.getTargetId());
+					bug.setCurrentName(user.getName());
+				}else{
+					bug.setCurrentName("未指派");
+				}
+			}
 			System.out.println(JSON.toJSON(tempResult));
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);

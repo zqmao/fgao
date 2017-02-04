@@ -19,7 +19,9 @@ public class TestUtil {
 		for(int i = 0; i < rs.size(); i++){
 			System.out.println(rs.get(i));
 		}
-		
+		String password = "111111";
+		password = MdUtil.MD5(password);
+		System.out.println(password);
 	}
 
 }

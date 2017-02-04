@@ -34,6 +34,10 @@ public class UserServlet extends BaseServlet {
 		if ("login".equals(sign)) {// 登陆
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
+			if(password == null || password.length() == 0){
+				responseError("请输入密码");
+				return;
+			}
 			password = MdUtil.MD5(password);
 			// 先根据登陆名查找是否存在
 			User dbUser = UserDAO.getInstance().query(name);

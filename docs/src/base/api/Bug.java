@@ -16,6 +16,7 @@ public class Bug {
 	private String finisherName;
 	
 	private int state;//0,未完成；1,完成
+	private String currentName;
 
 	public int getId() {
 		return id;
@@ -111,5 +112,13 @@ public class Bug {
 
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public String getCurrentName() {
+		return currentName;
+	}
+
+	public void setCurrentName(String currentName) {
+		this.currentName = currentName;
 	}
 }
