@@ -1,0 +1,5 @@
+#Sun Feb 05 19:58:03 CST 2017
+eclipse.preferences.version=1
+validator.Checked=WebRoot/js,WebRoot/kindEditor
+validator.Revalidate=true
+validator.Unchecked=

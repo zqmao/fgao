@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="themes/icon.css" />
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
 		function submit() {
 			$("#login").form("submit", {
@@ -38,16 +39,26 @@
 			    }
 			});
 		}
+		document.onkeydown = function(event_e){
+			if(window.event) {
+				event_e = window.event;
+			}
+			var int_keycode = event_e.charCode||event_e.keyCode;
+			if( int_keycode == '13' ) {
+				submit();
+				return false;
+			}
+		};
 	</script>
 </head>
 <body>
 <div class="easyui-panel" title="登录" style="width: 400px; height: 300px;padding: 10px;margin:0 auto;text-align:center" >
 	<form id="login" method="post">
 	
-		帐号：<input type="text" name="name"/>
+		帐号：<input type="text" name="name" class="easyui-validatebox" data-options="required:true"/>
 		<br/>
 		<br/>
-		密码：<input type="password" name="password">
+		密码：<input type="password" name="password" class="easyui-validatebox"  data-options="required:true"/>
 		<br/>
 	
 	</form>

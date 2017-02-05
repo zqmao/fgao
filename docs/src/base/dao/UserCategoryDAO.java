@@ -121,4 +121,19 @@ public class UserCategoryDAO extends BaseDAO {
 			return checkPermission(category.getParentId(), userId);
 		}
 	}
+	
+	public List<User> listBySimpleCategory(int categoryId, int index, int pagesize) {
+		String sql = "select u.* from t_user_category uc, t_user u where u.id=uc.userId and uc.categoryId=? order by u.id limit ?,?";
+		return JDBCUtil.queryObjectList(sql, User.class, categoryId, index, pagesize);
+	}
+	
+	public long listBySimpleCategoryCount(int categoryId) {
+		String sql = "select count(u.id) from t_user_category uc, t_user u where u.id=uc.userId and uc.categoryId=? ";
+		return JDBCUtil.queryCount(sql, categoryId);
+	}
+	
+	public UserCategory query(int categoryId, int userId){
+		String sql = "select uc.* from t_user_category uc where uc.userId="+userId+" and uc.categoryId=" + categoryId;
+		return JDBCUtil.queryObject(sql, UserCategory.class);
+	}
 }

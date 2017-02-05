@@ -1,5 +1,7 @@
-#Fri Feb 03 11:25:29 CST 2017
+#Sun Feb 05 20:22:55 CST 2017
 eclipse.preferences.version=1
 encoding//WebRoot/customer/articleEdit.jsp=UTF-8
+encoding//WebRoot/kindEditor/php/file_manager_json.php=UTF-8
+encoding//WebRoot/kindEditor/php/upload_json.php=UTF-8
 encoding//WebRoot/login.jsp=UTF-8
 encoding/<project>=UTF-8

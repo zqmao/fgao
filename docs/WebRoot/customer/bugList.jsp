@@ -110,9 +110,9 @@ PermissionUtil.check(request, response);
                             var ids = getChecked("bugGrid");
                             var len = ids.length;
                             if (len == 0) {
-                                $.messager.alert('提示', '至少选择一个。', 'Warning');
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
                             } else if (len > 1) {
-                                $.messager.alert('提示', '只能选择一个。', 'Warning');
+                                $.messager.alert('提示', '只能选择一个', 'Warning');
                             } else {
                                 var row = $("#bugGrid").datagrid('getChecked');
                                 $("#addBug").panel('open');
@@ -129,6 +129,10 @@ PermissionUtil.check(request, response);
                         iconCls: 'icon-ok',
                         handler: function() {
                         	var ids = getChecked("bugGrid");
+                        	if (ids.length == 0) {
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
+                                return;
+                            }
                         	$.ajax({
                                 type: "POST",
                                 url: "../bugServlet.do?sign=finish",
@@ -149,9 +153,9 @@ PermissionUtil.check(request, response);
                         	var ids = getChecked("bugGrid");
                             var len = ids.length;
                             if (len == 0) {
-                                $.messager.alert('提示', '至少选择一个。', 'Warning');
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
                             } else if (len > 1) {
-                                $.messager.alert('提示', '只能选择一个。', 'Warning');
+                                $.messager.alert('提示', '只能选择一个', 'Warning');
                             } else {
                                 var row = $("#bugGrid").datagrid('getChecked');
                                 $("#passUser").combobox({
@@ -207,7 +211,7 @@ PermissionUtil.check(request, response);
 					submitAdd();
 					return false;
 				}
-			}
+			};
             
             function submitAdd() {
 				$("#addBugForm").form('submit', {

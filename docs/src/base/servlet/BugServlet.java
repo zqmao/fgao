@@ -77,7 +77,7 @@ public class BugServlet extends BaseServlet {
 				if(bugOps.size() > 0){
 					BugOperation bugOp = bugOps.get(0);
 					User user = UserDAO.getInstance().load(bugOp.getTargetId());
-					bug.setCurrentName(user.getName());
+					bug.setCurrentName(user != null ? user.getName() : "人员消失");
 				}else{
 					bug.setCurrentName("未指派");
 				}
@@ -127,8 +127,9 @@ public class BugServlet extends BaseServlet {
 			String bugIds = (String) request.getParameter("bugIds");
 			for(String bugId : bugIds.split(",")){
 				BugDAO.getInstance().delete(Integer.parseInt(bugId));
+				BugDAO.getInstance().deleteOp(Integer.parseInt(bugId));
 			}
-			responseSuccess("修改成功");
+			responseSuccess("删除成功");
 		} else if ("finish".equals(sign)) {// 完成
 			String bugIds = (String) request.getParameter("bugIds");
 			if(currentUser == null){
@@ -153,7 +154,7 @@ public class BugServlet extends BaseServlet {
 			if(result.size() > 0){
 				BugOperation bugOp = result.get(0);
 				User user = UserDAO.getInstance().load(bugOp.getTargetId());
-				responseSuccess(user.getName());
+				responseSuccess(user != null ? user.getName() : "人员消失");
 			}else{
 				responseError("没有指派数据");
 			}
@@ -187,8 +188,8 @@ public class BugServlet extends BaseServlet {
 				vo.setBugId(bugOp.getBugId());
 				User target = UserDAO.getInstance().load(bugOp.getTargetId());
 				User operater = UserDAO.getInstance().load(bugOp.getOperaterId());
-				vo.setTarget(target.getName());
-				vo.setOperater(operater.getName());
+				vo.setTarget(target != null ? target.getName() : "人员消失");
+				vo.setOperater(operater != null ? operater.getName() : "人员消失");
 				vo.setTime(DateUtil.toString(bugOp.getTime()));
 				vo.setRemark(bugOp.getRemark());
 				array.add(JSON.toJSON(vo));
@@ -206,12 +207,10 @@ public class BugServlet extends BaseServlet {
 			Bug bug = BugDAO.getInstance().load(Integer.parseInt(bugId));
 			BugVO vo = new BugVO();
 			vo.setCategory(bug.getCategory());
-			User create = UserDAO.getInstance().load(bug.getCreaterId());
-			vo.setCreateInfo(create.getName() + " 于 " + DateUtil.toString(bug.getCreateTime()) + " 创建");
+			vo.setCreateInfo(bug.getCreaterName() + " 于 " + DateUtil.toString(bug.getCreateTime()) + " 创建");
 			vo.setCreateRemark(bug.getCreateRemark());
 			if(bug.getFinisherId() != 0){
-				User finish = UserDAO.getInstance().load(bug.getFinisherId());
-				vo.setFinishInfo(finish.getName() + " 于 " + DateUtil.toString(bug.getFinishTime()) + " 完成");
+				vo.setFinishInfo(bug.getFinisherName() + " 于 " + DateUtil.toString(bug.getFinishTime()) + " 完成");
 			}else{
 				vo.setFinishInfo("未完成");
 			}

@@ -87,4 +87,9 @@ public class BugDAO extends BaseDAO {
 		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, "%" + key + "%", "%" + key + "%", "%" + key + "%");
 		return objs;
 	}
+	
+	public void deleteOp(int bugId) {
+		String sql = "delete from t_bug_operation where bugId=?";
+		JDBCUtil.delete(sql, bugId);
+	}
 }

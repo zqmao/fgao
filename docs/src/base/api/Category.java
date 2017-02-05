@@ -6,7 +6,7 @@ public class Category {
 	
 	private int id;
 	private int parentId;//默认0
-	private String name;
+	private String text;
 	
 	private Category parent;
 	private List<Category> children;
@@ -23,11 +23,11 @@ public class Category {
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
 	}
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setText(String text) {
+		this.text = text;
 	}
 	public Category getParent() {
 		return parent;

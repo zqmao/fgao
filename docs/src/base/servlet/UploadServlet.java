@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class UploadServlet extends BaseServlet {
 
@@ -60,7 +63,18 @@ public class UploadServlet extends BaseServlet {
 					out.close();
 				}
 			}
-			responseSuccess(netPath);
+//			responseSuccess(netPath);
+			JSONObject obj = new JSONObject();  
+            obj.put("error", 0);  
+            obj.put("url", netPath);
+            PrintWriter out = null;
+    		try {
+    			out = response.getWriter();
+    			out.write(obj.toJSONString());
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		out.close();
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

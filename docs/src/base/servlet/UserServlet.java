@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import base.api.User;
 import base.dao.UserDAO;
-import base.util.MdUtil;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -56,42 +55,50 @@ public class UserServlet extends BaseServlet {
 		} else if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			List<User> result = UserDAO.getInstance().list();
-			int startIndex = (page - 1) * rows;
-			int endIndex = page * rows;
-			int total = result.size();
-			if(total < endIndex){
-				endIndex = total;
-			}
-			List<User> tempResult = result.subList(startIndex, endIndex);
-			System.out.println(JSON.toJSON(tempResult));
+			long total = UserDAO.getInstance().listCount();
+			int index = (page - 1) * rows;
+			List<User> result = UserDAO.getInstance().list(index, rows);
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);
-			obj.put("rows", JSON.toJSON(tempResult));
+			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
 		} else if ("add".equals(sign)) {// 注册用户
-			String userStr = (String) request.getParameter("user");
-			User user = JSON.parseObject(userStr, User.class);
-			String password = user.getPassword();
-			//password = MdUtil.MD5(password);
-			user.setPassword(password);
+			String name = (String) request.getParameter("name");
+			String loginName = (String) request.getParameter("loginName");
+			String phone = (String) request.getParameter("phone");
+			String info = (String) request.getParameter("info");
+			String userId = (String) request.getParameter("userId");
+			User user = null;
+			if(userId == null || userId.length() == 0){
+				user = new User();
+			}else{
+				user = UserDAO.getInstance().load(Integer.parseInt(userId));
+			}
+			user.setPassword("123456");
+			user.setAdmin(0);
+			user.setName(name);
+			user.setLoginName(loginName);
+			user.setPhone(phone);
+			user.setInfo(info);
 			if (user.getId() == 0) {
-				User dbUser = UserDAO.getInstance().query(user.getName());
+				User dbUser = UserDAO.getInstance().query(loginName);
 				if (dbUser != null) {
 					responseError("用户名已经存在");
 				} else {
-					int userId = UserDAO.getInstance().saveOrUpdate(user);
-					dbUser = UserDAO.getInstance().load(userId);
-					if (dbUser == null) {
-						responseError("注册失败");
-					} else {
-						responseSuccess(JSON.toJSON(dbUser));
-					}
+					UserDAO.getInstance().saveOrUpdate(user);
+					responseSuccess("注册成功");
 				}
 			} else {
 				UserDAO.getInstance().saveOrUpdate(user);
 				responseSuccess("修改成功");
 			}
+		} else if ("delete".equals(sign)) {// 删除
+			String userIds = (String) request.getParameter("userIds");
+			for(String userId : userIds.split(",")){
+				UserDAO.getInstance().delete(Integer.parseInt(userId));
+				//后面可能需要删除所有和人员有关的
+			}
+			responseSuccess("删除成功");
 		} else if ("select".equals(sign)) {// 查询列表
 			List<User> result = UserDAO.getInstance().list();
 			JSONArray array = new JSONArray();

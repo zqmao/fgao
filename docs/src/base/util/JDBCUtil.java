@@ -16,7 +16,7 @@ public class JDBCUtil {
 
 	private static final String Url = "jdbc:mysql://localhost:3306/db_fgao?characterEncoding=UTF-8";
 	private static final String User = "root";
-	private static final String Password = "123456";
+	private static final String Password = "111111";
 	private static final String Driver = "com.mysql.jdbc.Driver";
 	private static Connection con = null;
 	private static PreparedStatement ps = null;
