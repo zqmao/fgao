@@ -256,7 +256,7 @@ PermissionUtil.check(request, response);
 				    <option value="4">我参与过的</option>
 				</select>
 		    </div>
-			<table id="bugGrid"></table>
+			<table id="bugGrid" style="height: 340px;"></table>
 		</div>
 		<div id="addBug" class="easyui-panel" data-options="modal:true"
 			title="添加待办" style="width: 100%; height: 200px;padding: 10px;">
