@@ -1,46 +1,34 @@
-function convert(rows) {
-	function exists(rows, parentId) {
-		for ( var i = 0; i < rows.length; i++) {
-			if (rows[i].id == parentId)
-				return true;
+function getClipboard() {
+	if (window.clipboardData) {
+		return (window.clipboardData.getData('Text'));
+	} else if (window.netscape) {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+		if (!clip)
+			return;
+		var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+		if (!trans)
+			return;
+		trans.addDataFlavor('text/unicode');
+		clip.getData(trans, clip.kGlobalClipboard);
+		var str = new Object();
+		var len = new Object();
+		try {
+			trans.getTransferData('text/unicode', str, len);
+		} catch (error) {
+			return null;
 		}
-		return false;
-	}
-
-	var nodes = [];
-	// get the top level nodes
-	for ( var i = 0; i < rows.length; i++) {
-		var row = rows[i];
-		if (!exists(rows, row.parentId)) {
-			nodes.push({
-				id : row.id,
-				text : row.name
-			});
+		if (str) {
+			if (Components.interfaces.nsISupportsWString)
+				str = str.value.QueryInterface(Components.interfaces.nsISupportsWString);
+			else if (Components.interfaces.nsISupportsString)
+				str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+			else
+				str = null;
 		}
-	}
-
-	var toDo = [];
-	for ( var i = 0; i < nodes.length; i++) {
-		toDo.push(nodes[i]);
-	}
-	while (toDo.length) {
-		var node = toDo.shift(); // the parent node
-		// get the children nodes
-		for ( var i = 0; i < rows.length; i++) {
-			var row = rows[i];
-			if (row.parentId == node.id) {
-				var child = {
-					id : row.id,
-					text : row.name
-				};
-				if (node.children) {
-					node.children.push(child);
-				} else {
-					node.children = [ child ];
-				}
-				toDo.push(child);
-			}
+		if (str) {
+			return (str.data.substring(0, len.value / 2));
 		}
 	}
-	return nodes;
+	return null;
 }

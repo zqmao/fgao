@@ -15,6 +15,16 @@
     <url-pattern>/uploadServlet.do</url-pattern>
   </servlet-mapping>
   <servlet>
+    <description>UploadCopyServlet</description>
+    <display-name>UploadCopyServlet</display-name>
+    <servlet-name>UploadCopyServlet</servlet-name>
+    <servlet-class>base.servlet.UploadCopyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadCopyServlet</servlet-name>
+    <url-pattern>/uploadCopyServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <description>UserServlet</description>
     <display-name>UserServlet</display-name>
     <servlet-name>UserServlet</servlet-name>

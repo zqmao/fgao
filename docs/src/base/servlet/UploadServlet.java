@@ -39,18 +39,14 @@ public class UploadServlet extends BaseServlet {
 				String name = item.getFieldName();
 				if (item.isFormField()) {
 					String value = item.getString();
-					System.out.println("value:" + value);
 					request.setAttribute(name, value);
 				} else {
 					// 获取路径名
-					String value = item.getName();
-					int start = value.lastIndexOf("\\");
-					String filename = value.substring(start + 1);
+					String filename = System.currentTimeMillis() + ".png";
 					request.setAttribute(name, filename);
 					netPath = "http://" + request.getLocalAddr() + ":"
 							+ request.getLocalPort() + "/"
 							+ request.getContextPath() + "/upload/" + filename;
-					System.out.println(netPath);
 					OutputStream out = new FileOutputStream(new File(path, filename));
 					InputStream in = item.getInputStream();
 					int length = 0;
@@ -63,7 +59,6 @@ public class UploadServlet extends BaseServlet {
 					out.close();
 				}
 			}
-//			responseSuccess(netPath);
 			JSONObject obj = new JSONObject();  
             obj.put("error", 0);  
             obj.put("url", netPath);
