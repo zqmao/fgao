@@ -1,6 +1,7 @@
 package base.servlet;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,14 +67,27 @@ public class DocumentServlet extends BaseServlet {
 				responseSuccess(JSON.toJSON(obj));
 			}
 		} else if ("add".equals(sign)) {// 添加
-			String param = (String) request.getParameter("document");
-			Document document = JSON.parseObject(param, Document.class);
-			if (document.getId() == 0) {
-				int id = DocumentDAO.getInstance().saveOrUpdate(document);
-				Document dbResult = DocumentDAO.getInstance().load(id);
-				responseSuccess(JSON.toJSON(dbResult));
-			} else {
-				DocumentDAO.getInstance().saveOrUpdate(document);
+			String articleId = (String) request.getParameter("articleId");
+			String categoryId = (String) request.getParameter("categoryId");
+			String title = (String) request.getParameter("title");
+			String content = (String) request.getParameter("content");
+			content = URLDecoder.decode(content,"UTF-8");
+			System.out.println(title+content);
+			Document document = null;
+			if(articleId == null || articleId.length() == 0){
+				document = new Document();
+			}else{
+				document = DocumentDAO.getInstance().load(Integer.parseInt(articleId));
+			}
+			document.setTitle(title);
+			document.setContent(content);
+			document.setTime(System.currentTimeMillis());
+			document.setUserId(currentUser.getId());
+			document.setCategoryId(Integer.parseInt(categoryId));
+			DocumentDAO.getInstance().saveOrUpdate(document);
+			if(articleId == null || articleId.length() == 0){
+				responseSuccess("增加成功");
+			}else{
 				responseSuccess("修改成功");
 			}
 		} else if ("delete".equals(sign)) {// 删除
@@ -85,11 +99,14 @@ public class DocumentServlet extends BaseServlet {
 		} else if ("query".equals(sign)) {// 查询
 			String id = (String) request.getParameter("id");
 			Document result = DocumentDAO.getInstance().load(Integer.parseInt(id));
-			if(result != null){
-				responseSuccess(JSON.toJSON(result));
-			}else{
-				responseError("未查询到结果");
-			}
+			DocumentVO vo = new DocumentVO();
+			vo.setId(result.getId());
+			User user = UserDAO.getInstance().load(result.getUserId());
+			vo.setUserName(user.getName());
+			vo.setTitle(result.getTitle());
+			vo.setContent(result.getContent());
+			vo.setTime(DateUtil.toString(result.getTime()));
+			responseSuccess(JSON.toJSON(vo));
 		}
 	}
 

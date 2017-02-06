@@ -38,8 +38,8 @@ KindEditor.plugin('image', function(K) {
 		}
 		var html = [
 			'<div style="padding:20px;">',
-			//tabs
-			'<div class="tabs"></div>',
+			//tabs_ke
+			'<div class="tabs_ke"></div>',
 			//remote image - start
 			'<div class="tab1" style="display:none;">',
 			//url
@@ -103,7 +103,7 @@ KindEditor.plugin('image', function(K) {
 						return;
 					}
 					// insert local image
-					if (showLocal && showRemote && tabs && tabs.selectedIndex === 1 || !showRemote) {
+					if (showLocal && showRemote && tabs_ke && tabs_ke.selectedIndex === 1 || !showRemote) {
 						if (uploadbutton.fileBox.val() == '') {
 							alert(self.lang('pleaseSelectFile'));
 							return;
@@ -161,21 +161,21 @@ KindEditor.plugin('image', function(K) {
 			titleBox = K('.tab1 [name="title"]', div),
 			alignBox = K('.tab1 [name="align"]', div);
 
-		var tabs;
+		var tabs_ke;
 		if (showRemote && showLocal) {
-			tabs = K.tabs({
-				src : K('.tabs', div),
+			tabs_ke = K.tabs({
+				src : K('.tabs_ke', div),
 				afterSelect : function(i) {}
 			});
-			tabs.add({
+			tabs_ke.add({
 				title : lang.remoteImage,
 				panel : K('.tab1', div)
 			});
-			tabs.add({
+			tabs_ke.add({
 				title : lang.localImage,
 				panel : K('.tab2', div)
 			});
-			tabs.select(tabIndex);
+			tabs_ke.select(tabIndex);
 		} else if (showRemote) {
 			K('.tab1', div).show();
 		} else if (showLocal) {

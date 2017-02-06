@@ -20,7 +20,7 @@ PermissionUtil.checkAdmin(request, response);
 		var first = 1;
 		$(function() {
 			$('#tt').tree({
-				url: 'http://localhost:8080/userCategoryServlet.do?sign=listByUser&userId=2',
+				url: '../userCategoryServlet.do?sign=listByUser&userId=2',
 				loadFilter: function(data){
 					return data.data;
 				},
@@ -71,7 +71,7 @@ PermissionUtil.checkAdmin(request, response);
                     iconCls: 'icon-add',
                     text: '增加',
                     handler: function() {
-                    	window.open("/admin/articleEdit.jsp");
+                    	window.open("/admin/articleEdit.jsp?categoryId=" + categoryId);
                     }
                 }, {
                     iconCls: 'icon-edit',
@@ -86,7 +86,7 @@ PermissionUtil.checkAdmin(request, response);
                         } else {
                             var row = $("#articleGrid").datagrid("getChecked");
                             var articleId = row[0].id;
-                            window.open("/admin/articleEdit.jsp?articleId=" + articleId);
+                            window.open("/admin/articleEdit.jsp?articleId=" + articleId + "&categoryId=" + categoryId);
                         }
                     }
                 }, {

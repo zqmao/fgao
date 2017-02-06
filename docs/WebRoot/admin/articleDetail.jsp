@@ -2,27 +2,55 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String articleId = (String) request.getParameter("articleId");
+if(articleId == null){
+	articleId = "";
+}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <base href="<%=basePath%>">
-    
-    <title>My JSP 'adminUserList.jsp' starting page</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-
-  </head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>文章详情</title>
+		<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript">
+			initArticle();
+		    function initArticle(){
+		    	var articleId = <%=articleId%> + "";
+		    	if(articleId == ""){
+		    		return;
+		    	}
+		    	$.ajax({
+                    type: "POST",
+                    url: "../documentServlet.do?sign=query&id="+articleId,
+                    success: function(msg) {
+                    	var data = eval('('+msg+')');
+                    	$("#content").html(data.data.content);
+                    	$("#title").html(data.data.title);
+                    	$("#user").html(data.data.userName);
+                    	$("#time").html(data.data.time);
+                    },
+                    error: function(msg) {
+                        alert(msg.toString());
+                    }
+            	});
+		    }
+		</script>
+	</head>
   
-  <body>
-    This is my JSP page. <br>
-  </body>
+  <body class="easyui-layout">
+		<div id="addArticle" class="easyui-panel" title="文章详情" style="width: 100%;height: 100%; padding: 10px;">
+			<h1 align="center"><span id="title"></span></h1>
+			<hr/>
+			<div align="right" style="padding: 20px;">
+				<font size="4"><span id="user"></span></font>&nbsp;创建于&nbsp;<font size="4"><span id="time"></span></font>
+			</div>
+			<div id="content" style="text-indent: 20px;"></div>
+		</div>
+	</body>
 </html>
