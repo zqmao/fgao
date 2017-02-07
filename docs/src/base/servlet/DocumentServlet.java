@@ -10,12 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import base.api.Document;
-import base.api.User;
 import base.api.vo.DocumentVO;
 import base.dao.DocumentDAO;
 import base.dao.UserCategoryDAO;
-import base.dao.UserDAO;
-import base.util.DateUtil;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -43,22 +40,21 @@ public class DocumentServlet extends BaseServlet {
 				return;
 			}
 			if(currentUser.getAdmin() != 1 && !UserCategoryDAO.getInstance().checkPermission(Integer.parseInt(categoryId), currentUser.getId())){
-				responseError("无权限");
+				List<DocumentVO> temp = new ArrayList<DocumentVO>();
+				JSONObject obj = new JSONObject();
+				obj.put("total", 0);
+				obj.put("rows", JSON.toJSON(temp));
+				responseSuccess(JSON.toJSON(obj));
 			}else{
+				String key = request.getParameter("key");
 				int page = Integer.parseInt(request.getParameter("page"));
 				int rows = Integer.parseInt(request.getParameter("rows"));
-				long total = DocumentDAO.getInstance().listCount(Integer.parseInt(categoryId));
+				long total = DocumentDAO.getInstance().listCount(Integer.parseInt(categoryId), key);
 				int index = (page - 1) * rows;
-				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId), index, rows);
+				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId), key, index, rows);
 				List<DocumentVO> temp = new ArrayList<DocumentVO>();
 				for(Document document : result){
-					DocumentVO vo = new DocumentVO();
-					vo.setId(document.getId());
-					User user = UserDAO.getInstance().load(document.getUserId());
-					vo.setUserName(user.getName());
-					vo.setTitle(document.getTitle());
-					vo.setContent(document.getContent());
-					vo.setTime(DateUtil.toString(document.getTime()));
+					DocumentVO vo = new DocumentVO(document);
 					temp.add(vo);
 				}
 				JSONObject obj = new JSONObject();
@@ -99,13 +95,7 @@ public class DocumentServlet extends BaseServlet {
 		} else if ("query".equals(sign)) {// 查询
 			String id = (String) request.getParameter("id");
 			Document result = DocumentDAO.getInstance().load(Integer.parseInt(id));
-			DocumentVO vo = new DocumentVO();
-			vo.setId(result.getId());
-			User user = UserDAO.getInstance().load(result.getUserId());
-			vo.setUserName(user.getName());
-			vo.setTitle(result.getTitle());
-			vo.setContent(result.getContent());
-			vo.setTime(DateUtil.toString(result.getTime()));
+			DocumentVO vo = new DocumentVO(result);
 			responseSuccess(JSON.toJSON(vo));
 		}
 	}

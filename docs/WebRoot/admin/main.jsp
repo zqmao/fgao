@@ -1,16 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
 <%
-//这个页面展示4个按钮（人员，待办，分类，文章）
-PermissionUtil.checkAdmin(request, response);
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	//这个页面展示4个按钮（人员，待办，分类，文章）
+	PermissionUtil.checkAdmin(request, response);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <base href="<%=basePath%>">
     <title>管理员页面</title>
     <script type="text/javascript">
 		function toUser(){

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50041
 File Encoding         : 65001
 
-Date: 2017-02-05 20:41:30
+Date: 2017-02-07 17:45:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -149,7 +149,7 @@ CREATE TABLE `t_document` (
   `categoryId` int(11) default NULL,
   `userId` int(11) default NULL,
   `title` varchar(255) default NULL,
-  `content` varchar(255) default NULL,
+  `content` text,
   `time` bigint(20) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -157,7 +157,12 @@ CREATE TABLE `t_document` (
 -- ----------------------------
 -- Records of t_document
 -- ----------------------------
-INSERT INTO `t_document` VALUES ('1', '1', '3', 'asd', 'asd', '111111');
+INSERT INTO `t_document` VALUES ('2', '1', '1', '百度百科-爱情', '<div class=\"para\" style=\"font-size:14px;color:#333333;font-family:arial, 宋体, sans-serif;background-color:#FFFFFF;\">\n	爱情是人与人之间的<a target=\"_blank\" href=\"http://baike.baidu.com/view/1366814.htm\">强烈</a>的<a target=\"_blank\" href=\"http://baike.baidu.com/subview/101438/5070905.htm\">依恋</a>、亲近、向往，以及无私并且无所不尽其心的情感。它通常是<a target=\"_blank\" href=\"http://baike.baidu.com/subview/54543/8135332.htm\">情</a>与欲的对照，爱情[3]由情爱和性爱两个部分组成，情爱是爱情的灵魂，性爱是爱情的能量，情爱是性爱的先决条件，性爱是情爱的动力，只有如此才能达到至高无上的爱情境界。\n</div>\n<div class=\"para\" style=\"font-size:14px;color:#333333;font-family:arial, 宋体, sans-serif;background-color:#FFFFFF;\">\n	在<a target=\"_blank\" href=\"http://baike.baidu.com/view/681638.htm\">汉文化</a>里，爱就是网住对方的心，具有亲密、<a target=\"_blank\" href=\"http://baike.baidu.com/view/572959.htm\">情欲</a>和承诺、依恋、情感的属性，并且对这种关系的长久性持有信心，也能够与对方分享私生活。在爱的情感基础上，除了爱的<a target=\"_blank\" href=\"http://baike.baidu.com/view/1470740.htm\">跨文化</a>差异，随着时间的推移，关于爱情的观念也发生了很大的变化（在不同的民族文化也发展出不同的特征）。1\n</div>', '1486449278393');
+INSERT INTO `t_document` VALUES ('3', '4', '1', '你好', '你好', '1486434901146');
+INSERT INTO `t_document` VALUES ('4', '6', '1', '图片链接', '你好啊', '1486434921948');
+INSERT INTO `t_document` VALUES ('5', '7', '1', '安卓分享本应用不附带应用信息，显示为空', '<div class=\"para\" style=\"font-size:14px;color:#333333;font-family:arial, 宋体, sans-serif;background-color:#FFFFFF;\">\n	安卓分享本应用不附带应用信息，显示为空\n</div>\n<div class=\"para\" style=\"font-size:14px;color:#333333;font-family:arial, 宋体, sans-serif;background-color:#FFFFFF;\">\n	<a target=\"_blank\" href=\"http://baike.baidu.com/view/681638.htm\"></a><a target=\"_blank\" href=\"http://baike.baidu.com/view/572959.htm\"></a><a target=\"_blank\" href=\"http://baike.baidu.com/view/1470740.htm\"></a>\n</div>', '1486434973222');
+INSERT INTO `t_document` VALUES ('6', '5', '1', '安卓首页无上次登录时间，ios有', '安卓首页无上次登录时间，ios有', '1486434990158');
+INSERT INTO `t_document` VALUES ('7', '1', '3', '苏大', '你看到的是美好，还是什么，对于别人来说，也许就是幸福<img src=\"http://127.0.0.1:8080/upload/1486453002748.png\" /><br />', '1486453004473');
 
 -- ----------------------------
 -- Table structure for t_user
@@ -208,3 +213,7 @@ CREATE TABLE `t_user_category` (
 INSERT INTO `t_user_category` VALUES ('2', '1', '2');
 INSERT INTO `t_user_category` VALUES ('3', '1', '3');
 INSERT INTO `t_user_category` VALUES ('5', '1', '1');
+INSERT INTO `t_user_category` VALUES ('6', '4', '4');
+INSERT INTO `t_user_category` VALUES ('7', '4', '3');
+INSERT INTO `t_user_category` VALUES ('8', '10', '1');
+INSERT INTO `t_user_category` VALUES ('9', '9', '1');

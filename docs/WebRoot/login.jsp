@@ -12,11 +12,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录页面</title>
-	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="themes/icon.css" />
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="easyUi/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="easyUi/themes/icon.css" />
+	<script type="text/javascript" src="easyUi/jquery.min.js"></script>
+	<script type="text/javascript" src="easyUi/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
 		function submit() {
 			$("#login").form("submit", {

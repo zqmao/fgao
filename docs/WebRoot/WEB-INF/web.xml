@@ -4,6 +4,9 @@
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
+  <session-config>
+        <session-timeout>1440</session-timeout>
+  </session-config>
   <servlet>
     <description>UploadServlet</description>
     <display-name>UploadServlet</display-name>

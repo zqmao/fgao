@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
-String articleId = (String) request.getParameter("articleId");
-if(articleId == null){
-	articleId = "";
-}
+	String articleId = (String) request.getParameter("articleId");
+	if(articleId == null){
+		articleId = "";
+	}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

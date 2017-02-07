@@ -2,9 +2,7 @@
 <%@ page language="java" import="base.util.*"%>
 <%@page language="java" import="base.api.User"%>
 <%
-	PermissionUtil.checkAdmin(request, response);
-	User currentUser = (User)request.getSession().getAttribute("loginUser");
-	int userId = currentUser != null ? currentUser.getId() : 0;
+	int userId = PermissionUtil.checkAdmin(request, response);
 	String categoryId = request.getParameter("categoryId");
 %>
 
@@ -12,11 +10,11 @@
 <html>
  	<head>
   	<title>权限管理</title>
-	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
-	<script type="text/javascript" src="../js/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
+	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
+	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
 	$(function() {
         $("#option_user").combobox({

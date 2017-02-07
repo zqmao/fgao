@@ -6,11 +6,11 @@
 <html>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>人员管理</title>
-	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
-	<script type="text/javascript" src="../js/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
+	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
+	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
             $(function() {
             	$("#addUser").panel({
@@ -34,6 +34,7 @@
         			}]
             		});
                 $("#addUser").panel("open");
+                $("#grant").dialog("close");
                 $("#userGrid").datagrid({
                     selectOnCheck: true,
                     checkOnSelect: true,
@@ -54,6 +55,11 @@
                                 		return "普通成员";
                                 	}
                                 }
+                            },
+                            {title: '详情', field: 'opt', width: 100, align: 'center',
+                            	formatter: function(value, rowData, rowIndex) {
+                                	return "<a href='#' style='color:red' onclick='openGrant("+rowData.id+")'>权限查看</a>";
+                            	}
                             }
                         ]],
                     loadFilter: function(data){
@@ -145,6 +151,29 @@
 				    }
 				});
 			}
+			
+			function openGrant(userId){
+				$("#grant").dialog("open");
+				$('#tt').tree({
+					checkbox:true,
+					cascadeCheck:false,
+					url: '../userCategoryServlet.do?sign=listBySimpleUser&userId='+userId,
+					loadFilter: function(data){
+						return data.data;
+					},
+					formatter:function(node){
+						if(node.checked){
+							return node.text+"<font color='red'>  (有权限)</font>";
+						}else{
+							return node.text;
+						}
+						
+					},
+					onBeforeCheck: function(node, checked){
+						return false;
+					}
+				});
+			}
             
         </script>
 	</head>
@@ -176,6 +205,13 @@
 				    </tr>
 			    </table>
 			</form>
+		</div>
+		
+		<div id="grant" class="easyui-dialog" title="权限查看" style="width:300px; height: 340px;" >
+			<div title="分类" style="width: 100%;height: 100%;" >
+			    <ul id="tt" class="easyui-tree">
+				</ul>
+			</div>
 		</div>
 	</body>
 </html>

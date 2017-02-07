@@ -8,6 +8,7 @@ public class Category {
 	private int parentId;//默认0
 	private String text;
 	
+	private boolean checked;
 	private Category parent;
 	private List<Category> children;
 	
@@ -29,6 +30,12 @@ public class Category {
 	public void setText(String text) {
 		this.text = text;
 	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
 	public Category getParent() {
 		return parent;
 	}
@@ -40,5 +47,19 @@ public class Category {
 	}
 	public void setChildren(List<Category> children) {
 		this.children = children;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 }

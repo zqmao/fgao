@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
 <%
-PermissionUtil.checkAdmin(request, response);
+	int userId = PermissionUtil.checkAdmin(request, response);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -9,18 +9,18 @@ PermissionUtil.checkAdmin(request, response);
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>文章列表</title>
-	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
-	<script type="text/javascript" src="../js/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript" src="../js/common.js"></script>
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
+	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
+	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
 		var categoryId = "";
+		var key = "";
 		var first = 1;
 		$(function() {
 			$('#tt').tree({
-				url: '../userCategoryServlet.do?sign=listByUser&userId=2',
+				url: '../userCategoryServlet.do?sign=listByUser&userId=<%=userId%>',
 				loadFilter: function(data){
 					return data.data;
 				},
@@ -47,10 +47,12 @@ PermissionUtil.checkAdmin(request, response);
                 checkOnSelect: true,
                 pagination: true,
                 url: "../documentServlet.do?sign=list",
-                queryParams:{categoryId : categoryId},
+                queryParams:{categoryId : categoryId, key : key},
                 frozenColumns: [[
                         {field: 'ck', checkbox: true},
                         {title: '序号', field: 'id', width: 60},
+                        {title: '分类', field: 'categoryId', width: 0, align: 'center', hidden:true},
+                        {title: '分类', field: 'categoryName', width: 120, align: 'center'},
                         {title: '标题', field: 'title', width: 300, align: 'center'},
                         {title: '作者', field: 'userName', width: 120, align: 'center'},
                         {title: '创作时间', field: 'time', width: 180, align: 'center'},
@@ -68,6 +70,7 @@ PermissionUtil.checkAdmin(request, response);
                		}
                	},
                 toolbar: [{
+                	id: 'add',
                     iconCls: 'icon-add',
                     text: '增加',
                     handler: function() {
@@ -86,6 +89,7 @@ PermissionUtil.checkAdmin(request, response);
                         } else {
                             var row = $("#articleGrid").datagrid("getChecked");
                             var articleId = row[0].id;
+                            var categoryId = row[0].categoryId;
                             window.open("/admin/articleEdit.jsp?articleId=" + articleId + "&categoryId=" + categoryId);
                         }
                     }
@@ -115,7 +119,15 @@ PermissionUtil.checkAdmin(request, response);
                             });
                         }
                     }
-                }]
+                }],
+                onBeforeLoad: function(data){
+                	//如果是在全部或者我的分类下面，不能创建文章，因为category是虚拟的
+                	if(categoryId == '-1' || categoryId == '-2'){
+                		$("#add").hide();
+                	}else{
+                		$("#add").show();
+                	}
+                } 
 			});
 		}
 		function getChecked(id) {
@@ -126,18 +138,34 @@ PermissionUtil.checkAdmin(request, response);
             }
             return ids;
         }
+        function searchKey(){
+        	key = $("#key").val();
+        	var queryParams =$("#articleGrid").datagrid("options").queryParams;
+			queryParams.key = key;
+			$("#articleGrid").datagrid("reload");
+        }
 	</script>
   </head>
   
   <body>
-  <div id="cc" class="easyui-layout" style="width:100%;height:100%;">
-  	<div title="分类" style="width: 20%;height: 100%;" data-options="region:'west',collapsible:true">
-	    <ul id="tt" class="easyui-tree">
-		</ul>
-	</div>
-	<div class="easyui-panel" title="文章列表" style="width: 80%;height: 100%;" data-options="region:'center',split:true">
-	    <table id="articleGrid" style="height: 340px;"></table>
-	</div>
+  	<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+	  	<div title="分类" style="width: 20%;height: 100%;" data-options="region:'west',collapsible:true">
+		    <ul id="tt" class="easyui-tree">
+			</ul>
+		</div>
+		<div class="easyui-panel" title="文章列表" style="width: 80%;height: 100%;" data-options="region:'center',split:true">
+		    <div style="padding: 5px;">
+		    	筛选：
+		    	<input class="easyui-validatebox" style="width: 100px;padding: 5px;" id="key" type="text"/>
+		    	<a href="javascript:;" class="l-btn l-btn-small l-btn-plain" onclick="searchKey();">
+					<span class="l-btn-left l-btn-icon-left" style="border:1px solid #95B8E7;border-radius:5px;">
+						<span class="l-btn-text">搜索</span>
+						<span class="l-btn-icon icon-search">&nbsp;</span>
+					</span>
+				</a>
+		    </div>
+		    <table id="articleGrid" style="height: 340px;"></table>
+		</div>
 	</div>
   </body>
 </html>

@@ -23,9 +23,8 @@ public class UserCategoryDAO extends BaseDAO {
 		}
 		return dao;
 	}
-
-	public List<Category> listByUser(int userId) {
-		User user = UserDAO.getInstance().load(userId);
+	
+	public List<Category> listByUser(User user) {
 		if(user == null){
 			return new ArrayList<Category>();
 		}
@@ -36,7 +35,7 @@ public class UserCategoryDAO extends BaseDAO {
 			objs = JDBCUtil.queryObjectList(sql, Category.class);
 		}else{//如果不是管理员就加载有权限的类别
 			sql = "select c.* from t_user_category uc,t_category c where uc.categoryId=c.id and userId=? order by id";
-			objs = JDBCUtil.queryObjectList(sql, Category.class, userId);
+			objs = JDBCUtil.queryObjectList(sql, Category.class, user.getId());
 		}
 		looperChildren(objs);//把所有子都塞好
 		List<Category> tempList = new ArrayList<Category>();
@@ -45,11 +44,28 @@ public class UserCategoryDAO extends BaseDAO {
 			Category child = objs.get(i);
 			if(child.getParentId() != 0){
 				child = tempList.remove(i);
-				tempList.add(looperParent(child));//把所有父，都虚拟好
+				Category parent = looperParent(child);
+				if(!tempList.contains(parent)){
+					tempList.add(parent);//把所有父，都虚拟好
+				}
 				tempList.remove(child);//删除
 			}
 		}
 		return tempList;
+	}
+
+	public List<Category> listByUser(int userId) {
+		User user = UserDAO.getInstance().load(userId);
+		return listByUser(user);
+	}
+	
+	public List<Category> listBySimpleUser(int userId) {
+		User user = UserDAO.getInstance().load(userId);
+		if(user == null){
+			return new ArrayList<Category>();
+		}
+		String sql = "select c.* from t_user_category uc,t_category c where uc.categoryId=c.id and userId=? order by id";
+		return JDBCUtil.queryObjectList(sql, Category.class, user.getId());
 	}
 	
 	//补全所有的子分类
@@ -106,11 +122,35 @@ public class UserCategoryDAO extends BaseDAO {
 		}
 	}
 	
+	//补全所有的子分类,并设置选中状态
+	public void looperChildren(List<Category> objs, List<Category> temp){
+		for(Category category : objs){
+			List<Category> children = listByParent(category.getId());
+			if(children != null && children.size() > 0){
+				category.setChildren(children);
+				looperChildren(children);
+			}
+			if(temp.contains(category)){
+				category.setChecked(true);
+			}else{
+				category.setChecked(false);
+			}
+		}
+	}
+	
 	//检查这个人对这个类别是否有权限（即，对该类别和该类别的父类别）
 	public boolean checkPermission(int categoryId, int userId){
 		//根类别的父
 		if(categoryId == 0){
 			return false;
+		}
+		//全部
+		if(categoryId == -1){
+			return true;
+		}
+		//我的
+		if(categoryId == -2){
+			return true;
 		}
 		String sql = "select uc.* from t_user_category uc where uc.userId="+userId+" and uc.categoryId=" + categoryId;
 		List<UserCategory> result = JDBCUtil.queryObjectList(sql, UserCategory.class);

@@ -1,16 +1,16 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
 <%
-PermissionUtil.check(request, response);
+	PermissionUtil.check(request, response);
 %>
 
 <html>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>待办事项</title>
-	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
-	<script type="text/javascript" src="../js/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
+	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
+	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
 			var first = 1;
 			var option = "";

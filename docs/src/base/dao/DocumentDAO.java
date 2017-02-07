@@ -3,7 +3,9 @@ package base.dao;
 import java.util.List;
 
 import base.api.Document;
+import base.api.User;
 import base.util.JDBCUtil;
+import base.util.PermissionUtil;
 
 
 public class DocumentDAO extends BaseDAO {
@@ -21,15 +23,33 @@ public class DocumentDAO extends BaseDAO {
 		return dao;
 	}
 
-	public List<Document> list(int categoryId, int index, int pagesize) {
-		String sql = "select * from t_document where id != 0 and categoryId=? order by id limit ?,? ";
-		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class, categoryId, index, pagesize);
+	public List<Document> list(int categoryId, String key, int index, int pagesize) {
+		User user = PermissionUtil.getCurrentUser();
+		int userId = user != null ? user.getId() : 0;
+		String sub = "";
+		if(categoryId == -1){
+		}else if(categoryId == -2){
+			sub = " and userId="+userId;
+		}else{
+			sub = " and categoryId="+categoryId;
+		}
+		String sql = "select * from t_document where id != 0 "+sub+" and (title like ? or content like ?) order by id limit ?,? ";
+		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class, "%"+key+"%", "%"+key+"%", index, pagesize);
 		return objs;
 	}
 	
-	public long listCount(int categoryId) {
-		String sql = "select count(id) from t_document where categoryId=? ";
-		return JDBCUtil.queryCount(sql, categoryId);
+	public long listCount(int categoryId, String key) {
+		User user = PermissionUtil.getCurrentUser();
+		int userId = user != null ? user.getId() : 0;
+		String sub = "";
+		if(categoryId == -1){
+		}else if(categoryId == -2){
+			sub = " and userId="+userId;
+		}else{
+			sub = " and categoryId="+categoryId;
+		}
+		String sql = "select count(id) from t_document where (title like ? or content like ?)" + sub;
+		return JDBCUtil.queryCount(sql, "%"+key+"%", "%"+key+"%");
 	}
 
 	public Document load(int id) {

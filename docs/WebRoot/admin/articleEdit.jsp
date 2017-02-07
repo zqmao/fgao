@@ -14,15 +14,14 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>文章编辑</title>
-		<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css" />
-		<link rel="stylesheet" type="text/css" href="../themes/icon.css" />
+		<link rel="stylesheet" type="text/css" href="../easyUi/themes/default/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
 		<link rel="stylesheet" href="../kindEditor/themes/default/default.css" />
-		<script charset="utf-8" src="../js/common.js"></script>
 		<script charset="utf-8" src="../kindEditor/kindeditor-min.js"></script>
 		<script charset="utf-8" src="../kindEditor/lang/zh_CN.js"></script>
-		<script type="text/javascript" src="../js/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
+		<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 		<script type="text/javascript">
 			var editor;
 			KindEditor.ready(function(K) {
@@ -107,6 +106,7 @@
 				    		alert(data.reason);
 				    	}else{
 				    		alert(data.data);
+				    		window.close();
 				    	}
 				    }
 				});
@@ -132,7 +132,7 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		<div id="addArticle" class="easyui-panel" title="文章编辑" style="width: 100%; padding: 10px;">
+		<div id="addArticle" class="easyui-panel" title="文章编辑" style="width: 100%;height:100%; padding: 10px;">
 			<form id="addArticleForm" method="post">
 				<input type="hidden" name="articleId" value="<%=articleId %>" />
 				<input type="hidden" name="categoryId" value="<%=categoryId %>" />
@@ -150,7 +150,7 @@
 				    <tr >
 						<td colspan="2" align="center" style="padding-top: 20px;">
 							<a href='javascript:;' class='l-btn l-btn-small l-btn-plain' onclick='submitAdd();'>
-								<span class='l-btn-left l-btn-icon-left'>
+								<span class='l-btn-left l-btn-icon-left' style="border:1px solid #95B8E7;border-radius:5px;">
 									<span class='l-btn-text'>保存</span>
 									<span class='l-btn-icon icon-save'>&nbsp;</span>
 								</span>

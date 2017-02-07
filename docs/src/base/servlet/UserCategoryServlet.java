@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import base.api.Category;
 import base.api.User;
 import base.api.UserCategory;
+import base.dao.CategoryDAO;
 import base.dao.UserCategoryDAO;
 
 import com.alibaba.fastjson.JSON;
@@ -31,7 +32,22 @@ public class UserCategoryServlet extends BaseServlet{
 		if ("listByUser".equals(sign)) {// 根据人员查询有权限的类别
 			String userId = (String) req.getParameter("userId");
 			List<Category> result = UserCategoryDAO.getInstance().listByUser(Integer.parseInt(userId));
+			Category my = new Category();
+			my.setText("我的文章");
+			my.setId(-2);
+			result.add(0, my);
+			Category all = new Category();
+			all.setText("全部");
+			all.setId(-1);
+			result.add(0, all);
 			responseSuccess(result);
+		}else if ("listBySimpleUser".equals(sign)) {// 根据人员查询有权限的类别
+			//先查询出所有分类，然后选中有权限的分类
+			String userId = (String) req.getParameter("userId");
+			List<Category> temp = UserCategoryDAO.getInstance().listBySimpleUser(Integer.parseInt(userId));
+			List<Category> all = CategoryDAO.getInstance().list(0);
+			UserCategoryDAO.getInstance().looperChildren(all, temp);
+			responseSuccess(all);
 		}else if ("listByCategory".equals(sign)) {// 根据类别查询有权限的人员
 			String categoryId = (String) req.getParameter("categoryId");
 			List<User> result = UserCategoryDAO.getInstance().listByCategory(Integer.parseInt(categoryId));
