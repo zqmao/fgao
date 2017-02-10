@@ -1,27 +1,21 @@
 package base.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import base.api.User;
 
 public class TestUtil {
 	
-	public static void main(String[] args) {
-		List<String> rs = new ArrayList<String>();
-		for(int i = 0; i < 20; i++){
-			rs.add("--" + i);
-		}
-		for(int i = 0; i < rs.size(); i++){
-			String r = rs.get(i);
-			if(r.indexOf("2") != -1){
-				rs.remove(r);
-			}
-		}
-		for(int i = 0; i < rs.size(); i++){
-			System.out.println(rs.get(i));
-		}
-		String password = "111111";
-		password = MdUtil.MD5(password);
-		System.out.println(password);
+	static ThreadLocal<User> local = new ThreadLocal<User>();
+	
+	void setUser(User user){
+		local.set(user);
+	}
+	
+	User getUsert(){
+		return local.get();
 	}
 
+	
+	public static void main(String[] args) {
+		
+	}
 }

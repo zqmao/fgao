@@ -14,24 +14,8 @@ import com.alibaba.fastjson.JSONObject;
 
 public class JDBCUtil {
 
-	private static final String Url = "jdbc:mysql://localhost:3306/db_fgao?characterEncoding=UTF-8";
-	private static final String User = "root";
-	private static final String Password = "111111";
-	private static final String Driver = "com.mysql.jdbc.Driver";
-	private static Connection con = null;
-	private static PreparedStatement ps = null;
-	private static ResultSet rs = null;
-
-	static {
-		try {
-			Class.forName(Driver);// 注册驱动
-		} catch (ClassNotFoundException e) {
-			throw new ExceptionInInitializerError(e);
-		}
-	}
-
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(Url, User, Password);
+		return DriverManager.getConnection("proxool.mysql");
 	}
 
 	/**
@@ -42,6 +26,9 @@ public class JDBCUtil {
 	 */
 	public static int updateOrSave(String sqlStr, List<Object> values) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sqlStr);
@@ -72,6 +59,8 @@ public class JDBCUtil {
 
 	public static boolean delete(String sqlStr, int id) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sqlStr);
@@ -98,24 +87,14 @@ public class JDBCUtil {
 			if (rs != null) {
 				rs.close();
 			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
 		}
 	}
 
@@ -130,8 +109,11 @@ public class JDBCUtil {
 	public static <T> List<T> queryObjectList(String sqlStr, Class<T> clazz, Object... params) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
 		List<T> objs = new ArrayList<T>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			rs = getResultSet(sqlStr, params);
+			rs = getResultSet(ps, sqlStr, params);
 			while (rs.next()) {
 				objs.add(getObject(rs, clazz));
 			}
@@ -153,8 +135,11 @@ public class JDBCUtil {
 	 */
 	public static <T> T queryObject(String sqlStr, Class<T> clazz, Object... params) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			rs = getResultSet(sqlStr, params);
+			rs = getResultSet(ps, sqlStr, params);
 			if (rs.next()) {
 				return getObject(rs, clazz);
 			}
@@ -176,8 +161,11 @@ public class JDBCUtil {
 	 */
 	public static long queryCount(String sqlStr, Object... params) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			rs = getResultSet(sqlStr, params);
+			rs = getResultSet(ps, sqlStr, params);
 			if (rs.next()) {
 				return Long.parseLong(rs.getObject(1).toString());
 			}
@@ -189,8 +177,8 @@ public class JDBCUtil {
 		return 0L;
 	}
 	
-	private static ResultSet getResultSet(String sqlStr, Object... params) throws Exception{
-		con = getConnection();
+	private static ResultSet getResultSet(PreparedStatement ps, String sqlStr, Object... params) throws Exception{
+		Connection con = getConnection();
 		ps = con.prepareStatement(sqlStr);
 		int size = params.length;
 		for (int i = 0; i < size; i++) {
