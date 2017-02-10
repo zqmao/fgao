@@ -49,9 +49,9 @@ public class DocumentServlet extends BaseServlet {
 				String key = request.getParameter("key");
 				int page = Integer.parseInt(request.getParameter("page"));
 				int rows = Integer.parseInt(request.getParameter("rows"));
-				long total = DocumentDAO.getInstance().listCount(Integer.parseInt(categoryId), key);
+				long total = DocumentDAO.getInstance().listCount(Integer.parseInt(categoryId), currentUser.getId(), key);
 				int index = (page - 1) * rows;
-				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId), key, index, rows);
+				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId), currentUser.getId(), key, index, rows);
 				List<DocumentVO> temp = new ArrayList<DocumentVO>();
 				for(Document document : result){
 					DocumentVO vo = new DocumentVO(document);

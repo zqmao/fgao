@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import base.api.User;
 
 public class PermissionUtil {
-	private static User currentUser = null;
-	
 	/*
 	 * 普通成员页面的权限
 	 */
@@ -64,14 +62,6 @@ public class PermissionUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static User getCurrentUser() {
-		return currentUser;
-	}
-
-	public static void setCurrentUser(User user) {
-		currentUser = user;
 	}
 
 }

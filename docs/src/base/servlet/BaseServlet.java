@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import base.api.User;
-import base.util.PermissionUtil;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -36,7 +35,6 @@ public class BaseServlet extends HttpServlet{
 		resp.setContentType("text/plain");
 		sign = (String) req.getParameter("sign");
 		currentUser = (User)req.getSession().getAttribute("loginUser");
-		PermissionUtil.setCurrentUser(currentUser);
 	}
 	
 	protected void responseSuccess(Object cotent){

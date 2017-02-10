@@ -3,9 +3,7 @@ package base.dao;
 import java.util.List;
 
 import base.api.Document;
-import base.api.User;
 import base.util.JDBCUtil;
-import base.util.PermissionUtil;
 
 
 public class DocumentDAO extends BaseDAO {
@@ -23,9 +21,7 @@ public class DocumentDAO extends BaseDAO {
 		return dao;
 	}
 
-	public List<Document> list(int categoryId, String key, int index, int pagesize) {
-		User user = PermissionUtil.getCurrentUser();
-		int userId = user != null ? user.getId() : 0;
+	public List<Document> list(int categoryId, int userId, String key, int index, int pagesize) {
 		String sub = "";
 		if(categoryId == -1){
 		}else if(categoryId == -2){
@@ -38,9 +34,7 @@ public class DocumentDAO extends BaseDAO {
 		return objs;
 	}
 	
-	public long listCount(int categoryId, String key) {
-		User user = PermissionUtil.getCurrentUser();
-		int userId = user != null ? user.getId() : 0;
+	public long listCount(int categoryId, int userId, String key) {
 		String sub = "";
 		if(categoryId == -1){
 		}else if(categoryId == -2){
