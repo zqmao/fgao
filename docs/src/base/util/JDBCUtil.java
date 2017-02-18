@@ -113,6 +113,8 @@ public class JDBCUtil {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
 			rs = getResultSet(ps, sqlStr, params);
 			while (rs.next()) {
 				objs.add(getObject(rs, clazz));
@@ -139,6 +141,8 @@ public class JDBCUtil {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
 			rs = getResultSet(ps, sqlStr, params);
 			if (rs.next()) {
 				return getObject(rs, clazz);
@@ -165,6 +169,8 @@ public class JDBCUtil {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
 			rs = getResultSet(ps, sqlStr, params);
 			if (rs.next()) {
 				return Long.parseLong(rs.getObject(1).toString());
@@ -178,8 +184,6 @@ public class JDBCUtil {
 	}
 	
 	private static ResultSet getResultSet(PreparedStatement ps, String sqlStr, Object... params) throws Exception{
-		Connection con = getConnection();
-		ps = con.prepareStatement(sqlStr);
 		int size = params.length;
 		for (int i = 0; i < size; i++) {
 			ps.setObject((i + 1), params[i]);

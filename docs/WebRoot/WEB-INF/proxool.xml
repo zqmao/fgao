@@ -5,8 +5,8 @@
 	<driver-class>com.mysql.jdbc.Driver</driver-class>
 	<driver-properties>
 		<property name="user" value="root"/>
-		<property name="password" value="12344"/>
+		<property name="password" value="111111"/>
 	</driver-properties>
-	<maximum-connection-count>10</maximum-connection-count>
+	<maximum-connection-count>500</maximum-connection-count>
 	<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
 </proxool>

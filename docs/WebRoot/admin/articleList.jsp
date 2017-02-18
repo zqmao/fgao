@@ -14,11 +14,34 @@
 	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" href="../kindEditor/themes/default/default.css" />
+	<script charset="utf-8" src="../kindEditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="../kindEditor/lang/zh_CN.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript">
 		var categoryId = "";
 		var key = "";
 		var first = 1;
 		$(function() {
+			$('#addArticle').dialog({
+			    width:800,
+			    height:600,
+			    modal:true,
+			    buttons:[{
+			    	text:'保存',
+			    	iconCls:'icon-add',
+				    handler:function(){
+				    	submitAdd();
+				    }
+				},{
+					text:'取消',
+				    iconCls:'icon-cancel',
+				    handler:function(){
+				    	$("#addArticle").dialog("close");
+				    }
+			    }]
+			});
+			$('#addArticle').dialog("close");
 			$('#tt').tree({
 				url: '../userCategoryServlet.do?sign=listByUser&userId=<%=userId%>',
 				loadFilter: function(data){
@@ -74,7 +97,13 @@
                     iconCls: 'icon-add',
                     text: '增加',
                     handler: function() {
-                    	window.open("/admin/articleEdit.jsp?categoryId=" + categoryId);
+                    	//window.open("/admin/articleEdit.jsp?categoryId=" + categoryId);
+                    	editor.html("");
+                    	$("#addArticleForm").form('clear');
+                    	$("#addArticleForm").form('load', {
+                    		categoryId: categoryId
+                        });
+						$('#addArticle').dialog('open');
                     }
                 }, {
                     iconCls: 'icon-edit',
@@ -90,7 +119,14 @@
                             var row = $("#articleGrid").datagrid("getChecked");
                             var articleId = row[0].id;
                             var categoryId = row[0].categoryId;
-                            window.open("/admin/articleEdit.jsp?articleId=" + articleId + "&categoryId=" + categoryId);
+                            //window.open("/admin/articleEdit.jsp?articleId=" + articleId + "&categoryId=" + categoryId);
+                            initArticle(articleId);
+                            $("#addArticleForm").form('clear');
+                            $("#addArticleForm").form('load', {
+                        		categoryId: categoryId,
+                        		articleId: articleId
+                            });
+    						$('#addArticle').dialog('open');
                         }
                     }
                 }, {
@@ -144,6 +180,23 @@
 			queryParams.key = key;
 			$("#articleGrid").datagrid("reload");
         }
+        //var editor;
+        initKindEditor("content");
+	    function submitAdd() {
+	    	$("#content").val(encodeURIComponent(editor.html()));
+			$("#addArticleForm").form("submit", {
+			    url:"../documentServlet.do?sign=add",//&content=" + encodeURIComponent(editor.html()),
+			    success:function(data){
+			    	var data = eval('(' + data + ')');
+			    	if(data.result == 0){
+			    		alert(data.reason);
+			    	}else{
+			    		$("#addArticle").dialog("close");
+			    		$("#articleGrid").datagrid("reload");
+			    	}
+			    }
+			});
+		}
 	</script>
   </head>
   
@@ -166,6 +219,24 @@
 		    </div>
 		    <table id="articleGrid" style="height: 340px;"></table>
 		</div>
+	</div>
+	<div id="addArticle" class="easyui-dialog" title="文章编辑" style="width: 800px; padding: 10px;display: none;">
+		<form id="addArticleForm" method="post">
+			<input type="hidden" name="articleId" value="" />
+			<input type="hidden" name="categoryId" value="" />
+			<table>
+				<tr >
+					<td>标题:</td>
+					<td><input class="easyui-validatebox" style="width: 600px;padding: 5px;" id="title" name="title" type="text"  data-options="required:true"/><td>
+			    </tr>
+			    <tr >
+					<td>正文:</td>
+					<td>
+						<textarea name="content" id="content" style="width: 600px; height: 450px; visibility: hidden;"></textarea>
+					<td>
+			    </tr>
+		    </table>
+		</form>
 	</div>
   </body>
 </html>
