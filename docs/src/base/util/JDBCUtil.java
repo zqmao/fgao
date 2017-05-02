@@ -24,6 +24,7 @@ public class JDBCUtil {
 	 * @param sql
 	 * @return
 	 */
+	@SuppressWarnings("resource")
 	public static int updateOrSave(String sqlStr, List<Object> values) {
 		System.out.println("JDBCUtil SQL: " + sqlStr);
 		Connection con = null;
