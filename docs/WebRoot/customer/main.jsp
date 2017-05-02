@@ -15,6 +15,9 @@
 		function toArticle(){
 			window.open("/customer/articleList.jsp");
 		}
+		function toArrange(){
+			window.open("/customer/arrange.jsp");
+		}
 	</script>
   </head>
   
@@ -27,6 +30,14 @@
     			</td>
     			<td bgcolor="#D54D2B" style="width: 50%;cursor: pointer;" align="center" onclick="toArticle();">
     				<font size="20" color="#FFFFFF">文章管理</font>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td bgcolor="#ff00ff" style="width: 50%;cursor: pointer;" align="center" onclick="toArrange();">
+    				<font size="20" color="#FFFFFF">排班情况</font>
+    			</td>
+    			<td bgcolor="#ffff00" style="width: 50%;cursor: pointer;" align="center" onclick="toArrange();">
+    				<font size="20" color="#FFFFFF">排班情况</font>
     			</td>
     		</tr>
     	</table>

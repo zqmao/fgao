@@ -31,6 +31,16 @@
 		<url-pattern>/uploadCopyServlet.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<description>UploadExcelServlet</description>
+		<display-name>UploadExcelServlet</display-name>
+		<servlet-name>UploadExcelServlet</servlet-name>
+		<servlet-class>base.servlet.UploadExcelServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadExcelServlet</servlet-name>
+		<url-pattern>/uploadExcelServlet.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<description>UserServlet</description>
 		<display-name>UserServlet</display-name>
 		<servlet-name>UserServlet</servlet-name>
@@ -79,6 +89,16 @@
 	<servlet-mapping>
 		<servlet-name>BugServlet</servlet-name>
 		<url-pattern>/bugServlet.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>ArrangeServlet</description>
+		<display-name>ArrangeServlet</display-name>
+		<servlet-name>ArrangeServlet</servlet-name>
+		<servlet-class>base.servlet.ArrangeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ArrangeServlet</servlet-name>
+		<url-pattern>/arrangeServlet.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>

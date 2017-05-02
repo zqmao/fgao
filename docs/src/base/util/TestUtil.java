@@ -16,6 +16,8 @@ public class TestUtil {
 
 	
 	public static void main(String[] args) {
-		
+		System.out.println(DateUtil.getDayTime());
+		System.out.println(DateUtil.toString(1493654400000L));
 	}
+	
 }
