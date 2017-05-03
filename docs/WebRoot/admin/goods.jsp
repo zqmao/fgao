@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
+			var first = true;
             $(function() {
             	$("#tabs").tabs({
             	    border:false,
@@ -37,6 +38,12 @@
             	$("#goodsComeList").dialog({
             		left:100,
              	    top:100,
+             	   	onClose: function () {  
+             	   		if(!first){
+             	   			$("#goodsInGrid").datagrid("reload");
+             	   		}
+             	   		first = false;
+             	    }
             	});
             	$("#goodsComeList").dialog("close");
             	$("#goodsIn").dialog({
@@ -154,7 +161,7 @@
                             	formatter: function(value, rowData, rowIndex) {
                             		var opt = "";
                            			if(<%=goodOut%>){
-                           				opt += "<a href='javascript:;' class='l-btn l-btn-small l-btn-plain' onclick='openGoodsOut("+rowData.id+")'><span class='l-btn-left l-btn-icon-left'><span class='l-btn-text'>出货</span><span class='l-btn-icon icon-remove'>&nbsp;</span></span></a>"
+                           				opt += "<a href='javascript:;' class='l-btn l-btn-small l-btn-plain' onclick='openGoodsOut("+rowData.id+")'><span class='l-btn-left l-btn-icon-left'><span class='l-btn-text'>出货</span><span class='l-btn-icon icon-remove'>&nbsp;</span></span></a>";
                            			}
                            			if(<%=goodIn%>){
                            				opt += "<a href='javascript:;' class='l-btn l-btn-small l-btn-plain' onclick='openGoodsIn("+rowData.id+")'><span class='l-btn-left l-btn-icon-left'><span class='l-btn-text'>进货</span><span class='l-btn-icon icon-add'>&nbsp;</span></span></a>";
@@ -194,7 +201,7 @@
                                 $("#addGoods").panel("open");
                                 $("#addGoodsForm").form("load", {
                                 	goodsId: row[0].id,
-                                    name: row[0].name,
+                                    name: row[0].name
                                 });
                             }
                         }
@@ -478,7 +485,6 @@
                                             data: "recordIds=" + ids,
                                             success: function(msg) {
                                                 $("#goodsComeGrid").datagrid("reload");
-                                                $("#goodsInGrid").datagrid("reload");
                                             },
                                             error: function(msg) {
                                                 alert(msg.toString());
