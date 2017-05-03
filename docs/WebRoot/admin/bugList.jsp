@@ -272,8 +272,8 @@
 				
 				$("#addBugForm").form('submit', {
 				    url:"../bugServlet.do?sign=add",
-				    success:function(data){
-				    	var data = eval('(' + data + ')');
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
@@ -288,8 +288,8 @@
 			function submitPass() {
 				$("#passBugForm").form('submit', {
 				    url:"../bugServlet.do?sign=passBug",
-				    success:function(data){
-				    	var data = eval('(' + data + ')');
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{

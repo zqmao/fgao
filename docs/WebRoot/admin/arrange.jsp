@@ -37,8 +37,8 @@
             function uploadExcel() {
 				$("#uploadExcel").form('submit', {
 				    url:"../uploadExcelServlet.do",
-				    success:function(data){
-				    	var data = eval('(' + data + ')');
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{

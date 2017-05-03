@@ -1,7 +1,5 @@
 package base.util;
 
-import java.util.List;
-
 import base.api.User;
 
 public class TestUtil {
@@ -20,10 +18,6 @@ public class TestUtil {
 	public static void main(String[] args) {
 		System.out.println(DateUtil.getDayTime());
 		System.out.println(DateUtil.toString(1493654400000L));
-		List<String> re = null;
-		for(String r :re){
-			
-		}
 	}
 	
 }

@@ -186,8 +186,8 @@
 	    	$("#content").val(encodeURIComponent(editor.html()));
 			$("#addArticleForm").form("submit", {
 			    url:"../documentServlet.do?sign=add",//&content=" + encodeURIComponent(editor.html()),
-			    success:function(data){
-			    	var data = eval('(' + data + ')');
+			    success:function(result){
+			    	var data = eval('(' + result + ')');
 			    	if(data.result == 0){
 			    		alert(data.reason);
 			    	}else{

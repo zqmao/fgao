@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
 <%
-	int userId = PermissionUtil.checkAdmin(request, response);
+	int userId = PermissionUtil.check(request, response);
 	boolean goodIn = false;
 	boolean goodOut = false;
 	if(userId != 0){

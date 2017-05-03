@@ -46,15 +46,10 @@ public class PermissionUtil {
 			redirectLogin(request, response);
 			return false;
 		}else{
-			if(user.getAdmin() != 1){
-				redirectError(request, response);
+			if(user.getInGoods() != 1){
 				return false;
 			}else{
-				if(user.getInGoods() != 1){
-					return false;
-				}else{
-					return true;
-				}
+				return true;
 			}
 		}
 	}
@@ -68,15 +63,10 @@ public class PermissionUtil {
 			redirectLogin(request, response);
 			return false;
 		}else{
-			if(user.getAdmin() != 1){
-				redirectError(request, response);
+			if(user.getOutGoods() != 1){
 				return false;
 			}else{
-				if(user.getOutGoods() != 1){
-					return false;
-				}else{
-					return true;
-				}
+				return true;
 			}
 		}
 	}

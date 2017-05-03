@@ -165,8 +165,8 @@
             function submitAdd() {
 				$("#addCategoryForm").form("submit", {
 				    url:"../categoryServlet.do?sign=add&parentId="+parentId,
-				    success:function(data){
-				    	var data = eval('(' + data + ')');
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{

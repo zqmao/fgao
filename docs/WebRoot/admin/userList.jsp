@@ -140,8 +140,8 @@
             function submitAdd() {
 				$("#addUserForm").form("submit", {
 				    url:"../userServlet.do?sign=add",
-				    success:function(data){
-				    	var data = eval('(' + data + ')');
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
