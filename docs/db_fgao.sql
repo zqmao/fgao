@@ -2,39 +2,71 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50041
+Source Server Version : 50717
 Source Host           : localhost:3306
 Source Database       : db_fgao
 
 Target Server Type    : MYSQL
-Target Server Version : 50041
+Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-02-07 17:45:07
+Date: 2017-05-03 17:27:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_arrange
+-- ----------------------------
+DROP TABLE IF EXISTS `t_arrange`;
+CREATE TABLE `t_arrange` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `day` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_arrange
+-- ----------------------------
+INSERT INTO `t_arrange` VALUES ('1', '1', '早', '1493654400000');
+INSERT INTO `t_arrange` VALUES ('2', '1', '夜', '1493740800000');
+INSERT INTO `t_arrange` VALUES ('6', '1', '正', '1493913600000');
+INSERT INTO `t_arrange` VALUES ('7', '1', '休', '1493827200000');
+INSERT INTO `t_arrange` VALUES ('8', '3', '早', '1493654400000');
+INSERT INTO `t_arrange` VALUES ('9', '3', '夜', '1493740800000');
+INSERT INTO `t_arrange` VALUES ('10', '3', '休', '1493827200000');
+INSERT INTO `t_arrange` VALUES ('11', '3', '正', '1493913600000');
+INSERT INTO `t_arrange` VALUES ('12', '2', '早', '1493654400000');
+INSERT INTO `t_arrange` VALUES ('13', '2', '夜', '1493740800000');
+INSERT INTO `t_arrange` VALUES ('14', '2', '休', '1493827200000');
+INSERT INTO `t_arrange` VALUES ('15', '2', '正', '1493913600000');
+INSERT INTO `t_arrange` VALUES ('16', '15', '早', '1493654400000');
+INSERT INTO `t_arrange` VALUES ('17', '15', '夜', '1493740800000');
+INSERT INTO `t_arrange` VALUES ('18', '15', '休', '1493827200000');
+INSERT INTO `t_arrange` VALUES ('19', '15', '正', '1493913600000');
 
 -- ----------------------------
 -- Table structure for t_bug
 -- ----------------------------
 DROP TABLE IF EXISTS `t_bug`;
 CREATE TABLE `t_bug` (
-  `id` int(11) NOT NULL auto_increment,
-  `category` varchar(255) default NULL,
-  `title` varchar(255) default NULL,
-  `createRemark` varchar(255) default NULL,
-  `createTime` bigint(20) default NULL,
-  `createrId` int(11) default NULL,
-  `createrName` varchar(255) default NULL,
-  `finishRemark` varchar(255) default NULL,
-  `finishTime` bigint(20) default NULL,
-  `finisherId` int(11) default NULL,
-  `finisherName` varchar(255) default NULL,
-  `state` int(11) default NULL,
-  `currentName` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `createRemark` varchar(255) DEFAULT NULL,
+  `createTime` bigint(20) DEFAULT NULL,
+  `createrId` int(11) DEFAULT NULL,
+  `createrName` varchar(255) DEFAULT NULL,
+  `finishRemark` varchar(255) DEFAULT NULL,
+  `finishTime` bigint(20) DEFAULT NULL,
+  `finisherId` int(11) DEFAULT NULL,
+  `finisherName` varchar(255) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `currentName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_bug
@@ -54,20 +86,22 @@ INSERT INTO `t_bug` VALUES ('33', '售后', '1212饿', '122额2', '1486214281875
 INSERT INTO `t_bug` VALUES ('34', '售后', '爱上大声地', '爱上大声地', '1486214413769', '2', 'zqmao2', null, '0', '0', '未完成', '0', null);
 INSERT INTO `t_bug` VALUES ('35', '售后', '44', '444', '1486215473025', '2', 'zqmao2', null, '0', '0', '未完成', '0', null);
 INSERT INTO `t_bug` VALUES ('36', '售后', '爱上大声地', '啊实打实', '1486215538405', '2', 'zqmao2', null, '0', '8', 'zqmao8', '1', null);
+INSERT INTO `t_bug` VALUES ('37', '售后', '你好啊', '你好啊', '1493694474482', '1', 'admin', null, '1493694632668', '1', 'admin', '0', null);
+INSERT INTO `t_bug` VALUES ('38', '售后', 'dl耳机', '3想，asdasdad', '1493695937922', '1', 'admin', null, '1493781836766', '1', 'admin', '0', null);
 
 -- ----------------------------
 -- Table structure for t_bug_operation
 -- ----------------------------
 DROP TABLE IF EXISTS `t_bug_operation`;
 CREATE TABLE `t_bug_operation` (
-  `id` int(11) NOT NULL auto_increment,
-  `bugId` int(11) default NULL,
-  `remark` varchar(255) default NULL,
-  `time` bigint(20) default NULL,
-  `operaterId` int(11) default NULL,
-  `targetId` int(11) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bugId` int(11) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `time` bigint(20) DEFAULT NULL,
+  `operaterId` int(11) DEFAULT NULL,
+  `targetId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_bug_operation
@@ -112,17 +146,21 @@ INSERT INTO `t_bug_operation` VALUES ('40', '33', '', '1486214281897', '2', '2')
 INSERT INTO `t_bug_operation` VALUES ('41', '34', '', '1486214413779', '2', '2');
 INSERT INTO `t_bug_operation` VALUES ('42', '35', '', '1486215473036', '2', '2');
 INSERT INTO `t_bug_operation` VALUES ('43', '36', '', '1486215538422', '2', '2');
+INSERT INTO `t_bug_operation` VALUES ('44', '37', '', '1493694474499', '1', '1');
+INSERT INTO `t_bug_operation` VALUES ('45', '37', '紧急处理', '1493694612498', '1', '3');
+INSERT INTO `t_bug_operation` VALUES ('46', '38', '', '1493695937925', '1', '1');
+INSERT INTO `t_bug_operation` VALUES ('47', '38', '', '1493695950672', '1', '3');
 
 -- ----------------------------
 -- Table structure for t_category
 -- ----------------------------
 DROP TABLE IF EXISTS `t_category`;
 CREATE TABLE `t_category` (
-  `id` int(11) NOT NULL auto_increment,
-  `parentId` int(11) default NULL,
-  `text` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parentId` int(11) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_category
@@ -145,14 +183,14 @@ INSERT INTO `t_category` VALUES ('13', '10', 'EE1.2');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_document`;
 CREATE TABLE `t_document` (
-  `id` int(11) NOT NULL auto_increment,
-  `categoryId` int(11) default NULL,
-  `userId` int(11) default NULL,
-  `title` varchar(255) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `content` text,
-  `time` bigint(20) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `time` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_document
@@ -165,47 +203,132 @@ INSERT INTO `t_document` VALUES ('6', '5', '1', '安卓首页无上次登录时�
 INSERT INTO `t_document` VALUES ('7', '1', '3', '苏大', '你看到的是美好，还是什么，对于别人来说，也许就是幸福<img src=\"http://127.0.0.1:8080/upload/1486453002748.png\" /><br />', '1486453004473');
 
 -- ----------------------------
+-- Table structure for t_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods`;
+CREATE TABLE `t_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_goods
+-- ----------------------------
+INSERT INTO `t_goods` VALUES ('1', 'Dr-20 黑', '300');
+INSERT INTO `t_goods` VALUES ('2', 'Dr-20 白', '0');
+INSERT INTO `t_goods` VALUES ('3', '索爱-麦-黑', '80');
+INSERT INTO `t_goods` VALUES ('5', '索爱-麦-白', '90');
+INSERT INTO `t_goods` VALUES ('6', '索爱-麦-蓝', '50');
+INSERT INTO `t_goods` VALUES ('7', 'Dr-20 蓝', '0');
+
+-- ----------------------------
+-- Table structure for t_goods_come
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_come`;
+CREATE TABLE `t_goods_come` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `inRecordId` int(11) NOT NULL,
+  `count` int(11) DEFAULT NULL,
+  `orderNum` varchar(255) DEFAULT NULL,
+  `time` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_goods_come
+-- ----------------------------
+INSERT INTO `t_goods_come` VALUES ('8', '3', '100', '$(\"#goodsComeGrid\").datagrid(\"reload\");', '1493798124669');
+INSERT INTO `t_goods_come` VALUES ('9', '6', '300', '后期了', '1493801930140');
+INSERT INTO `t_goods_come` VALUES ('10', '5', '50', '等会的', '1493802075315');
+INSERT INTO `t_goods_come` VALUES ('11', '4', '50', '', '1493802416112');
+INSERT INTO `t_goods_come` VALUES ('12', '4', '30', '', '1493802474890');
+
+-- ----------------------------
+-- Table structure for t_goods_in
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_in`;
+CREATE TABLE `t_goods_in` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goodsId` int(11) NOT NULL,
+  `count` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `time` bigint(20) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_goods_in
+-- ----------------------------
+INSERT INTO `t_goods_in` VALUES ('3', '5', '100', '1', '1493795898698', '100');
+INSERT INTO `t_goods_in` VALUES ('4', '3', '100', '0', '1493795969813', '100进货索爱-麦-黑');
+INSERT INTO `t_goods_in` VALUES ('5', '6', '200', '0', '1493801872555', '索爱-麦-蓝,单号还没下来');
+INSERT INTO `t_goods_in` VALUES ('6', '1', '300', '1', '1493801907979', '你好啊');
+
+-- ----------------------------
+-- Table structure for t_goods_out
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_out`;
+CREATE TABLE `t_goods_out` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goodsId` int(11) NOT NULL,
+  `count` int(11) DEFAULT NULL,
+  `time` bigint(20) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_goods_out
+-- ----------------------------
+INSERT INTO `t_goods_out` VALUES ('4', '5', '10', '1493795883875', '10');
+
+-- ----------------------------
 -- Table structure for t_user
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `id` int(11) NOT NULL auto_increment,
-  `deptId` int(11) default NULL,
-  `name` varchar(255) default NULL,
-  `loginName` varchar(255) default NULL,
-  `password` varchar(255) default NULL,
-  `phone` varchar(255) default NULL,
-  `info` varchar(255) default NULL,
-  `admin` int(11) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `deptId` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `loginName` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `info` varchar(255) DEFAULT NULL,
+  `admin` int(11) DEFAULT NULL,
+  `inGoods` int(11) DEFAULT NULL,
+  `outGoods` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '1', 'admin', 'admin', 'admin', '15956938334', 'admin', '1');
-INSERT INTO `t_user` VALUES ('2', '1', 'zqmao2', 'zqmao2', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('3', '1', 'zqmao3', 'zqmao3', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('4', '1', 'zqmao4', 'zqmao4', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('5', '1', 'zqmao5', 'zqmao5', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('6', '1', 'zqmao6', 'zqmao6', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('7', '1', 'zqmao7', 'zqmao7', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('9', '1', 'zqmao9', 'zqmao9', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('10', '1', 'zqmao10', 'zqmao10', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('11', '1', 'zqmao11', 'zqmao11', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('12', '1', 'zqmao12', 'zqmao12', '123456', null, null, '0');
-INSERT INTO `t_user` VALUES ('15', '0', '周慧琴', 'hqzhou', '123456', '18297980795', '我老婆灰常', '0');
+INSERT INTO `t_user` VALUES ('1', '1', 'admin', 'admin', 'admin', '15956938334', 'admin', '1', '0', '0');
+INSERT INTO `t_user` VALUES ('2', '1', 'zqmao2', 'zqmao2', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('3', '1', 'zqmao3', 'zqmao3', '123456', null, null, '1', '0', '1');
+INSERT INTO `t_user` VALUES ('4', '1', 'zqmao4', 'zqmao4', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('5', '1', 'zqmao5', 'zqmao5', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('6', '1', 'zqmao6', 'zqmao6', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('7', '1', 'zqmao7', 'zqmao7', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('9', '1', 'zqmao9', 'zqmao9', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('10', '1', 'zqmao10', 'zqmao10', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('11', '1', 'zqmao11', 'zqmao11', '123456', null, null, '0', '0', '0');
+INSERT INTO `t_user` VALUES ('12', '1', 'zqmao12', 'zqmao12', '123456', null, '1', '1', '0', '0');
+INSERT INTO `t_user` VALUES ('15', '0', '周慧琴', 'hqzhou', '123456', '18297980795', 'tech', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_user_category
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_category`;
 CREATE TABLE `t_user_category` (
-  `id` int(11) NOT NULL auto_increment,
-  `categoryId` int(11) default NULL,
-  `userId` int(11) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user_category

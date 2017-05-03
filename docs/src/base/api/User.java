@@ -11,6 +11,8 @@ public class User {
 	private String info;
 	
 	private int admin;//默认0，非管理员
+	private int inGoods;
+	private int outGoods;
 	
 	public int getId() {
 		return id;
@@ -60,4 +62,17 @@ public class User {
 	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
+	public int getInGoods() {
+		return inGoods;
+	}
+	public void setInGoods(int inGoods) {
+		this.inGoods = inGoods;
+	}
+	public int getOutGoods() {
+		return outGoods;
+	}
+	public void setOutGoods(int outGoods) {
+		this.outGoods = outGoods;
+	}
+	
 }

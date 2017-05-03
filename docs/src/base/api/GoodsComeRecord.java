@@ -1,6 +1,6 @@
 package base.api;
 
-public class GoodComeRecord {
+public class GoodsComeRecord {
 	
 	private int id;//自由编号
 	private int inRecordId;//对应进货记录id

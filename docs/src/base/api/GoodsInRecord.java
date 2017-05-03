@@ -1,5 +1,7 @@
 package base.api;
 
+import java.util.List;
+
 /*
  * 进货记录
  */
@@ -11,6 +13,8 @@ public class GoodsInRecord {
 	private int status;//进货记录状态：正在进货，收货完成
 	private long time;//进货时间
 	private String remark;//进货备注（保护各批次快递单号，数量）
+	
+	private List<GoodsComeRecord> comes;
 	
 	public int getId() {
 		return id;
@@ -47,5 +51,11 @@ public class GoodsInRecord {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public List<GoodsComeRecord> getComes() {
+		return comes;
+	}
+	public void setComes(List<GoodsComeRecord> comes) {
+		this.comes = comes;
 	}
 }

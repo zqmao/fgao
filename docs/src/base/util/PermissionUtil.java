@@ -37,6 +37,50 @@ public class PermissionUtil {
 		}
 	}
 	
+	/*
+	 * 是否具有进货的权限
+	 */
+	public static boolean checkGoodsIn(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getAdmin() != 1){
+				redirectError(request, response);
+				return false;
+			}else{
+				if(user.getInGoods() != 1){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+	}
+	
+	/*
+	 * 是否具有发货的权限
+	 */
+	public static boolean checkGoodsOut(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getAdmin() != 1){
+				redirectError(request, response);
+				return false;
+			}else{
+				if(user.getOutGoods() != 1){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+	}
+	
 	private static void redirectLogin(HttpServletRequest request, HttpServletResponse response){
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		try {

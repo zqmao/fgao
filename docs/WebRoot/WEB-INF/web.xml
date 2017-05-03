@@ -101,6 +101,39 @@
 		<url-pattern>/arrangeServlet.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<description>GoodsServlet</description>
+		<display-name>GoodsServlet</display-name>
+		<servlet-name>GoodsServlet</servlet-name>
+		<servlet-class>base.servlet.GoodsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoodsServlet</servlet-name>
+		<url-pattern>/goodsServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>GoodsOutServlet</description>
+		<display-name>GoodsOutServlet</display-name>
+		<servlet-name>GoodsOutServlet</servlet-name>
+		<servlet-class>base.servlet.GoodsOutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoodsOutServlet</servlet-name>
+		<url-pattern>/goodsOutServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>GoodsInServlet</description>
+		<display-name>GoodsInServlet</display-name>
+		<servlet-name>GoodsInServlet</servlet-name>
+		<servlet-class>base.servlet.GoodsInServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoodsInServlet</servlet-name>
+		<url-pattern>/goodsInServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>
