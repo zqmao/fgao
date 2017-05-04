@@ -25,6 +25,7 @@
                         $("#createRemark").textbox("setValue", data.data.createRemark);
                         $("#createInfo").val(data.data.createInfo);
                         $("#finishInfo").val(data.data.finishInfo);
+                        $("#finishRemark").val(data.data.finishRemark);
                         
                         $("#bugOperationGrid").datagrid({
                             selectOnCheck: true,
@@ -90,6 +91,12 @@
 				<div>完成情况:</div>
 				<input class="easyui-validatebox" type="text" id="finishInfo" disabled="disabled" style="width:80%;padding: 5px;" />
 		    </div>
+		    <br/>
+		    <div >
+				<div>完成备注:</div>
+				<input class="easyui-validatebox" type="text" id="finishRemark" disabled="disabled" style="width:80%;padding: 5px;" />
+		    </div>
+		    
 		</div>
 		<div class="easyui-panel" title="指派记录" style="width: 100%;padding: 10px;">
 			<table id="bugOperationGrid"></table>

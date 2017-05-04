@@ -8,6 +8,7 @@ public class BugVO {
 	private String createRemark;
 	private String createInfo;
 	private String finishInfo;
+	private String finishRemark;
 	
 	public int getId() {
 		return id;
@@ -44,5 +45,11 @@ public class BugVO {
 	}
 	public void setFinishInfo(String finishInfo) {
 		this.finishInfo = finishInfo;
+	}
+	public String getFinishRemark() {
+		return finishRemark;
+	}
+	public void setFinishRemark(String finishRemark) {
+		this.finishRemark = finishRemark;
 	}
 }

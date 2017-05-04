@@ -1,11 +1,9 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ page language="java" import="base.util.*"%>
-<%@ page language="java" import="base.api.*"%>
 <%
 	int userId = PermissionUtil.check(request, response);
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -213,7 +211,7 @@
 			<table>
 				<tr >
 					<td>标题:</td>
-					<td><input class="easyui-validatebox" style="width: 600px;padding: 5px;" id="title" name="title" type="text"  data-options="required:true"/><td>
+					<td><input class="easyui-validatebox" style="width: 600px;padding: 5px;" id="title" name="title" type="text" data-options="required:true"/><td>
 			    </tr>
 			    <tr >
 					<td>正文:</td>

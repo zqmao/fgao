@@ -142,4 +142,8 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<listener>
+	   	<listener-class>base.listener.ZhuangBiListener</listener-class>
+	</listener>
 </web-app>

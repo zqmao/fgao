@@ -132,6 +132,7 @@ public class BugServlet extends BaseServlet {
 			responseSuccess("删除成功");
 		} else if ("finish".equals(sign)) {// 完成
 			String bugIds = (String) request.getParameter("bugIds");
+			String finishRemark = (String) request.getParameter("finishRemark");
 			if(currentUser == null){
 				responseError("需要登录");
 				return;
@@ -141,6 +142,7 @@ public class BugServlet extends BaseServlet {
 				bug.setFinisherId(currentUser.getId());
 				bug.setFinisherName(currentUser.getName());
 				bug.setFinishTime(System.currentTimeMillis());
+				bug.setFinishRemark(finishRemark);
 				BugDAO.getInstance().saveOrUpdate(bug);
 			}
 			responseSuccess("修改成功");
@@ -214,6 +216,7 @@ public class BugServlet extends BaseServlet {
 			}else{
 				vo.setFinishInfo("未完成");
 			}
+			vo.setFinishRemark(bug.getFinishRemark());
 			vo.setTitle(bug.getTitle());
 			vo.setId(bug.getId());
 			responseSuccess(JSON.toJSON(vo));

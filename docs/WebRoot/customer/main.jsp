@@ -39,7 +39,7 @@
     			<td bgcolor="#ff00ff" style="width: 50%;cursor: pointer;" align="center" onclick="toArrange();">
     				<font size="20" color="#FFFFFF">排班情况</font>
     			</td>
-    			<td bgcolor="#ffff00" style="width: 50%;cursor: pointer;" align="center" onclick="toGoods();">
+    			<td bgcolor="#48cb5e" style="width: 50%;cursor: pointer;" align="center" onclick="toGoods();">
     				<font size="20" color="#FFFFFF">进销存系统</font>
     			</td>
     		</tr>

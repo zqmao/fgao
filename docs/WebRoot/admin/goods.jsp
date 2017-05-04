@@ -576,7 +576,7 @@
 				<table style="width: 100%;">
 					<tr >
 						<td>出货数量:</td>
-						<td><input class="easyui-validatebox" name="count" type="text"  data-options="required:true"/><td>
+						<td><input class="easyui-validatebox" name="count" type="text" data-options="required:true"/><td>
 				    </tr>
 				    <tr >
 						<td>备注:</td>

@@ -18,6 +18,23 @@
 			var option_user = "0";
 			var option_type = "0";
             $(function() {
+            	$("#finishBug").dialog({
+            		iconCls: 'icon-save',
+    				buttons: [{
+    					text:'完成',
+    					iconCls:'icon-ok',
+    					handler:function(){
+    						finishBug();
+    					}
+    				},{
+    					text:'取消',
+    					iconCls:'icon-cancel',
+    					handler:function(){
+    						$("#finishBug").dialog("close");
+    					}
+    				}]
+            	});
+				$("#finishBug").dialog('close');
                 $("#addBug").panel({
                 	title: '添加',
                 	tools:[{
@@ -190,17 +207,7 @@
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
                                 return;
                             }
-                        	$.ajax({
-                                type: "POST",
-                                url: "../bugServlet.do?sign=finish",
-                                data: "bugIds=" + ids,
-                                success: function(msg) {
-                                    $("#bugGrid").datagrid('reload');
-                                },
-                                error: function(msg) {
-                                    alert(msg.toString());
-                                }
-                            });
+                        	openFinishBug(ids);
                         }
                     }, {
                     	text:'指派给',
@@ -301,6 +308,28 @@
 				});
 			}
             
+			function openFinishBug(ids){
+				$("#finishBug").dialog('open');
+                $("#finishBugForm").form('load', {
+                	bugIds: ids
+                });
+			}
+			
+			function finishBug(){
+				$("#finishBugForm").form('submit', {
+				    url:"../bugServlet.do?sign=finish",
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+				    		$("#finishBug").panel("close");
+				    		$("#finishBugForm").form('clear');
+        					$("#bugGrid").datagrid("reload");
+				    	}
+				    }
+				});
+			}
         </script>
 	</head>
 
@@ -366,6 +395,17 @@
 					<input class="easyui-textbox" type="text" name="remark" style="width:80%;height:50px" data-options="multiline:true" />
 			    </div>
 			    <br/>
+			</form>
+		</div>
+		<div id="finishBug" class="easyui-dialog" title="完成待办" style="width: 30%; height: 250px;padding: 10px;">
+			<form id="finishBugForm" method="post">
+				<input type="hidden" name="bugIds" value="" />
+				<table style="width: 100%;">
+				    <tr >
+						<td>完成备注:</td>
+						<td><input class="easyui-textbox" type="text" name="finishRemark" style="width:100%;height:50px" data-options="multiline:true" /><td>
+				    </tr>
+			    </table>
 			</form>
 		</div>
 	</body>
