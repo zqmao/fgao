@@ -11,11 +11,12 @@ public class GoodsVO {
 	private int id;
 	private String name;
 	private String stock;
+	private String crisisCount;
 	
 	public GoodsVO(Goods goods){
 		this.id = goods.getId();
 		this.name = goods.getName();
-		if(goods.getStock() <= 0){
+		if(goods.getStock() <= goods.getCrisisCount()){
 			if(GoodsInDAO.getInstance().goodsIng(id)){
 				this.stock = goods.getStock()+ " (正在进货中)";
 			}else{
@@ -24,6 +25,7 @@ public class GoodsVO {
 		}else{
 			this.stock = "" + goods.getStock();
 		}
+		this.crisisCount = "" + goods.getCrisisCount();
 	}
 	
 	public int getId() {
@@ -43,6 +45,14 @@ public class GoodsVO {
 	}
 	public void setStock(String stock) {
 		this.stock = stock;
+	}
+
+	public String getCrisisCount() {
+		return crisisCount;
+	}
+
+	public void setCrisisCount(String crisisCount) {
+		this.crisisCount = crisisCount;
 	}
 
 }

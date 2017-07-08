@@ -11,6 +11,7 @@ public class Comment {
 	private String secondComment;
 	private String secondCommentPic;
 	private String timeDes;
+	private int userId;
 	
 	public int getId() {
 		return id;
@@ -65,5 +66,11 @@ public class Comment {
 	}
 	public void setTimeDes(String timeDes) {
 		this.timeDes = timeDes;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

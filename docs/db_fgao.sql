@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50717
+Source Server Version : 50636
 Source Host           : localhost:3306
 Source Database       : db_fgao
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2017-05-03 17:27:28
+Date: 2017-07-08 18:07:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_arrange`;
 CREATE TABLE `t_arrange` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '排班表',
   `userId` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `day` bigint(20) DEFAULT NULL,
@@ -52,7 +52,7 @@ INSERT INTO `t_arrange` VALUES ('19', '15', '正', '1493913600000');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_bug`;
 CREATE TABLE `t_bug` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '待办表',
   `category` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `createRemark` varchar(255) DEFAULT NULL,
@@ -94,7 +94,7 @@ INSERT INTO `t_bug` VALUES ('38', '售后', 'dl耳机', '3想，asdasdad', '1493
 -- ----------------------------
 DROP TABLE IF EXISTS `t_bug_operation`;
 CREATE TABLE `t_bug_operation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '待办操作记录表',
   `bugId` int(11) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   `time` bigint(20) DEFAULT NULL,
@@ -156,7 +156,7 @@ INSERT INTO `t_bug_operation` VALUES ('47', '38', '', '1493695950672', '1', '3')
 -- ----------------------------
 DROP TABLE IF EXISTS `t_category`;
 CREATE TABLE `t_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章的分类',
   `parentId` int(11) DEFAULT NULL,
   `text` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -179,11 +179,69 @@ INSERT INTO `t_category` VALUES ('12', '10', 'EE1.1');
 INSERT INTO `t_category` VALUES ('13', '10', 'EE1.2');
 
 -- ----------------------------
+-- Table structure for t_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `t_comment`;
+CREATE TABLE `t_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论列表',
+  `time` bigint(20) DEFAULT NULL,
+  `creator` varchar(255) DEFAULT NULL,
+  `goodsId` int(11) NOT NULL,
+  `firstComment` text,
+  `firstCommentPic` varchar(255) DEFAULT NULL,
+  `secondComment` text,
+  `secondCommentPic` varchar(255) DEFAULT NULL,
+  `timeDes` varchar(255) DEFAULT NULL,
+  `userId` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_comment
+-- ----------------------------
+INSERT INTO `t_comment` VALUES ('1', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', 'http://img1.skqkw.cn:888/2014/11/26/08/o5u1t2j2m3a-73633.jpg', '几天后，又来评论了', 'http://wenwen.soso.com/p/20111118/20111118152120-18093601.jpg,', '2天后', '0');
+INSERT INTO `t_comment` VALUES ('2', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', 'http://www.uuwtq.com/file/image/tx/4w3711346186u2135842954t21.jpg', '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('3', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', 'http://www.uuwtq.com/file/image/tx/4w3711346186u2135842954t21.jpg,http://www.qqxoo.com/uploads/allimg/170129/2255523224-5.jpg', '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('4', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('5', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('6', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('7', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('8', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('9', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('10', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('11', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('12', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('13', '11111', null, '1', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('14', '11111', null, '2', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('15', '11111', null, '2', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('16', '11111', null, '3', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('17', '11111', null, '3', '面料很舒服，还有里衬，穿上感觉很好！可惜对胖子不是那么友好，尺寸虽然很准，却没有xxl及以上尺寸的，加上有两层，导致透气性略差一点！但总体上来说还是很好的，无论是性价比还是舒适性都值得给赞+好评', null, '几天后，又来评论了', null, '2天后', '0');
+INSERT INTO `t_comment` VALUES ('32', '1499508284394', 'admin', '1', '撒大声道', 'http://127.0.0.1:8080//upload/32_first_pic_1.png', '是大大大飒飒的', '', '不限时间', '1');
+INSERT INTO `t_comment` VALUES ('33', '1499508398829', 'admin', '3', '撒打算', '', '撒打算', '', '不限时间', '1');
+
+-- ----------------------------
+-- Table structure for t_comment_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `t_comment_goods`;
+CREATE TABLE `t_comment_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论使用的货物列表',
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_comment_goods
+-- ----------------------------
+INSERT INTO `t_comment_goods` VALUES ('1', '告白气球');
+INSERT INTO `t_comment_goods` VALUES ('2', '床边故事');
+INSERT INTO `t_comment_goods` VALUES ('3', '借口');
+
+-- ----------------------------
 -- Table structure for t_document
 -- ----------------------------
 DROP TABLE IF EXISTS `t_document`;
 CREATE TABLE `t_document` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章',
   `categoryId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
@@ -207,28 +265,30 @@ INSERT INTO `t_document` VALUES ('7', '1', '3', '苏大', '你看到的是美好
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods`;
 CREATE TABLE `t_goods` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '进销存货物',
   `name` varchar(255) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
+  `crisisCount` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_goods
 -- ----------------------------
-INSERT INTO `t_goods` VALUES ('1', 'Dr-20 黑', '300');
-INSERT INTO `t_goods` VALUES ('2', 'Dr-20 白', '0');
-INSERT INTO `t_goods` VALUES ('3', '索爱-麦-黑', '80');
-INSERT INTO `t_goods` VALUES ('5', '索爱-麦-白', '90');
-INSERT INTO `t_goods` VALUES ('6', '索爱-麦-蓝', '50');
-INSERT INTO `t_goods` VALUES ('7', 'Dr-20 蓝', '0');
+INSERT INTO `t_goods` VALUES ('1', 'Dr-20 黑', '300', null);
+INSERT INTO `t_goods` VALUES ('2', 'Dr-20 白', '0', null);
+INSERT INTO `t_goods` VALUES ('3', '索爱-麦-黑', '80', '56');
+INSERT INTO `t_goods` VALUES ('5', '索爱-麦-白', '90', '100');
+INSERT INTO `t_goods` VALUES ('6', '索爱-麦-蓝', '50', null);
+INSERT INTO `t_goods` VALUES ('7', 'Dr-20 蓝', '0', null);
+INSERT INTO `t_goods` VALUES ('8', 'nikan a', '0', '2');
 
 -- ----------------------------
 -- Table structure for t_goods_come
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods_come`;
 CREATE TABLE `t_goods_come` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '到货记录',
   `inRecordId` int(11) NOT NULL,
   `count` int(11) DEFAULT NULL,
   `orderNum` varchar(255) DEFAULT NULL,
@@ -250,7 +310,7 @@ INSERT INTO `t_goods_come` VALUES ('12', '4', '30', '', '1493802474890');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods_in`;
 CREATE TABLE `t_goods_in` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '进货记录',
   `goodsId` int(11) NOT NULL,
   `count` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
@@ -272,7 +332,7 @@ INSERT INTO `t_goods_in` VALUES ('6', '1', '300', '1', '1493801907979', '你好�
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods_out`;
 CREATE TABLE `t_goods_out` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '出货记录',
   `goodsId` int(11) NOT NULL,
   `count` int(11) DEFAULT NULL,
   `time` bigint(20) DEFAULT NULL,
@@ -290,7 +350,7 @@ INSERT INTO `t_goods_out` VALUES ('4', '5', '10', '1493795883875', '10');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '人员表',
   `deptId` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `loginName` varchar(255) DEFAULT NULL,
@@ -306,7 +366,7 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '1', 'admin', 'admin', 'admin', '15956938334', 'admin', '1', '0', '0');
+INSERT INTO `t_user` VALUES ('1', '1', 'admin', 'admin', 'admin', '15956938334', 'admin', '1', '1', '1');
 INSERT INTO `t_user` VALUES ('2', '1', 'zqmao2', 'zqmao2', '123456', null, null, '0', '0', '0');
 INSERT INTO `t_user` VALUES ('3', '1', 'zqmao3', 'zqmao3', '123456', null, null, '1', '0', '1');
 INSERT INTO `t_user` VALUES ('4', '1', 'zqmao4', 'zqmao4', '123456', null, null, '0', '0', '0');
@@ -324,7 +384,7 @@ INSERT INTO `t_user` VALUES ('15', '0', '周慧琴', 'hqzhou', '123456', '182979
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_category`;
 CREATE TABLE `t_user_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '人员权限表',
   `categoryId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)

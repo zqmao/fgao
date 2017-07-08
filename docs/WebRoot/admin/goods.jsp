@@ -157,6 +157,7 @@
                             {title: '序号', field: 'id', width: 60},
                             {title: '货物名称', field: 'name', width: 220, align: 'center'},
                             {title: '库存', field: 'stock', width: 220, align: 'center'},
+                            {title: '临界库存', field: 'crisisCount', width: 100, align: 'center'},
                             {title: '操作', field: 'opt', width: 220, align: 'center',
                             	formatter: function(value, rowData, rowIndex) {
                             		var opt = "";
@@ -201,7 +202,8 @@
                                 $("#addGoods").panel("open");
                                 $("#addGoodsForm").form("load", {
                                 	goodsId: row[0].id,
-                                    name: row[0].name
+                                    name: row[0].name,
+                                    crisisCount:row[0].crisisCount
                                 });
                             }
                         }
@@ -548,6 +550,10 @@
 					<tr >
 						<td>货物名称:</td>
 						<td><input class="easyui-validatebox" name="name" type="text"  data-options="required:true"/><td>
+				    </tr>
+				    <tr >
+						<td>临界库存:</td>
+						<td><input class="easyui-validatebox" name="crisisCount" type="text"  data-options="required:true"/><td>
 				    </tr>
 			    </table>
 			</form>

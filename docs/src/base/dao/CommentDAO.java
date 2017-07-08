@@ -20,10 +20,20 @@ public class CommentDAO extends BaseDAO{
 		return dao;
 	}
 
-	public List<Comment> list(int goodsId) {
-		String sql = "select * from t_comment where goodsId=? ";
-		List<Comment> objs = JDBCUtil.queryObjectList(sql, Comment.class, goodsId);
+	public List<Comment> list(int goodsId, int index, int pagesize) {
+		String sql = "select * from t_comment where goodsId=? limit ?, ? ";
+		List<Comment> objs = JDBCUtil.queryObjectList(sql, Comment.class, goodsId, index, pagesize);
 		return objs;
 	}
 
+	//全部的总数
+	public long listCount(int goodsId) {
+		String sql = "select count(*) from t_comment where goodsId=? order by id desc";
+		return JDBCUtil.queryCount(sql, goodsId);
+	}
+	
+	public Comment load(int id) {
+		String sql = "select * from t_comment where id=?";
+		return JDBCUtil.queryObject(sql, Comment.class, id);
+	}
 }

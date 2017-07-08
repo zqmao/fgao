@@ -134,6 +134,17 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>CommentServlet</description>
+		<display-name>CommentServlet</display-name>
+		<servlet-name>CommentServlet</servlet-name>
+		<servlet-class>base.servlet.CommentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CommentServlet</servlet-name>
+		<url-pattern>/commentServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>

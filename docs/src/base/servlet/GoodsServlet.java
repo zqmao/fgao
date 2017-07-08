@@ -49,6 +49,7 @@ public class GoodsServlet extends BaseServlet {
 			responseSuccess(JSON.toJSON(obj));
 		} else if ("add".equals(sign)) {// 增加
 			String name = (String) request.getParameter("name");
+			String crisisCount = (String) request.getParameter("crisisCount");
 			String goodsId = (String) request.getParameter("goodsId");
 			Goods goods = null;
 			if(goodsId == null || goodsId.length() == 0){
@@ -58,6 +59,11 @@ public class GoodsServlet extends BaseServlet {
 				goods = GoodsDAO.getInstance().load(Integer.parseInt(goodsId));
 			}
 			goods.setName(name);
+			if(crisisCount == null || crisisCount.length() == 0){
+				goods.setCrisisCount(0);
+			}else{
+				goods.setCrisisCount(Integer.parseInt(crisisCount));
+			}
 			if (goods.getId() == 0) {
 				GoodsDAO.getInstance().saveOrUpdate(goods);
 				responseSuccess("添加成功");

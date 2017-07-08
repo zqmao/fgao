@@ -8,6 +8,7 @@ public class Goods {
 	private int id;
 	private String name;
 	private int stock;
+	private int crisisCount;
 	
 	public int getId() {
 		return id;
@@ -26,6 +27,12 @@ public class Goods {
 	}
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+	public int getCrisisCount() {
+		return crisisCount;
+	}
+	public void setCrisisCount(int crisisCount) {
+		this.crisisCount = crisisCount;
 	}
 
 }
