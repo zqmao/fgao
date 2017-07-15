@@ -50,19 +50,39 @@
 			}
 		};
 	</script>
+	<style> 
+	body{ text-align:center} 
+	.div{ margin:0 auto; width:400px; height:100px;} 
+	.sign-in-button {
+	    background: #1E90FF;
+	    width: 50%;
+	    padding: 9px 18px;
+	    font-size: 18px;
+	    border: none;
+	    border-radius: 4px;
+	    color: #fff;
+	    cursor: pointer;
+	    margin-top: 10px;
+	}
+	</style>
 </head>
-<body>
-<div class="easyui-panel" title="登录" style="width: 400px; height: 300px;padding: 10px;margin:0 auto;text-align:center" >
-	<form id="login" method="post">
+<body style="background-image:url(/image/login_bg.jpg)">
+	<div class="div" style="margin-top: 200px;">
+		<div class="easyui-panel" title="登录" style="width: 400px; height: 300px;padding-top:80px;margin:0 auto;text-align:center" >
+			<form id="login" method="post">
+			
+				<font size="3" color="#1E90FF"><b>帐号：</b></font>
+				<input type="text" name="name" class="easyui-validatebox" data-options="required:true"/>
+				<br/>
+				<br/>
+				<font size="3" color="#1E90FF"><b>密码：</b></font>
+				<input type="password" name="password" class="easyui-validatebox"  data-options="required:true"/>
+				<br/>
+			
+			</form>
+			<input type="button" value="登录" onclick="submit();" class="sign-in-button"/>
+		</div>
+    </div>
 	
-		帐号：<input type="text" name="name" class="easyui-validatebox" data-options="required:true"/>
-		<br/>
-		<br/>
-		密码：<input type="password" name="password" class="easyui-validatebox"  data-options="required:true"/>
-		<br/>
-	
-	</form>
-	<input type="button" value="登录" onclick="submit();">
-</div>
 </body>
 </html>
