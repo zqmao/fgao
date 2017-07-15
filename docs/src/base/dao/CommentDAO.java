@@ -21,15 +21,32 @@ public class CommentDAO extends BaseDAO{
 	}
 
 	public List<Comment> list(int goodsId, int index, int pagesize) {
-		String sql = "select * from t_comment where goodsId=? limit ?, ? ";
-		List<Comment> objs = JDBCUtil.queryObjectList(sql, Comment.class, goodsId, index, pagesize);
+		String condition = "";
+		if(goodsId != -1){
+			condition = " where goodsId=? ";
+		}
+		String sql = "select * from t_comment " + condition + " limit ?, ? ";
+		List<Comment> objs = null;
+		if(goodsId != -1){
+			objs = JDBCUtil.queryObjectList(sql, Comment.class, goodsId, index, pagesize);
+		}else{
+			objs = JDBCUtil.queryObjectList(sql, Comment.class, index, pagesize);
+		}
 		return objs;
 	}
 
 	//全部的总数
 	public long listCount(int goodsId) {
-		String sql = "select count(*) from t_comment where goodsId=? order by id desc";
-		return JDBCUtil.queryCount(sql, goodsId);
+		String condition = "";
+		if(goodsId != -1){
+			condition = " where goodsId=? ";
+		}
+		String sql = "select count(*) from t_comment " + condition;
+		if(goodsId != -1){
+			return JDBCUtil.queryCount(sql, goodsId);
+		}else{
+			return JDBCUtil.queryCount(sql);
+		}
 	}
 	
 	public Comment load(int id) {

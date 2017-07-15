@@ -12,6 +12,7 @@ public class Comment {
 	private String secondCommentPic;
 	private String timeDes;
 	private int userId;
+	private String remark;
 	
 	public int getId() {
 		return id;
@@ -73,4 +74,11 @@ public class Comment {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 }

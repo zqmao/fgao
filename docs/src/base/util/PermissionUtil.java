@@ -71,6 +71,23 @@ public class PermissionUtil {
 		}
 	}
 	
+	/*
+	 * 是否具有发货的权限
+	 */
+	public static boolean checkCoupon(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getCoupon() != 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	
 	private static void redirectLogin(HttpServletRequest request, HttpServletResponse response){
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		try {

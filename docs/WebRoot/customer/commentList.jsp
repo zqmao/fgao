@@ -37,7 +37,7 @@
                 });
                 $("#addComment").panel("open");
                 $("#option_goods").combobox({
-                    url:'../commentServlet.do?sign=select',
+                    url:'../commentServlet.do?sign=selectAll',
                     valueField:'id',
                     textField:'text',
                     loadFilter: function(data){
@@ -60,10 +60,24 @@
 							loadTableData();
 						}
 						$("#addComment").form('load', {
-                        	goodsId: option
+                        	goodsId: "-2"
                         });
 						first = 0;
 					}
+                });
+                
+                $("#goodsId").combobox({
+                    url:'../commentServlet.do?sign=select',
+                    valueField:'id',
+                    textField:'text',
+                    loadFilter: function(data){
+                   		if (data.data){
+                   			$("#goodsId").combobox('select', data.data[0].id);
+                   			return data.data;
+                   		} else {
+                   			return data;
+                   		}
+                   	}
                 });
                 
             });
@@ -81,13 +95,15 @@
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '序号', field: 'id', width: 60},
+                            {title: '录入者', field: 'creator', width: 100, align: 'center'},
                             {title: '首评', field: 'firstComment', width: 400, align: 'center'},
                             {title: '', field: 'firstCommentPic', width: 400, align: 'center',hidden:'true'},
                             {title: '首评图片', field: 'left', width: 300, align: 'center', formatter:leftFormatter },
                             {title: '追评论天数', field: 'timeDes', width: 80, align: 'center'},
                             {title: '追评', field: 'secondComment', width: 400, align: 'center'},
                             {title: '', field: 'secondCommentPic', width: 400, align: 'center',hidden:'true'},
-                            {title: '追评图片', field: 'right', width: 300, align: 'center', formatter:rightFormatter }
+                            {title: '追评图片', field: 'right', width: 300, align: 'center', formatter:rightFormatter },
+                            {title: '备注', field: 'remark', width: 200, align: 'center'},
                         ]],
                     loadFilter: function(data){
                    		if (data.data){
@@ -104,7 +120,7 @@
                             $("#timeDes").combobox('select', "不限时间");
                             $("#addComment").panel('open');
                             $("#addComment").form('load', {
-                            	goodsId: option
+                            	goodsId: "-2"
                             });
                         }
                     }, {
@@ -125,7 +141,8 @@
                                 	timeDes: row[0].timeDes,
                                 	secondComment: row[0].secondComment,
                                 	commentId: row[0].id,
-                                	goodsId: option
+                                	remark: row[0].remark,
+                                	goodsId: row[0].goodsId
                                 });
                             }
                         }
@@ -223,7 +240,7 @@
 							$("#timeDes").combobox('select', "不限时间");
         					$("#commentGrid").datagrid("reload");
         					$("#addComment").form('load', {
-                            	goodsId: option
+                            	goodsId: "-2"
                             });
 				    	}
 				    }
@@ -244,9 +261,12 @@
 		<div id="addComment" class="easyui-panel" data-options="modal:true"
 			title="添加评论" style="width: 100%; height: 400px;padding: 10px;">
 			<form id="addCommentForm" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="goodsId" value="" />
+				<!-- input type="hidden" name="goodsId" value="" /> -->
 				<input type="hidden" name="commentId" value="" />
-			    <br/>
+				<div>
+					<label for="goodsId">选择商品:</label>
+					<input id="goodsId" name="goodsId"/>
+			    </div>
 			    <div >
 					<label for="firstComment">首评内容:</label>
 					<input class="easyui-textbox" type="text" name="firstComment" style="width:80%;height:50px;" data-options="multiline:true" />
@@ -285,6 +305,11 @@
 				    <input type="file" name="second_pic_3" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
 				    <input type="file" name="second_pic_4" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
 				    <input type="file" name="second_pic_5" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
+			    </div>
+			    <br/>
+			    <div >
+					<label for="remark">录入备注:</label>
+					<input class="easyui-textbox" type="text" name="remark" style="width:80%;height:30px;"/>
 			    </div>
 			</form>
 			<br/>

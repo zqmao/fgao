@@ -13,6 +13,7 @@ public class User {
 	private int admin;//默认0，非管理员
 	private int inGoods;
 	private int outGoods;
+	private int coupon;//是否有设置优惠券的权限
 	
 	public int getId() {
 		return id;
@@ -74,5 +75,10 @@ public class User {
 	public void setOutGoods(int outGoods) {
 		this.outGoods = outGoods;
 	}
-	
+	public int getCoupon() {
+		return coupon;
+	}
+	public void setCoupon(int coupon) {
+		this.coupon = coupon;
+	}
 }

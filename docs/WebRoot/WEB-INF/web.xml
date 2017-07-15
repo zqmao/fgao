@@ -145,6 +145,17 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>CouponServlet</description>
+		<display-name>CouponServlet</display-name>
+		<servlet-name>CouponServlet</servlet-name>
+		<servlet-class>base.servlet.CouponServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CouponServlet</servlet-name>
+		<url-pattern>/couponServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>

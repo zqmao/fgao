@@ -39,6 +39,7 @@ public class CommentServlet extends BaseServlet{
 		this.doPost(req, resp);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
@@ -52,9 +53,31 @@ public class CommentServlet extends BaseServlet{
 			obj.put("total", CommentDAO.getInstance().listCount(goodsId));
 			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
+		}else if ("selectAll".equals(sign)) {// 查询评论货物列表
+			List<CommentGoods> result = CommentGoodsDAO.getInstance().list();
+			JSONArray array = new JSONArray();
+			JSONObject all = new JSONObject();
+			all.put("id", -1);
+			all.put("text", "所有");
+			array.add(all);
+			JSONObject other = new JSONObject();
+			other.put("id", -2);
+			other.put("text", "其他");
+			array.add(other);
+			for(CommentGoods item : result){
+				JSONObject obj = new JSONObject();
+				obj.put("id", item.getId());
+				obj.put("text", item.getName());
+				array.add(obj);
+			}
+			responseSuccess(JSON.toJSON(array));
 		}else if ("select".equals(sign)) {// 查询评论货物列表
 			List<CommentGoods> result = CommentGoodsDAO.getInstance().list();
 			JSONArray array = new JSONArray();
+			JSONObject other = new JSONObject();
+			other.put("id", -2);
+			other.put("text", "其他");
+			array.add(other);
 			for(CommentGoods item : result){
 				JSONObject obj = new JSONObject();
 				obj.put("id", item.getId());
@@ -68,6 +91,7 @@ public class CommentServlet extends BaseServlet{
 			String secondComment = "";
 			String commentId = "";
 			String goodsId = "";
+			String remark = "";
 			
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			// 获取文件需要上传到的路径
@@ -93,6 +117,8 @@ public class CommentServlet extends BaseServlet{
 							commentId = value;
 						}else if(name.equals("goodsId")){
 							goodsId = value;
+						}else if(name.equals("remark")){
+							remark = value;
 						}
 					}
 				}
@@ -109,6 +135,7 @@ public class CommentServlet extends BaseServlet{
 			comment.setSecondComment(secondComment);
 			comment.setTime(System.currentTimeMillis());
 			comment.setTimeDes(timeDes);
+			comment.setRemark(remark);
 			if(goodsId == null || goodsId.length() == 0){
 				responseError("商品参数错误");
 				return;
@@ -169,9 +196,7 @@ public class CommentServlet extends BaseServlet{
 		String path = request.getRealPath("/upload");
 		
 		String filename = commentId + "_" + item.getFieldName() + ".png";
-		String netPath = "http://" + request.getLocalAddr() + ":"
-				+ request.getLocalPort() + "/"
-				+ request.getContextPath() + "/upload/" + filename;
+		String netPath = "../upload/" + filename;
 		OutputStream out;
 		try {
 			out = new FileOutputStream(new File(path, filename));

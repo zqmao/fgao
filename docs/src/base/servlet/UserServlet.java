@@ -109,6 +109,33 @@ public class UserServlet extends BaseServlet {
 				array.add(obj);
 			}
 			responseSuccess(JSON.toJSON(array));
+		} else if ("edit".equals(sign)) {// 查询列表
+			if(currentUser == null){
+				responseError("需要登录");
+				return;
+			}
+			String originPassword = (String) request.getParameter("originPassword");
+			String newPassword = (String) request.getParameter("newPassword");
+			String confirmPassword = (String) request.getParameter("confirmPassword");
+			String phone = (String) request.getParameter("phone");
+			if(newPassword != null && newPassword.length() > 0 && confirmPassword != null && confirmPassword.length() > 0){
+				//想要修改密码
+				if(originPassword.equals(currentUser.getPassword())){
+					if(newPassword.equals(confirmPassword)){
+						currentUser.setPassword(newPassword);
+					}else{
+						responseError("新密码确认错误,修改密码失败");
+					}
+				}else{
+					responseError("原密码错误,修改密码失败");
+				}
+			}
+			if(phone != null && phone.length() > 0){
+				//想要手机号
+				currentUser.setPhone(phone);
+			}
+			UserDAO.getInstance().saveOrUpdate(currentUser);
+			responseSuccess("修改成功");
 		}
 	}
 
