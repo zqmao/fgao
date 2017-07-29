@@ -78,7 +78,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
-            position: absolute;top: 36%;left: 26%;
+            position: absolute;top: 36%;left: 22%;
             padding: 40px 4%;
         }
         .zx_title{
@@ -149,18 +149,20 @@
                 <div class="zx_title">登录</div>
                 <form id="login" method="post">
                     <div class="zx_form">
-                        <li class="zx_li1">
-                            <i></i>
-                            <label>
-                                <input type="text" name="name" placeholder="手机号或邮箱" class="easyui-validatebox" data-options="required:true"/> 
-                            </label>
-                        </li>
-                        <li class="zx_li2">
-                            <i></i>
-                            <label>
-                                <input type="password" name="password" placeholder="密码" class="easyui-validatebox"  data-options="required:true"/>
-                            </label>
-                        </li>
+                    	<ul>
+	                        <li class="zx_li1">
+	                            <i></i>
+	                            <label>
+	                                <input type="text" name="name" placeholder="手机号或邮箱" class="easyui-validatebox" data-options="required:true"/> 
+	                            </label>
+	                        </li>
+	                        <li class="zx_li2">
+	                            <i></i>
+	                            <label>
+	                                <input type="password" name="password" placeholder="密码" class="easyui-validatebox"  data-options="required:true"/>
+	                            </label>
+	                        </li>
+                        </ul>
                     </div>
                 </form>
                 <input type="button" value="登录" onclick="submit();" class="sign-in-button"/>
