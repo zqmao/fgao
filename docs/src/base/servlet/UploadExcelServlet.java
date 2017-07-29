@@ -111,6 +111,9 @@ public class UploadExcelServlet extends BaseServlet {
 			Set<Integer> indexs = days.keySet();
 			for(int i = 1; i < sheet.getLastRowNum() + 1; i++){
 				Row data = sheet.getRow(i);
+				if(data == null){
+					continue;
+				}
 				Cell nameCell = data.getCell(0);
 				int userId = 0;
 				if(nameCell != null && nameCell.getCellTypeEnum() == CellType.STRING){
