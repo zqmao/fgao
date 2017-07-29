@@ -223,10 +223,10 @@
 	</head>
 
 	<body class="easyui-layout">
-		<div class="easyui-panel" title="评论列表" style="width: 100%;">
+		<div class="easyui-panel" title="优惠券列表" style="width: 100%;">
 			<table id="couponGrid" style="height: 500px;"></table>
 		</div>
-		<div id="addCoupon" class="easyui-panel" title="添加评论" style="width: 100%; height: 400px;padding: 10px;">
+		<div id="addCoupon" class="easyui-panel" title="添加优惠券" style="width: 100%; height: 400px;padding: 10px;">
 			<form id="addCouponForm" method="post">
 				<input type="hidden" name="couponId" value="" />
 				<table style="width: 100%">

@@ -88,6 +88,8 @@ public class BugServlet extends BaseServlet {
 			responseSuccess(JSON.toJSON(obj));
 		} else if ("add".equals(sign)) {// 增加
 			String category = (String) request.getParameter("category");
+			String wangwang = (String) request.getParameter("wangwang");
+			String goods = (String) request.getParameter("goods");
 			String title = (String) request.getParameter("title");
 			String createRemark = (String) request.getParameter("createRemark");
 			String bugId = (String) request.getParameter("bugId");
@@ -100,11 +102,14 @@ public class BugServlet extends BaseServlet {
 			bug.setCategory(category);
 			bug.setCreateRemark(createRemark);
 			bug.setTitle(title);
+			bug.setWangwang(wangwang);
+			bug.setGoods(goods);
 			if(currentUser != null){
 				bug.setCreaterId(currentUser.getId());
 				bug.setCreaterName(currentUser.getName());
 				bug.setCreateTime(System.currentTimeMillis());
 				bug.setFinisherName("未完成");
+				bug.setFinishRemark("");
 			}else{
 				responseError("需要登录");
 				return;
@@ -146,6 +151,19 @@ public class BugServlet extends BaseServlet {
 				BugDAO.getInstance().saveOrUpdate(bug);
 			}
 			responseSuccess("修改成功");
+		} else if ("handle".equals(sign)) {// 处理
+			String bugIds = (String) request.getParameter("bugIds");
+			String finishRemark = (String) request.getParameter("finishRemark");
+			if(currentUser == null){
+				responseError("需要登录");
+				return;
+			}
+			for(String bugId : bugIds.split(",")){
+				Bug bug = BugDAO.getInstance().load(Integer.parseInt(bugId));
+				bug.setFinishRemark(finishRemark);
+				BugDAO.getInstance().saveOrUpdate(bug);
+			}
+			responseSuccess("修改成功");
 		} else if ("current".equals(sign)) {// 查询某个bug当前处理人员
 			String bugId = (String) request.getParameter("bugId");
 			if(currentUser == null){
@@ -161,20 +179,22 @@ public class BugServlet extends BaseServlet {
 				responseError("没有指派数据");
 			}
 		} else if ("passBug".equals(sign)) {// 查询某个bug当前处理人员
-			String bugId = (String) request.getParameter("bugId");
+			String bugIds = (String) request.getParameter("bugIds");
 			String passUser = (String)request.getParameter("passUser");
 			String remark = (String)request.getParameter("remark");
 			if(currentUser == null){
 				responseError("需要登录");
 				return;
 			}
-			BugOperation bugOp = new BugOperation();
-			bugOp.setBugId(Integer.parseInt(bugId));
-			bugOp.setOperaterId(currentUser.getId());
-			bugOp.setRemark(remark);
-			bugOp.setTargetId(Integer.parseInt(passUser));
-			bugOp.setTime(System.currentTimeMillis());
-			BugOperationDAO.getInstance().saveOrUpdate(bugOp);
+			for(String bugId : bugIds.split(",")){
+				BugOperation bugOp = new BugOperation();
+				bugOp.setBugId(Integer.parseInt(bugId));
+				bugOp.setOperaterId(currentUser.getId());
+				bugOp.setRemark(remark);
+				bugOp.setTargetId(Integer.parseInt(passUser));
+				bugOp.setTime(System.currentTimeMillis());
+				BugOperationDAO.getInstance().saveOrUpdate(bugOp);
+			}
 			responseSuccess("保存成功");
 		} else if ("listOperation".equals(sign)) {// 查询某个bug当前处理人员
 			String bugId = (String) request.getParameter("bugId");

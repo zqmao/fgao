@@ -14,6 +14,8 @@ public class Bug {
 	private long finishTime;//完成时间
 	private int finisherId;//完成者
 	private String finisherName;
+	private String wangwang;
+	private String goods;
 	
 	private int state;//0,未完成；1,完成
 	private String currentName;
@@ -120,5 +122,21 @@ public class Bug {
 
 	public void setCurrentName(String currentName) {
 		this.currentName = currentName;
+	}
+
+	public String getWangwang() {
+		return wangwang;
+	}
+
+	public void setWangwang(String wangwang) {
+		this.wangwang = wangwang;
+	}
+
+	public String getGoods() {
+		return goods;
+	}
+
+	public void setGoods(String goods) {
+		this.goods = goods;
 	}
 }

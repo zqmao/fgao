@@ -32,6 +32,23 @@
     				}]
             	});
 				$("#finishBug").dialog('close');
+				$("#handleBug").dialog({
+            		iconCls: 'icon-save',
+    				buttons: [{
+    					text:'确认',
+    					iconCls:'icon-ok',
+    					handler:function(){
+    						handleBug();
+    					}
+    				},{
+    					text:'取消',
+    					iconCls:'icon-cancel',
+    					handler:function(){
+    						$("#handleBug").dialog("close");
+    					}
+    				}]
+            	});
+				$("#handleBug").dialog('close');
                 $("#addBug").panel({
                 	title: '添加',
                 	tools:[{
@@ -93,12 +110,17 @@
                     queryParams:{option : option},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
-                            {title: '序号', field: 'id', width: 60},
+                            {title: '序号', field: 'id', width: 30},
+                            {title: '录入时间', field: 'createTime', width: 150, align: 'center',formatter:jsonYearMonthDay},
+                            {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
+                            {title: '产品型号', field: 'goods', width: 120, align: 'center'},
                             {title: '类别', field: 'category', width: 120, align: 'center'},
-                            {title: '标题', field: 'title', width: 400},
+                            {title: '标题', field: 'title', width: 200,formatter:formatCellTooltip},
+                            {title: '描述', field: 'createRemark', width: 200,formatter:formatCellTooltip},
                             {title: '创建者', field: 'createrName', width: 100, align: 'center'},
                             {title: '当前处理人员', field: 'currentName', width: 100, align: 'center'},
                             {title: '完成者', field: 'finisherName', width: 100, align: 'center'},
+                            {title: '备注', field: 'finishRemark', width: 100, align: 'center',formatter:formatCellTooltip},
                             {title: '详情', field: 'opt', width: 100, align: 'center',
                             	formatter: function(value, rowData, rowIndex) {
                                 	return "<a href='bugDetail.jsp?bugId="+rowData.id+"' target='_blank' style='color:red'>查看详情</a>";
@@ -137,9 +159,22 @@
                                 	category: row[0].category,
                                 	title: row[0].title,
                                 	createRemark: row[0].createRemark,
+                                	wangwang: row[0].wangwang,
+                                	goods: row[0].goods,
                                 	bugId: row[0].id
                                 });
                             }
+                        }
+                    }, {
+                    	text:'处理',
+                        iconCls: 'icon-ok',
+                        handler: function() {
+                        	var ids = getChecked("bugGrid");
+                        	if (ids.length == 0) {
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
+                                return;
+                            }
+                        	openHandleBug(ids);
                         }
                     }, {
                     	text:'完成',
@@ -161,9 +196,7 @@
                             var len = ids.length;
                             if (len == 0) {
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
-                            } else if (len > 1) {
-                                $.messager.alert('提示', '只能选择一个', 'Warning');
-                            } else {
+                            }else {
                                 var row = $("#bugGrid").datagrid('getChecked');
                                 $("#passUser").combobox({
                                     url:'../userServlet.do?sign=select',
@@ -192,13 +225,28 @@
                                 });
                                 $("#passBug").panel('open');
                                 $("#passBug").form('load', {
-                                    bugId: row[0].id
+                                    bugIds: ids
                                 });
                             }
                         }
                     }]
                 });
             });
+            function formatCellTooltip(value){  
+	            return "<span title='" + value + "'>" + value + "</span>";  
+	        } 
+			function jsonYearMonthDay(milliseconds) {
+			    var datetime = new Date();
+			    datetime.setTime(milliseconds);
+			    var year = datetime.getFullYear();
+			    var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+			    var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+			    var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+		        var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+		        var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+			    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			 
+			}
 
             function getChecked(id) {
                 var ids = [];
@@ -274,7 +322,27 @@
 				    }
 				});
 			}
-            
+			function openHandleBug(ids){
+				$("#handleBug").dialog('open');
+                $("#handleBugForm").form('load', {
+                	bugIds: ids
+                });
+			}
+			function handleBug(){
+				$("#handleBugForm").form('submit', {
+				    url:"../bugServlet.do?sign=handle",
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+				    		$("#handleBug").panel("close");
+				    		$("#handleBugForm").form('clear');
+        					$("#bugGrid").datagrid("reload");
+				    	}
+				    }
+				});
+			}
         </script>
 	</head>
 
@@ -283,7 +351,7 @@
 			<div style="padding-left: 5px;padding-top: 10px;padding-bottom: 10px;">
 				<label for="option">筛选:</label>
 				<select class="easyui-combobox" id="option" style="width:250px;">
-				    <option value="0">全部</option>
+				    <!-- option value="0">全部</option> -->
 				    <option value="1">我创建的</option>
 				    <option value="2" selected="selected">我正在处理的</option>
 				    <option value="3">我完成的</option>
@@ -293,20 +361,24 @@
 			<table id="bugGrid" style="height: 340px;"></table>
 		</div>
 		<div id="addBug" class="easyui-panel" data-options="modal:true"
-			title="添加待办" style="width: 100%; height: 200px;padding: 10px;">
+			title="添加待办" style="width: 100%; height: 220px;padding: 10px;">
 			<form id="addBugForm" method="post">
 				<input type="hidden" name="bugId" value="" />
 				<div >
 					<label for="category">类别:</label>
-					<select class="easyui-combobox" id="category" name="category" style="width:40%;">
+					<select class="easyui-combobox" id="category" name="category" style="width:100px;">
 					    <option value="售后">售后</option>
 					    <option value="返现">返现</option>
 					</select>
+					<label for="wangwang">旺旺:</label>
+					<input class="easyui-validatebox" type="text" name="wangwang" style="width:200px;" data-options="required:true" />
+					<label for="goods">产品型号:</label>
+					<input class="easyui-validatebox" type="text" name="goods" style="width:200px;" data-options="required:true" />
 			    </div>
 			    <br/>
 				<div >
 					<label for="title">标题:</label>
-					<input class="easyui-validatebox" type="text" name="title" style="width:80%;padding: 5px;" data-options="required:true" />
+					<input class="easyui-textbox" type="text" name="title" style="width:80%;height: 50px;" data-options="multiline:true" />
 			    </div>
 			    <br/>
 			    <div >
@@ -319,7 +391,7 @@
 		<div id="passBug" class="easyui-panel" data-options="modal:true"
 			title="指派待办" style="width: 100%; height: 200px;padding: 10px;">
 			<form id="passBugForm" method="post">
-				<input type="hidden" name="bugId" value="" />
+				<input type="hidden" name="bugIds" value="" />
 				<div >
 					<label for="currentMan">当前处理人员:</label>
 					<input id="currentMan" class="easyui-validatebox" type="text" disabled="disabled" name="currentMan" style="width:30%;"/>
@@ -343,6 +415,17 @@
 				<table style="width: 100%;">
 				    <tr >
 						<td>完成备注:</td>
+						<td><input class="easyui-textbox" type="text" name="finishRemark" style="width:100%;height:50px" data-options="multiline:true" /><td>
+				    </tr>
+			    </table>
+			</form>
+		</div>
+		<div id="handleBug" class="easyui-dialog" title="处理待办" style="width: 30%; height: 250px;padding: 10px;">
+			<form id="handleBugForm" method="post">
+				<input type="hidden" name="bugIds" value="" />
+				<table style="width: 100%;">
+				    <tr >
+						<td>备注:</td>
 						<td><input class="easyui-textbox" type="text" name="finishRemark" style="width:100%;height:50px" data-options="multiline:true" /><td>
 				    </tr>
 			    </table>
