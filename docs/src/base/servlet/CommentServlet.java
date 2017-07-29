@@ -164,6 +164,7 @@ public class CommentServlet extends BaseServlet{
 				responseSuccess("增加成功");
 			} else {
 				responseSuccess("修改成功");
+				id = comment.getId();
 			}
 			
 			String firstCommentPic = "";
