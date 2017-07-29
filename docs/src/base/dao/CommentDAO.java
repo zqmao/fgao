@@ -3,6 +3,7 @@ package base.dao;
 import java.util.List;
 
 import base.api.Comment;
+import base.api.User;
 import base.util.JDBCUtil;
 
 public class CommentDAO extends BaseDAO{
@@ -20,12 +21,24 @@ public class CommentDAO extends BaseDAO{
 		return dao;
 	}
 
-	public List<Comment> list(int goodsId, int index, int pagesize) {
+	public List<Comment> list(int userId, int goodsId, int index, int pagesize) {
 		String condition = "";
 		if(goodsId != -1){
 			condition = " where goodsId=? ";
+		}else{
+			condition = " where 1=1 ";
 		}
-		String sql = "select * from t_comment " + condition + " limit ?, ? ";
+		User user = UserDAO.getInstance().load(userId);
+		
+		if(user.getAdmin() == 1){
+			//是管理员就可以看到全部
+			condition += " ";
+		}else{
+			//自己创建的，即使没有审核通过，也能看到
+			condition += " and (userId=" + userId + " or isVerify=1) ";
+		}
+		
+		String sql = "select * from t_comment " + condition + " ORDER BY isVerify, time DESC limit ?, ? ";
 		List<Comment> objs = null;
 		if(goodsId != -1){
 			objs = JDBCUtil.queryObjectList(sql, Comment.class, goodsId, index, pagesize);

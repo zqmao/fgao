@@ -13,6 +13,7 @@ public class Comment {
 	private String timeDes;
 	private int userId;
 	private String remark;
+	private int isVerify;
 	
 	public int getId() {
 		return id;
@@ -79,6 +80,12 @@ public class Comment {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public int getIsVerify() {
+		return isVerify;
+	}
+	public void setIsVerify(int isVerify) {
+		this.isVerify = isVerify;
 	}
 	
 }

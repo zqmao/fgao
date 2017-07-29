@@ -88,6 +88,22 @@ public class PermissionUtil {
 		}
 	}
 	
+	/*
+	 * 是否是管理员
+	 */
+	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			return false;
+		}else{
+			if(user.getAdmin() != 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	
 	private static void redirectLogin(HttpServletRequest request, HttpServletResponse response){
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		try {

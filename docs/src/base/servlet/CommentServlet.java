@@ -47,8 +47,12 @@ public class CommentServlet extends BaseServlet{
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
 			int goodsId = Integer.parseInt(request.getParameter("goodsId"));
+			if(currentUser == null){
+				responseError("需要登录");
+				return;
+			}
 			int index = (page - 1) * rows;
-			List<Comment> result = CommentDAO.getInstance().list(goodsId, index, rows);
+			List<Comment> result = CommentDAO.getInstance().list(currentUser.getId(), goodsId, index, rows);
 			JSONObject obj = new JSONObject();
 			obj.put("total", CommentDAO.getInstance().listCount(goodsId));
 			obj.put("rows", JSON.toJSON(result));
@@ -74,6 +78,10 @@ public class CommentServlet extends BaseServlet{
 		}else if ("select".equals(sign)) {// 查询评论货物列表
 			List<CommentGoods> result = CommentGoodsDAO.getInstance().list();
 			JSONArray array = new JSONArray();
+			JSONObject def = new JSONObject();
+			def.put("id", -3);
+			def.put("text", "-请选择-");
+			array.add(def);
 			JSONObject other = new JSONObject();
 			other.put("id", -2);
 			other.put("text", "其他");
@@ -110,7 +118,10 @@ public class CommentServlet extends BaseServlet{
 						if(name.equals("firstComment")){
 							firstComment = value;
 						}else if(name.equals("timeDes")){
-							timeDes = value;
+							if(value == null || value.length() == 0){
+								value = "7";
+							}
+							timeDes = value + "天后";
 						}else if(name.equals("secondComment")){
 							secondComment = value;
 						}else if(name.equals("commentId")){
@@ -187,6 +198,15 @@ public class CommentServlet extends BaseServlet{
 				CommentDAO.getInstance().delete(Integer.parseInt(commentId));
 			}
 			responseSuccess("删除成功");
+		} else if ("verify".equals(sign)) {// 审核
+			String commentIds = (String) request.getParameter("commentIds");
+			for(String commentId : commentIds.split(",")){
+				Comment comment = null;
+				comment = CommentDAO.getInstance().load(Integer.parseInt(commentId));
+				comment.setIsVerify(1);
+				CommentDAO.getInstance().saveOrUpdate(comment);
+			}
+			responseSuccess("审核成功");
 		}
 	}
 	

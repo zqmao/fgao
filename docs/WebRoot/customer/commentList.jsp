@@ -2,6 +2,7 @@
 <%@ page language="java" import="base.util.*"%>
 <%
 	PermissionUtil.check(request, response);
+	boolean isAdmin = PermissionUtil.isAdmin(request, response);
 %>
 
 <html>
@@ -70,9 +71,10 @@
                     url:'../commentServlet.do?sign=select',
                     valueField:'id',
                     textField:'text',
+                    editable:false,
                     loadFilter: function(data){
                    		if (data.data){
-                   			$("#goodsId").combobox('select', data.data[0].id);
+                   			$("#goodsId").combobox('select', -3);
                    			return data.data;
                    		} else {
                    			return data;
@@ -94,7 +96,7 @@
                     queryParams:{goodsId : option},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
-                            {title: '序号', field: 'id', width: 60},
+                            {title: '序号', field: 'id', width: 60, hidden:true},
                             {title: '录入者', field: 'creator', width: 100, align: 'center'},
                             {title: '首评', field: 'firstComment', width: 400, align: 'center'},
                             {title: '', field: 'firstCommentPic', width: 400, align: 'center',hidden:'true'},
@@ -104,6 +106,7 @@
                             {title: '', field: 'secondCommentPic', width: 400, align: 'center',hidden:'true'},
                             {title: '追评图片', field: 'right', width: 300, align: 'center', formatter:rightFormatter },
                             {title: '备注', field: 'remark', width: 200, align: 'center'},
+                            {title: '审核状态', field: 'isVerify', width: 100, align: 'center', formatter:verifyFormatter}
                         ]],
                     loadFilter: function(data){
                    		if (data.data){
@@ -112,6 +115,16 @@
                    			return data;
                    		}
                    	},
+                   	onBeforeLoad: function(data){
+                    	if(<%=isAdmin%>){
+                    		$("#toolbar-comment-verify").show();
+                    		$("#toolbar-comment-delete").show();
+                    	}else{
+                    		$("#toolbar-comment-verify").hide();
+                    		$("#toolbar-comment-delete").hide();
+                    		
+                    	}
+                    },
                     toolbar: [{
                     	text:'增加',
                         iconCls: 'icon-add',
@@ -147,6 +160,7 @@
                             }
                         }
                     }, {
+                    	id: 'toolbar-comment-delete',
                     	text:'删除',
                         iconCls: 'icon-remove',
                         handler: function() {
@@ -160,6 +174,33 @@
                                         $.ajax({
                                             type: "POST",
                                             url: "../commentServlet.do?sign=delete",
+                                            data: "commentIds=" + ids,
+                                            success: function(msg) {
+                                                $("#commentGrid").datagrid('reload');
+                                            },
+                                            error: function(msg) {
+                                                alert(msg.toString());
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    }, {
+                    	id: 'toolbar-comment-verify',
+                    	text:'审核',
+                        iconCls: 'icon-ok',
+                        handler: function() {
+                            var ids = getChecked("commentGrid");
+                            var len = ids.length;
+                            if (len == 0) {
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
+                            } else {
+                                $.messager.confirm('Confirm', '确认要审核选择的项吗？', function(r) {
+                                    if (r) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "../commentServlet.do?sign=verify",
                                             data: "commentIds=" + ids,
                                             success: function(msg) {
                                                 $("#commentGrid").datagrid('reload');
@@ -207,6 +248,14 @@
             	}
             	return pics;
         	}
+            
+            function verifyFormatter(value, rowData, rowIndex){
+            	if(value == 1){
+            		return "审核通过";
+            	}else{
+            		return "未审核";
+            	}
+            }
 
             function getChecked(id) {
                 var ids = [];
@@ -229,6 +278,11 @@
 			};
             
             function submitAdd() {
+            	var goodsId = $("#goodsId").val();
+            	if(goodsId == -3){
+            		alert("请选择商品");
+            		return;
+            	}
 				$("#addCommentForm").form('submit', {
 				    url:"../commentServlet.do?sign=add",
 				    success:function(result){
@@ -246,7 +300,6 @@
 				    }
 				});
 			}
-            
         </script>
 	</head>
 
@@ -282,7 +335,8 @@
 			    <br/>
 			    <div >
 					<label for="timeDes">追评时间:</label>
-					<select class="easyui-combobox" id="timeDes" name="timeDes" style="width:40%;">
+					<input class="easyui-numberbox" type="text" name="timeDes" style="width:100px;height:30px;" value="7" data-options="min:0,precision:0"/> 天后    <font style="color: red;">&nbsp;&nbsp;*请输入数字，如果不输入，默认7天后</font>
+					<!-- select class="easyui-combobox" id="timeDes" name="timeDes" style="width:170PX;">
 					    <option value="不限时间" checked="true">不限时间</option>
 					    <option value="1天后">1天后</option>
 					    <option value="2天后">2天后</option>
@@ -291,7 +345,7 @@
 					    <option value="5天后">5天后</option>
 					    <option value="6天后">6天后</option>
 					    <option value="7天后">7天后</option>
-					</select>
+					</select> -->
 			    </div>
 			    <br/>
 			    <div >
