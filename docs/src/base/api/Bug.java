@@ -1,5 +1,10 @@
 package base.api;
 
+/**
+ * 待办数据库类
+ * @author zqmao
+ *
+ */
 public class Bug {
 	
 	private int id;

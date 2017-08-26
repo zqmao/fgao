@@ -1,5 +1,10 @@
 package base.api;
 
+/**
+ * 排班数据库类
+ * @author zqmao
+ *
+ */
 public class Arrange {
 	
 	public static final String EARLY = "早";

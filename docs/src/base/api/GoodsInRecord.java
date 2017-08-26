@@ -2,8 +2,10 @@ package base.api;
 
 import java.util.List;
 
-/*
- * 进货记录
+/**
+ * 进货记录数据库类
+ * @author zqmao
+ *
  */
 public class GoodsInRecord {
 	

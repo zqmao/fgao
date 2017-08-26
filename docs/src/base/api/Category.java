@@ -2,6 +2,12 @@ package base.api;
 
 import java.util.List;
 
+
+/**
+ * 文章使用到的分类数据库类
+ * @author zqmao
+ *
+ */
 public class Category {
 	
 	private int id;

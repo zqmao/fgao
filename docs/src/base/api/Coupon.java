@@ -1,18 +1,23 @@
 package base.api;
 
+/**
+ * 优惠券数据库类
+ * @author zqmao
+ *
+ */
 public class Coupon {
 	
 	private int id;
-	private int userId;
-	private String creator;
-	private long time;
-	private String shopName;
+	private int userId;//创建者id
+	private String creator;//创建者名字
+	private long time;//创建时间
+	private String shopName;//商铺名称
 	private String category;//商品优惠券，店铺优惠券
-	private String goodsName;
-	private String content;
-	private String deadLine;
-	private String remark;
-	private String link;
+	private String goodsName;//商品名称
+	private String content;//优惠券内容
+	private String deadLine;//优惠券有效期
+	private String remark;//备注
+	private String link;//优惠券链接
 	
 	public int getId() {
 		return id;

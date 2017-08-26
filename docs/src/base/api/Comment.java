@@ -1,19 +1,24 @@
 package base.api;
 
+/**
+ * 优秀评论数据库类
+ * @author zqmao
+ *
+ */
 public class Comment {
 	
 	private int id;
-	private long time;
-	private String creator;
-	private int goodsId;
-	private String firstComment;
-	private String firstCommentPic;
-	private String secondComment;
-	private String secondCommentPic;
-	private String timeDes;
-	private int userId;
-	private String remark;
-	private int isVerify;
+	private long time;//评论时间
+	private String creator;//评论录入者
+	private int goodsId;//评论商品
+	private String firstComment;//评论首评
+	private String firstCommentPic;//首评图片 
+	private String secondComment;//追评内容
+	private String secondCommentPic;//追评图片
+	private String timeDes;//追评时间
+	private int userId;//评论录入者id
+	private String remark;//备注
+	private int isVerify;//是否审核通过
 	
 	public int getId() {
 		return id;
