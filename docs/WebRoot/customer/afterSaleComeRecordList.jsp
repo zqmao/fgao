@@ -40,15 +40,15 @@
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
-                            {title: '快递单号', field: 'courierNum', width: 60},
+                            {title: '快递单号', field: 'courierNum', width: 120},
                             {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
                             {title: '检查结果', field: 'checkResult', width: 120, align: 'center'},
                             {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
-                            {title: '手机号', field: 'phoneNum', width: 240, align: 'center'},
+                            {title: '手机号', field: 'phoneNum', width: 120, align: 'center'},
                             {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '创建人员', field: 'creator', width: 100, align: 'center'},
-                            {title: '创建时间', field: 'createTime', width: 100, align: 'center'},
-                            {title: '备注', field: 'remark', width: 100, align: 'center'},
+                            {title: '创建时间', field: 'createTime', width: 180, align: 'center'},
+                            {title: '备注', field: 'remark', width: 100, align: 'center', formatter:formatCellTooltip},
                             {title: '状态', field: 'status', width: 100, align: 'center'}
                         ]],
                     loadFilter: function(data){
@@ -121,6 +121,10 @@
                 });
             });
 
+            function formatCellTooltip(value){  
+	            return "<span title='" + value + "'>" + value + "</span>";  
+	        } 
+            
             function getChecked(id) {
                 var ids = [];
                 var rows = $('#' + id).datagrid("getChecked");
