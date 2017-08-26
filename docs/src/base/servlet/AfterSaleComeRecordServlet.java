@@ -90,6 +90,12 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				responseSuccess("更新售后记录成功");
 			}
 		    
+		} else if ("delete".equals(sign)) {// 删除
+			String ascrIds = (String) request.getParameter("ascrIds");
+			for(String ascrId : ascrIds.split(",")){
+				AfterSaleComeRecordDAO.getInstance().delete(Integer.parseInt(ascrId));
+			}
+			responseSuccess("删除成功");
 		}
 	}
 		

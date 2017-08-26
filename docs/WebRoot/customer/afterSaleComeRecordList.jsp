@@ -104,7 +104,7 @@
                                     if (r) {
                                         $.ajax({
                                             type: "POST",
-                                            url: "../afterSaleComeRecordServlet?sign=delete",
+                                            url: "../afterSaleComeRecordServlet.do?sign=delete",
                                             data: "ascrIds=" + ids,
                                             success: function(msg) {
                                                 $("#ascrGrid").datagrid("reload");
