@@ -12,6 +12,7 @@ import base.util.DateUtil;
  */
 public class AfterSaleComeRecordVO {
 	
+	private int id;
 	private String courierNum;//快递单号
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
@@ -24,6 +25,7 @@ public class AfterSaleComeRecordVO {
 	private String status;//处理状态
 	
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
+		this.id = afterSaleComeRecord.getId();
 		this.courierNum = afterSaleComeRecord.getCourierNum();
 		this.goodsName = afterSaleComeRecord.getGoodsName();
 		this.checkResult = afterSaleComeRecord.getCheckResult();
@@ -35,6 +37,14 @@ public class AfterSaleComeRecordVO {
 		this.createTime = DateUtil.toString(afterSaleComeRecord.getCreateTime());
 		this.remark = afterSaleComeRecord.getRemark();
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getCourierNum() {

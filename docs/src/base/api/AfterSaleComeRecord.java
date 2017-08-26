@@ -7,6 +7,7 @@ package base.api;
  */
 public class AfterSaleComeRecord {
 	
+	private int id;//数据库主键
 	private String courierNum;//快递单号
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
@@ -16,8 +17,14 @@ public class AfterSaleComeRecord {
 	private int creatorId;//创建者
 	private long createTime;//创建时间
 	private String remark;//备注
-	private int status;//处理状态
+	private int status;//处理状态:1已处理；0未处理
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getCourierNum() {
 		return courierNum;
 	}

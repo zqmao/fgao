@@ -12,8 +12,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
+import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
 import base.dao.AfterSaleComeRecordDAO;
+import base.dao.UserDAO;
 
 public class AfterSaleComeRecordServlet extends BaseServlet {
 
@@ -46,7 +48,51 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			obj.put("total", total);
 			obj.put("rows", JSON.toJSON(vos));
 			responseSuccess(JSON.toJSON(obj));
+		}else if("add".equals(sign)){//新增纪录
+			if(currentUser == null){
+				responseError("需要登录");
+				return;
+			}
+			String courierNum = (String) request.getParameter("courierNum");
+			String goodsName = (String) request.getParameter("goodsName");
+			String checkResult = (String) request.getParameter("checkResult");
+			String wangwang = (String) request.getParameter("wangwang");
+			String phoneNum = (String) request.getParameter("phoneNum");
+			String orderNum = (String) request.getParameter("orderNum");
+			String remark = (String) request.getParameter("remark");
+			String status = (String) request.getParameter("status");
+			String id = (String) request.getParameter("ascrId");
+			AfterSaleComeRecord afterSaleComeRecord = null;
+			//如果没有id是新建
+			if(id == null || id.length() == 0){
+				afterSaleComeRecord = new AfterSaleComeRecord();
+				afterSaleComeRecord.setCreatorId(currentUser.getId());
+				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
+			}else{
+				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
+			}
+			afterSaleComeRecord.setCourierNum(courierNum);
+			afterSaleComeRecord.setGoodsName(goodsName);
+			afterSaleComeRecord.setCheckResult(checkResult);
+			afterSaleComeRecord.setWangwang(wangwang);
+			afterSaleComeRecord.setPhoneNum(phoneNum);
+			afterSaleComeRecord.setOrderNum(orderNum);
+			afterSaleComeRecord.setRemark(remark);
+			if("已处理".equals(status)){
+				afterSaleComeRecord.setStatus(1);
+			}else{
+				afterSaleComeRecord.setStatus(0);
+			}
+			AfterSaleComeRecordDAO.getInstance().saveOrUpdate(afterSaleComeRecord);
+			if(id == null || id.length() == 0){
+				responseSuccess("新建售后记录成功");
+			}else{
+				responseSuccess("更新售后记录成功");
+			}
+		    
 		}
 	}
-
+		
 }
+
+

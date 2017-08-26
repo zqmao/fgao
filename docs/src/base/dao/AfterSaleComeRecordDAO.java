@@ -3,6 +3,7 @@ package base.dao;
 import java.util.List;
 
 import base.api.AfterSaleComeRecord;
+import base.api.User;
 import base.util.JDBCUtil;
 
 /**
@@ -32,7 +33,7 @@ public class AfterSaleComeRecordDAO extends BaseDAO {
 	}
 	
 	public List<AfterSaleComeRecord> list(int index, int pagesize) {
-		String sql = "select * from t_after_sale_come_record order by courierNum desc limit ?, ? ";
+		String sql = "select * from t_after_sale_come_record order by id desc limit ?, ? ";
 		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class, index, pagesize);
 		return objs;
 	}
@@ -43,9 +44,13 @@ public class AfterSaleComeRecordDAO extends BaseDAO {
 		return JDBCUtil.queryCount(sql);
 	}
 
-	public AfterSaleComeRecord load(String courierNum) {
-		String sql = "select * from t_after_sale_come_record where courierNum=?";
-		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, courierNum);
+	public AfterSaleComeRecord load(int id) {
+		String sql = "select * from t_after_sale_come_record where id=?";
+		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, id);
+	}
+	public AfterSaleComeRecord query(String courierNum) {
+		String sql = "select * from t_after_sale_come_record where courierNum=? ";
+		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, courierNum );
 	}
 
 }

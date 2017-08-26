@@ -10,8 +10,8 @@
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
             $(function() {
-            	$("#addUser").panel({
-            		title: '添加人员',
+            	$("#addAscr").panel({
+            		title: '添加售后收货记录',
             		tools:[{
         				text:'保存',
         				iconCls:'icon-ok',
@@ -26,19 +26,20 @@
         				text:'取消',
         				iconCls:'icon-cancel',
         				handler:function(){
-        					$("#addUser").panel("close");
+        					$("#addAscr").panel("close");
         				}
         			}]
             		});
-                $("#addUser").panel("open");
+                $("#addAscr").panel("open");
                 $("#grant").dialog("close");
-                $("#userGrid").datagrid({
+                $("#ascrGrid").datagrid({
                     selectOnCheck: true,
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
+                            {title: '编号', field: 'id', width: 60},
                             {title: '快递单号', field: 'courierNum', width: 60},
                             {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
                             {title: '检查结果', field: 'checkResult', width: 120, align: 'center'},
@@ -61,28 +62,32 @@
                         iconCls: 'icon-add',
                         text: '增加',
                         handler: function() {
-                            $("#addUser").form("clear");
-                            $("#addUser").panel("open");
+                            $("#addAscr").form("clear");
+                            $("#addAscr").panel("open");
                         }
                     }, {
                         iconCls: 'icon-edit',
                         text: '修改',
                         handler: function() {
-                            var ids = getChecked("userGrid");
+                            var ids = getChecked("ascrGrid");
                             var len = ids.length;
                             if (len == 0) {
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
                             } else if (len > 1) {
                                 $.messager.alert('提示', '只能选择一个', 'Warning');
                             } else {
-                                var row = $("#userGrid").datagrid("getChecked");
-                                $("#addUser").panel("open");
-                                $("#addUser").form("load", {
-                                    userId: row[0].id,
-                                    name: row[0].name,
-                                    loginName: row[0].loginName,
-                                    phone: row[0].phone,
-                                    info: row[0].info
+                                var row = $("#ascrGrid").datagrid("getChecked");
+                                $("#addAscr").panel("open");
+                                $("#addAscr").form("load", {
+                                    ascrId: row[0].id,
+                                    courierNum: row[0].courierNum,
+                                    goodsName: row[0].goodsName,
+                                    checkResult: row[0].checkResult,
+                                    wangwang: row[0].wangwang,
+                                    phoneNum: row[0].phoneNum,
+                                    orderNum: row[0].orderNum,
+                                    remark: row[0].remark,
+                                    status: row[0].status
                                 });
                             }
                         }
@@ -90,7 +95,7 @@
                         iconCls: 'icon-remove',
                         text: '删除',
                         handler: function() {
-                            var ids = getChecked("userGrid");
+                            var ids = getChecked("ascrGrid");
                             var len = ids.length;
                             if (len == 0) {
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
@@ -99,10 +104,10 @@
                                     if (r) {
                                         $.ajax({
                                             type: "POST",
-                                            url: "../userServlet.do?sign=delete",
-                                            data: "userIds=" + ids,
+                                            url: "../afterSaleComeRecordServlet?sign=delete",
+                                            data: "ascrIds=" + ids,
                                             success: function(msg) {
-                                                $("#userGrid").datagrid("reload");
+                                                $("#ascrGrid").datagrid("reload");
                                             },
                                             error: function(msg) {
                                                 alert(msg.toString());
@@ -126,15 +131,15 @@
             }
             
             function submitAdd() {
-				$("#addUserForm").form("submit", {
-				    url:"../userServlet.do?sign=add",
+				$("#addAscrForm").form("submit", {
+				    url:"../afterSaleComeRecordServlet.do?sign=add",
 				    success:function(result){
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
-							$("#addUserForm").form("clear");
-        					$("#userGrid").datagrid("reload");
+							$("#addAscrForm").form("clear");
+        					$("#ascrGrid").datagrid("reload");
 				    	}
 				    }
 				});
@@ -145,28 +150,50 @@
 
 	<body class="easyui-layout">
 		<div title="售后收货记录列表" class="easyui-panel" style="width: 100%">
-			<table id="userGrid" style="height: 340px;"></table>
+			<table id="ascrGrid" style="height: 340px;"></table>
 		</div>
 
-		<div id="addUser" class="easyui-panel" title="添加售后收货记录" style="width: 100%; height: 200px;padding: 10px;">
-			<form id="addUserForm" method="post">
-				<input type="hidden" name="userId" value="" />
+		<div id="addAscr" class="easyui-panel" title="添加售后收货记录" style="width: 100%; height: 500px;padding: 10px;">
+			<form id="addAscrForm" method="post">
+				<input type="hidden" name="ascrId" value="" />
 				<table>
-					<tr >
-						<td>姓名:</td>
-						<td><input class="easyui-validatebox" name="name" type="text"  data-options="required:true"/><td>
+				<tr >
+						<td>快递单号:</td>
+						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 400px;" data-options="required:true"/><td>
+				    </tr>
+				 <tr >
+						<td>物品名称:</td>
+						<td><input class="easyui-validatebox" name="goodsName" type="text" style="width: 400px;" data-options="required:true"/><td>
 				    </tr>
 				    <tr >
-						<td>登录帐号:</td>
-						<td><input class="easyui-validatebox" name="loginName" type="text"  data-options="required:true"/><td>
+						<td>检测结果:</td>
+						<td><input class="easyui-validatebox" name="checkResult" type="text" style="width: 400px;" data-options="required:true"/><td>
+				    </tr>
+				    <tr >
+						<td>订单号:</td>
+						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 400px;"  data-options="required:true"/><td>
+				    </tr>
+					
+				   
+				    <tr >
+						<td>旺旺:</td>
+						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 400px;"/><td>
 				    </tr>
 				    <tr >
 						<td>手机号:</td>
-						<td><input class="easyui-validatebox" name="phone" type="text"  data-options="required:true"/><td>
+						<td><input class="easyui-validatebox" name="phoneNum" type="text" style="width: 400px;"/><td>
 				    </tr>
 				    <tr >
 						<td>备注:</td>
-						<td><input class="easyui-validatebox" name="info" type="text" style="width: 400px;"/><td>
+						<td><textarea name="remark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
+				    </tr>
+				    <tr >
+						<td>处理状态:</td>
+						<td>
+							<input type="radio" name="status" value="待处理" checked="checked" />待处理
+							<input type="radio" name="status" value="已处理" />已处理
+						<td>
+						
 				    </tr>
 			    </table>
 			</form>
