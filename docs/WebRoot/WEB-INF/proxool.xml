@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
 <proxool>
 	<alias>mysql</alias>
-	<driver-url>jdbc:mysql://127.0.0.1:3306/db_fgao_test?characterEncoding=UTF-8</driver-url>
+	<driver-url>jdbc:mysql://192.168.1.169:3306/db_fgao_test?characterEncoding=UTF-8</driver-url>
 	<driver-class>com.mysql.jdbc.Driver</driver-class>
 	<driver-properties>
 		<property name="user" value="root"/>
