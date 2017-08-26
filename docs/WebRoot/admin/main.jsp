@@ -37,6 +37,9 @@
 		function toUserEdit(){
 			window.open("/customer/userEdit.jsp");
 		}
+		function toAfterSale(){
+			window.open("/customer/afterSaleComeRecordList.jsp");
+		}
 	</script>
   </head>
   
@@ -78,6 +81,14 @@
     			</td>
     			<td bgcolor="#000000" style="width: 50%;cursor: pointer;" align="center" onclick="toCoupons();">
     				<font size="20" color="#FFFFFF">优惠券管理</font>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td bgcolor="#000000" style="width: 50%;cursor: pointer;" align="center" onclick="toAfterSale();">
+    				<font size="20" color="#FFFFFF">售后收货记录</font>
+    			</td>
+    			<td bgcolor="#000000" style="width: 50%;cursor: pointer;" align="center" onclick="">
+    				<font size="20" color="#FFFFFF">建设中</font>
     			</td>
     		</tr>
     	</table>
