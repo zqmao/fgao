@@ -3,11 +3,12 @@ package base.dao;
 import java.util.List;
 
 import base.api.Arrange;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 import base.util.DateUtil;
-import base.util.JDBCUtil;
 
 
-public class ArrangeDAO extends BaseDAO {
+public class ArrangeDAO extends BaseDAO<Arrange> {
 
 	private static ArrangeDAO dao;
 

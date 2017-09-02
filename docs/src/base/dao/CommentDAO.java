@@ -4,7 +4,8 @@ import java.util.List;
 
 import base.api.Comment;
 import base.api.User;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
 public class CommentDAO extends BaseDAO{
 

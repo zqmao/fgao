@@ -3,7 +3,8 @@ package base.dao;
 import java.util.List;
 
 import base.api.User;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
 
 public class UserDAO extends BaseDAO {

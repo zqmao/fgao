@@ -13,7 +13,7 @@ public class ReflectUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String, Object> getValus(Object obj) throws Exception {
+	public static Map<String, Object> getValues(Object obj) throws Exception {
 		Map<String, Object> valueMap = new HashMap<String, Object>();
 		Method[] methods = obj.getClass().getDeclaredMethods();
 		String key = "";

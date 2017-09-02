@@ -6,7 +6,8 @@ import java.util.List;
 import base.api.Category;
 import base.api.User;
 import base.api.UserCategory;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
 
 public class UserCategoryDAO extends BaseDAO {

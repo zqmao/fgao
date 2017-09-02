@@ -1,4 +1,4 @@
-package base.util;
+package base.dao.core;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -184,10 +184,12 @@ public class JDBCUtil {
 		return 0L;
 	}
 	
-	private static ResultSet getResultSet(PreparedStatement ps, String sqlStr, Object... params) throws Exception{
+	private static ResultSet getResultSet(PreparedStatement ps, String sqlStr, Object[] params) throws Exception{
 		int size = params.length;
 		for (int i = 0; i < size; i++) {
-			ps.setObject((i + 1), params[i]);
+			if(params[i] != null) {
+				ps.setObject((i + 1), params[i]);
+			}
 		}
 		return ps.executeQuery();
 	}

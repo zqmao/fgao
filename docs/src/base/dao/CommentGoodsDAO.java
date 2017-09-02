@@ -3,7 +3,8 @@ package base.dao;
 import java.util.List;
 
 import base.api.CommentGoods;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
 public class CommentGoodsDAO extends BaseDAO{
 

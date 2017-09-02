@@ -7,8 +7,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import base.api.Arrange;
 import base.api.User;
+import base.dao.ArrangeDAO;
 import base.dao.UserDAO;
+import base.dao.core.BaseDAO;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -31,27 +34,33 @@ public class UserServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("login".equals(sign)) {// 登陆
-			String name = request.getParameter("name");
-			String password = request.getParameter("password");
-			if(password == null || password.length() == 0){
-				responseError("请输入密码");
-				return;
+			BaseDAO<Arrange>.QueryBuilder builder = ArrangeDAO.getInstance().creatBuilder();
+			List<Arrange> re = builder.eq("userId", 2).eq("status", 2).limit(0, 2).orderBy("day", true).queryList();
+			for(Arrange a : re) {
+				System.out.println(a.getId());
 			}
-			//password = MdUtil.MD5(password);
-			// 先根据登陆名查找是否存在
-			User dbUser = UserDAO.getInstance().query(name);
-			if (dbUser == null) {
-				responseError("用户名不存在");
-			} else {
-				String dbPassword = dbUser.getPassword();
-				request.getSession().setAttribute("loginUser", dbUser);
-				if(dbPassword.equals(password)){
-					responseSuccess(JSON.toJSON(dbUser));
-					request.getSession().setAttribute("loginUser", dbUser);
-				}else{
-					responseError("登录失败,密码错误");
-				}
-			}
+			System.out.println(re + "---" + builder.queryCount());
+//			String name = request.getParameter("name");
+//			String password = request.getParameter("password");
+//			if(password == null || password.length() == 0){
+//				responseError("请输入密码");
+//				return;
+//			}
+//			//password = MdUtil.MD5(password);
+//			// 先根据登陆名查找是否存在
+//			User dbUser = UserDAO.getInstance().query(name);
+//			if (dbUser == null) {
+//				responseError("用户名不存在");
+//			} else {
+//				String dbPassword = dbUser.getPassword();
+//				request.getSession().setAttribute("loginUser", dbUser);
+//				if(dbPassword.equals(password)){
+//					responseSuccess(JSON.toJSON(dbUser));
+//					request.getSession().setAttribute("loginUser", dbUser);
+//				}else{
+//					responseError("登录失败,密码错误");
+//				}
+//			}
 		} else if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
