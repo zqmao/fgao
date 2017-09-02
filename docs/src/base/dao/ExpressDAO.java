@@ -4,9 +4,10 @@ import java.util.List;
 
 import base.api.Express;
 import base.api.User;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
-public class ExpressDAO extends BaseDAO{
+public class ExpressDAO extends BaseDAO<Express>{
 	private static ExpressDAO dao;
 
 	private ExpressDAO() {
@@ -36,11 +37,6 @@ public class ExpressDAO extends BaseDAO{
 	public long listCount() {
 		String sql = "select count(id) from t_user";
 		return JDBCUtil.queryCount(sql);
-	}
-
-	public User load(int id) {
-		String sql = "select * from t_user where id=?";
-		return JDBCUtil.queryObject(sql, User.class, id);
 	}
 
 	public User query(String name) {

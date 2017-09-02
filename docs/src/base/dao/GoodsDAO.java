@@ -7,7 +7,7 @@ import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
 
-public class GoodsDAO extends BaseDAO {
+public class GoodsDAO extends BaseDAO<Goods> {
 
 	private static GoodsDAO dao;
 

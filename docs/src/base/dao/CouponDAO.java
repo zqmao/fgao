@@ -6,7 +6,7 @@ import base.api.Coupon;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
-public class CouponDAO extends BaseDAO{
+public class CouponDAO extends BaseDAO<Coupon>{
 
 	private static CouponDAO dao;
 

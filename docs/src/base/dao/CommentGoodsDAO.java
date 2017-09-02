@@ -6,7 +6,7 @@ import base.api.CommentGoods;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
-public class CommentGoodsDAO extends BaseDAO{
+public class CommentGoodsDAO extends BaseDAO<CommentGoods>{
 
 	private static CommentGoodsDAO dao;
 

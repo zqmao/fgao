@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.api.AfterSaleComeRecord;
-import base.api.User;
-import base.util.JDBCUtil;
+import base.dao.core.BaseDAO;
+import base.dao.core.JDBCUtil;
 
 /**
  * 售后收货记录数据库操作类
  * @author zqmao
  *
  */
-public class AfterSaleComeRecordDAO extends BaseDAO {
+public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 
 	private static AfterSaleComeRecordDAO dao;
 

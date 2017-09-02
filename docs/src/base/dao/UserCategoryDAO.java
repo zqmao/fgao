@@ -10,7 +10,7 @@ import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
 
-public class UserCategoryDAO extends BaseDAO {
+public class UserCategoryDAO extends BaseDAO<Category> {
 
 	private static UserCategoryDAO dao;
 
