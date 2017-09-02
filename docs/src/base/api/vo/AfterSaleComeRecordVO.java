@@ -12,8 +12,10 @@ import base.util.DateUtil;
  */
 public class AfterSaleComeRecordVO {
 	
-	private int id;
+	private int id;//数据库主键
 	private String courierNum;//快递单号
+	private String expressName;//快递名称
+	private String shopName;//商店名称
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
 	private String wangwang;//用户旺旺
@@ -27,6 +29,8 @@ public class AfterSaleComeRecordVO {
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
 		this.id = afterSaleComeRecord.getId();
 		this.courierNum = afterSaleComeRecord.getCourierNum();
+		this.expressName = afterSaleComeRecord.getExpressName();
+		this.shopName = afterSaleComeRecord.getShopName();
 		this.goodsName = afterSaleComeRecord.getGoodsName();
 		this.checkResult = afterSaleComeRecord.getCheckResult();
 		this.wangwang = afterSaleComeRecord.getWangwang();
@@ -37,6 +41,22 @@ public class AfterSaleComeRecordVO {
 		this.createTime = DateUtil.toString(afterSaleComeRecord.getCreateTime());
 		this.remark = afterSaleComeRecord.getRemark();
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
+	}
+	
+	public String getExpressName() {
+		return expressName;
+	}
+
+	public void setExpressName(String expressName) {
+		this.expressName = expressName;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 
 	public int getId() {
@@ -54,7 +74,6 @@ public class AfterSaleComeRecordVO {
 	public void setCourierNum(String courierNum) {
 		this.courierNum = courierNum;
 	}
-
 	public String getGoodsName() {
 		return goodsName;
 	}

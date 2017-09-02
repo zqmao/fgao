@@ -9,6 +9,8 @@ public class AfterSaleComeRecord {
 	
 	private int id;//数据库主键
 	private String courierNum;//快递单号
+	private String expressName;//快递名称
+	private String shopName;//商店名称
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
 	private String wangwang;//用户旺旺
@@ -19,6 +21,19 @@ public class AfterSaleComeRecord {
 	private String remark;//备注
 	private int status;//处理状态:1已处理；0未处理
 	
+	
+	public String getExpressName() {
+		return expressName;
+	}
+	public void setExpressName(String expressName) {
+		this.expressName = expressName;
+	}
+	public String getShopName() {
+		return shopName;
+	}
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
 	public int getId() {
 		return id;
 	}

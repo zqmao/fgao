@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
+import base.api.Express;
 import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
+import base.api.vo.ExpressVO;
 import base.dao.AfterSaleComeRecordDAO;
+import base.dao.ExpressDAO;
 import base.dao.UserDAO;
 
 public class AfterSaleComeRecordServlet extends BaseServlet {
@@ -29,16 +33,33 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doPost(req, resp);
 	}
-
+	String courierNum = "";
+	String expressName = "";
+	String shopName = "";
+	String goodsName = "";
+	String orderNum = "";
+	String phoneNum = "";
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = AfterSaleComeRecordDAO.getInstance().listCount();
+			long total = 0;
 			int index = (page - 1) * rows;
-			List<AfterSaleComeRecord> result = AfterSaleComeRecordDAO.getInstance().list(index, rows);
+			List<AfterSaleComeRecord> result =new ArrayList<AfterSaleComeRecord>();
+			
+			if((courierNum!=null&&courierNum.length()!=0)||(expressName!=null && expressName.length()!=0)
+					||(shopName!=null&&shopName.length()!=0)||(goodsName!=null&&goodsName.length()!=0)
+					||(orderNum!=null&&orderNum.length()!=0)||(phoneNum!=null&&phoneNum.length()!=0)){
+				total = AfterSaleComeRecordDAO.getInstance().searchCount(courierNum,expressName,shopName,goodsName,orderNum,phoneNum);
+				result = AfterSaleComeRecordDAO.getInstance().search(courierNum,expressName,shopName,goodsName,orderNum,phoneNum,index, rows);
+			}else{
+				total = AfterSaleComeRecordDAO.getInstance().listCount();
+				result = AfterSaleComeRecordDAO.getInstance().list(index, rows);
+			}
+			
 			List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
 			for(AfterSaleComeRecord record : result){
 				AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
@@ -47,6 +68,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);
 			obj.put("rows", JSON.toJSON(vos));
+			
 			responseSuccess(JSON.toJSON(obj));
 		}else if("add".equals(sign)){//新增纪录
 			if(currentUser == null){
@@ -54,6 +76,8 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				return;
 			}
 			String courierNum = (String) request.getParameter("courierNum");
+			String expressName = (String) request.getParameter("expressName");
+			String shopName = (String)request.getParameter("shopName");
 			String goodsName = (String) request.getParameter("goodsName");
 			String checkResult = (String) request.getParameter("checkResult");
 			String wangwang = (String) request.getParameter("wangwang");
@@ -72,6 +96,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
 			}
 			afterSaleComeRecord.setCourierNum(courierNum);
+			afterSaleComeRecord.setExpressName(expressName);
+			
+			afterSaleComeRecord.setShopName(shopName);
 			afterSaleComeRecord.setGoodsName(goodsName);
 			afterSaleComeRecord.setCheckResult(checkResult);
 			afterSaleComeRecord.setWangwang(wangwang);
@@ -96,8 +123,42 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				AfterSaleComeRecordDAO.getInstance().delete(Integer.parseInt(ascrId));
 			}
 			responseSuccess("删除成功");
-		}
-	}
+		}else if("search".equals(sign)){//搜索
+			courierNum = (String) request.getParameter("courierNum2");
+			expressName = (String) request.getParameter("expressName2");
+			shopName = (String) request.getParameter("shopName2");
+			goodsName = (String) request.getParameter("goodsName2");
+			orderNum = (String) request.getParameter("orderNum2");
+			phoneNum = (String) request.getParameter("phoneNum2"); 
+			if((courierNum == null || courierNum.length() == 0)&&(expressName == null || expressName.length() == 0)&&(shopName == null
+					|| shopName.length() == 0)&&(goodsName == null || goodsName.length() == 0)){
+				responseError("无查询条件");
+				return;
+			}else{
+				List<AfterSaleComeRecord> result = AfterSaleComeRecordDAO.getInstance().list(courierNum);
+				List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
+				for(AfterSaleComeRecord record : result){
+					AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
+					vos.add(vo);
+				}
+				responseSuccess("查询成功");
+			}
+					/*AfterSaleComeRecordDAO.getInstance().query(courierNum);//, expressName, shopName, orderNum, phoneNum
+*/		}else if("select".equals(sign)){//查询快递
+		//查询所有快递种类
+				List<Express> expressResult = new ArrayList<Express>();
+				expressResult = ExpressDAO.getInstance().express();
+				JSONArray array = new JSONArray();
+				for(Express express : expressResult){
+					JSONObject obj = new JSONObject();
+					obj.put("id", express.getId());
+					obj.put("text", express.getExpressName());
+					array.add(obj);
+				}
+				responseSuccess(JSON.toJSON(array));
+          }
+
+    }
 		
 }
 

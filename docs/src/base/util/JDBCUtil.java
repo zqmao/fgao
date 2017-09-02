@@ -155,6 +155,62 @@ public class JDBCUtil {
 		}
 		return null;
 	}
+	/**
+	 * 查询，
+	 * 
+	 * @param sqlStr
+	 * @param list
+	 *            参数值
+	 * @return
+	 */
+	public static <T> T searchObject(String sqlStr, Class<T> clazz,Object... params){
+		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
+			rs = getResultSet(ps, sqlStr, params);
+			if (rs.next()) {
+				return getObject(rs, clazz);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free(rs, ps, con);
+		}
+		return null;
+	}
+	/**
+	 * 查询，
+	 * 
+	 * @param sqlStr
+	 * @param list
+	 *            参数值
+	 * @return
+	 */
+	public static <T> List<T> searchList(String sqlStr, Class<T> clazz,List<Object> list){
+		System.out.println("JDBCUtil SQL: " + sqlStr);
+		List<T> objs = new ArrayList<T>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
+			rs = getResultSetList(ps, sqlStr, list);
+			while (rs.next()) {
+				objs.add(getObject(rs, clazz));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free(rs, ps, con);
+		}
+		return objs;
+	}
+	
 	
 	/**
 	 * 查询一个对象，而这个对象的所有属性值存放在数组中
@@ -183,11 +239,37 @@ public class JDBCUtil {
 		}
 		return 0L;
 	}
-	
+	//搜索
+	public static long searchCount(String sqlStr, List<Object> list) {
+		System.out.println("JDBCUtil SQL: " + sqlStr);
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
+			rs = getResultSetList(ps, sqlStr, list);
+			if (rs.next()) {
+				return Long.parseLong(rs.getObject(1).toString());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free(rs, ps, con);
+		}
+		return 0L;
+	}
 	private static ResultSet getResultSet(PreparedStatement ps, String sqlStr, Object... params) throws Exception{
 		int size = params.length;
 		for (int i = 0; i < size; i++) {
 			ps.setObject((i + 1), params[i]);
+		}
+		return ps.executeQuery();
+	}
+	private static ResultSet getResultSetList(PreparedStatement ps, String sqlStr,List<Object> list) throws Exception{
+		int size = list.size();
+		for (int i = 0; i < size; i++) {
+			ps.setObject((i + 1), list.get(i));
 		}
 		return ps.executeQuery();
 	}

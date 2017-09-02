@@ -38,7 +38,7 @@
 			window.open("/customer/userEdit.jsp");
 		}
 		function toAfterSale(){
-			window.open("/customer/afterSaleComeRecordList.jsp");
+			window.open("/admin/afterSaleComeRecordList.jsp");
 		}
 	</script>
   </head>
