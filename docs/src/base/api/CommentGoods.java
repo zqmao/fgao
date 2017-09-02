@@ -2,7 +2,7 @@ package base.api;
 
 /**
  * 评论使用到的货物名称
- * @author Administrator
+ * @author zqmao
  *
  */
 public class CommentGoods {

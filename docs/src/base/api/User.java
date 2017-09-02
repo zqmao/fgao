@@ -1,5 +1,9 @@
 package base.api;
 
+/**
+ * 人员数据库类
+ * @author zqmao
+ */
 public class User {
 	
 	private int id;

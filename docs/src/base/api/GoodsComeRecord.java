@@ -1,5 +1,10 @@
 package base.api;
 
+/**
+ * 收货记录数据库类
+ * @author zqmao
+ *
+ */
 public class GoodsComeRecord {
 	
 	private int id;//自由编号

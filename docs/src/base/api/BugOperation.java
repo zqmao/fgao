@@ -1,5 +1,10 @@
 package base.api;
 
+/**
+ * 待办的操作记录数据库类
+ * @author zqmao
+ *
+ */
 public class BugOperation {
 	
 	private int id;

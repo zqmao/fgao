@@ -1,8 +1,9 @@
 package base.api;
 
-/*
+/**
  * 出货记录
  * 销售和盘库矫正
+ * @author zqmao
  */
 public class GoodsOutRecord {
 	

@@ -1,13 +1,18 @@
 package base.api;
 
+/**
+ * 文章数据库类
+ * @author zqmao
+ *
+ */
 public class Document {
 	
 	private int id;//
-	private int categoryId;//
-	private int userId;
-	private String title;//
-	private String content;//
-	private long time;//
+	private int categoryId;//所属类别
+	private int userId;//创建者
+	private String title;//标题
+	private String content;//内容
+	private long time;//创建时间
 	
 	public int getId() {
 		return id;

@@ -1,5 +1,9 @@
 package base.api;
 
+/**
+ * 人员权限数据库类
+ * @author zqmao
+ */
 public class UserCategory {
 	
 	private int id;

@@ -156,6 +156,17 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>AfterSaleComeRecordServlet</description>
+		<display-name>AfterSaleComeRecordServlet</display-name>
+		<servlet-name>AfterSaleComeRecordServlet</servlet-name>
+		<servlet-class>base.servlet.AfterSaleComeRecordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AfterSaleComeRecordServlet</servlet-name>
+		<url-pattern>/afterSaleComeRecordServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>
