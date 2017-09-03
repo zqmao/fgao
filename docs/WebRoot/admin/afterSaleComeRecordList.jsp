@@ -245,7 +245,7 @@
 				    </tr>
 				    <tr >
 						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;"  data-options="required:true"/><td>
+						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;" /><td>
 				    </tr>
 					
 				   
