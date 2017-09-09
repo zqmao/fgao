@@ -40,6 +40,9 @@
 		function toAfterSale(){
 			window.open("/admin/afterSaleComeRecordList.jsp");
 		}
+		function toExpressReissue(){
+			window.open("/admin/expressReissueList.jsp");
+		}
 	</script>
   </head>
   
@@ -81,6 +84,11 @@
     			</td>
     			<td bgcolor="#000000" style="width: 50%;cursor: pointer;" align="center" onclick="toCoupons();">
     				<font size="20" color="#FFFFFF">优惠券管理</font>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td bgcolor="#000000" style="width: 50%;cursor: pointer;" align="center" onclick="toExpressReissue();">
+    				<font size="20" color="#FFFFFF">补发快递</font>
     			</td>
     		</tr>
     		<tr>
