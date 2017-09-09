@@ -18,6 +18,8 @@ public class User {
 	private int inGoods;
 	private int outGoods;
 	private int coupon;//是否有设置优惠券的权限
+	private int after;//是否有操作售后记录的权限
+	
 	
 	public int getId() {
 		return id;
@@ -84,5 +86,11 @@ public class User {
 	}
 	public void setCoupon(int coupon) {
 		this.coupon = coupon;
+	}
+	public int getAfter() {
+		return after;
+	}
+	public void setAfter(int after) {
+		this.after = after;
 	}
 }

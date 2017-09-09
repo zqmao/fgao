@@ -24,7 +24,7 @@
 			var option_express3 = "0";
 			var ids = "";
             $(function() {
-            	
+            	$("#displayId").hide(); 
             	$("#addErlist").panel({
             		title: '添加需要补发记录',
             		
@@ -104,6 +104,7 @@
                             {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
                             {title: '备注', field: 'remark', width: 140, align: 'center', formatter:formatCellTooltip},
+                            {title: '退件类型', field: 'bounceType', width: 120, align: 'center'},
                             
                             {title: '状态', field: 'status', width: 100, align: 'center'},
                             
@@ -150,7 +151,8 @@
                                     orderNum: row[0].orderNum,
                                     courierNum: row[0].courierNum,
                                     expressName:row[0].expressName,
-                                    remark:row[0].remark
+                                    remark:row[0].remark,
+                                    bounceType:row[0].bounceType
                                     /* status: row[0].status,
                                     issueDocumentor:row[0].issueDocumentor,
                                     expressName:row[0].expressName,
@@ -215,6 +217,16 @@
                 }
                 return ids;
             }
+            function changeGoods(){
+            	//var value  = $('input[name="bounceType"]:checked').val(); //获取被选中Radio的Value值
+            	$("#displayId").show();
+            	//$('#courierNum3').attr("disabled",true); 
+            	//var Num3 = $('#courierNum3').html();
+            }
+            function changeDisplay(){
+            	$("#displayId").hide();
+            	$("#displayId").form("clear");
+            }
             //查询
             function submitSearch(){
             	courierNum = $("#courierNum").val();
@@ -248,15 +260,15 @@
             
             function submitReissue(){
          
-            	var erlistId;
+            	var erlistId; 
             	var ids = getChecked("erlistGrid");
-            	$("#reissueInf1").html("你正在补发的是编号为"+ids+"数据");
+            	
             	var shopName=getFormDate("erlistGrid","shopName");
-            	$("#reissueInf2").html("商铺名称是:"+shopName);
+            	
             	var goodsName = getFormDate("erlistGrid","goodsName");
-            	$("#reissueInf3").html("物品名称是:"+goodsName);
+            	
             	var address = getFormDate("erlistGrid","address");
-            	$("#reissueInf4").html("地址是:"+address);
+            	
             	$("#updateId").val(ids);
                 var len = ids.length;
                 if (len == 0) {
@@ -264,7 +276,10 @@
                 } else if (len > 1) {
                     $.messager.alert('提示', '只能选择一个', 'Warning');
                 } else {
-                	
+                	$("#reissueInf1").html("你正在补发的是编号为"+ids+"数据");
+                	$("#reissueInf2").html("商铺名称是:"+shopName);
+                	$("#reissueInf3").html("物品名称是:"+goodsName);
+                	$("#reissueInf4").html("地址是:"+address);
                 }      
                   
             }
@@ -297,27 +312,50 @@
             	var erlistId;
             	var ids = getChecked("erlistGrid");
                 $("#updateId").val(ids);
+                
                 var len = ids.length;
                 if (len == 0) {
                     $.messager.alert('提示', '至少选择一个', 'Warning');
                 } else if (len > 1) {
                     $.messager.alert('提示', '只能选择一个', 'Warning');
                 } else {
-                	
+                	 var value  = $('input[name="status"]:checked').val(); //获取被选中Radio的Value值
+                     if(value == "待处理"){
+                     	var iss = $("#issuRemark").val();
+                     	if(iss==null||iss.length==0){
+                     		alert(iss)
+                     		alert( '当选择待处理时,打单备注不能为空');
+                     	}else{
+                     		$("#addEreissuelistForm").form("submit", {
+            				    url:"../expressReissueServlet.do?sign=reissueAdd",
+            				    success:function(result){
+            				    	var data = eval('(' + result + ')');
+            				    	if(data.result == 0){
+            				    		alert(data.reason);
+            				    	}else{
+            							$("#addEreissuelistForm").form("clear");
+                    					$("#erlistGrid").datagrid("reload");
+            				    	}
+            				    }
+            				});
+                     	}
+                     }else{
+                    	 $("#addEreissuelistForm").form("submit", {
+         				    url:"../expressReissueServlet.do?sign=reissueAdd",
+         				    success:function(result){
+         				    	var data = eval('(' + result + ')');
+         				    	if(data.result == 0){
+         				    		alert(data.reason);
+         				    	}else{
+         							$("#addEreissuelistForm").form("clear");
+                 					$("#erlistGrid").datagrid("reload");
+         				    	}
+         				    }
+         				}); 
+                     }
                 }
             	
-            	$("#addEreissuelistForm").form("submit", {
-				    url:"../expressReissueServlet.do?sign=reissueAdd",
-				    success:function(result){
-				    	var data = eval('(' + result + ')');
-				    	if(data.result == 0){
-				    		alert(data.reason);
-				    	}else{
-							$("#addEreissuelistForm").form("clear");
-        					$("#erlistGrid").datagrid("reload");
-				    	}
-				    }
-				});
+            	
             }
             function submitCourierNum() {
 				$("#courierNumAscrForm").form("submit", {
@@ -340,11 +378,11 @@
 		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
 			<table id="erlistGrid" style="height: 340px;"></table>
 		</div>
-	<div style="width:40%; position:relative">
+	<div style="width:44%; position:relative">
 		<div id="addErlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
 			<form id="addErlistForm" method="post">
 				<input type="hidden"  name="erlistId" value="" />
-				<table >
+				<table style="" >
 					<tr id="ershopName" >
 						<td>商铺名称:</td>
 						<td><select class="easyui-combobox" name="shopName"  style="width:250px;">
@@ -357,13 +395,12 @@
 				    </tr>
 				    <tr >
 						<td>补发地址:</td>
-						<td><input class="easyui-validatebox" name="address" type="text" style="width: 250px;" data-options="required:true"  /><td>
+						<td><input class="easyui-validatebox" name="address" type="text" style="width: 250px;" data-options="required:true" /><td>
 				    </tr>
 					<tr >
 						<td>补发物品:</td>
 						<td><input class="easyui-validatebox" name="goodsName" type="text" style="width: 250px;" data-options="required:true" /><td>
 				    </tr>
-				    <tr >
 				    <tr >
 						<td>订单号:</td>
 						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;"/><td>
@@ -373,8 +410,34 @@
 				    </tr>
 				    <tr >
 						<td>备注:</td>
-						<td><textarea name="remark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
+						<td><textarea name="remark" style="width:250px;height:100px" ></textarea><td>
 				    </tr>
+				    <tr >
+						<td>退件类型:</td>
+						<td>
+							<input type="radio" name="bounceType" value="退货" onclick="changeDisplay()" />退货
+							<input type="radio" name="bounceType" value="换货" onclick="changeGoods()" />换货
+							<input type="radio" name="bounceType" value="拦截件" onclick="changeDisplay()" />拦截件
+							<input type="radio" name="bounceType" value="无信息" onclick="changeDisplay()" checked="checked"/>无信息 
+							<!-- <input type="radio" name="status" value="已处理" />已处理
+							<input type="radio" name="status" value="待处理" checked="checked" />待处理 -->
+						<td>
+				    </tr>
+			    </table>
+			    <table id="displayId" style="position:absolute;margin-top: -233px;margin-left: 350px;">
+			    	<tr >
+						<td>快递单号:</td>
+						<td><input class="easyui-validatebox" id="courierNum3" name="courierNum3" type="text" style="width: 250px;" /><td>
+				    </tr>
+				     <tr >
+						<td><label for="option_express3" style="font-size: 16px;">快递名称:</label></td>
+						
+				        <td><input class="easyui-combobox" id="option_express3" style="width:250px;margin-left:5px;" name="expressName3" /></td>
+				    </tr>
+					<!-- <tr >
+						<td>快递名称:</td>
+						<td><input class="easyui-validatebox" name="expressName3" type="text" style="width: 250px;" data-options="required:true" /><td>
+				    </tr> -->
 			    </table>
 			</form>
 			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" id="addbutn" onclick="submitAdd();">
@@ -386,7 +449,7 @@
 		</div>
 		</div>
 		
-			<div style="width:30%;position:absolute;left:40%;top:368px">
+			<div style="width:28%;position:absolute;left:44%;top:368px">
 		<div id="addEreissuelist" class="easyui-panel" title="补发快递记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="addEreissuelistForm" method="post">
 				<input type="hidden" id="updateId" name="updateId" value="" />
@@ -415,28 +478,23 @@
 				    </tr>
 				    <tr >
 						<td>打单备注:</td>
-						<td><textarea name="issuRemark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
+						<td><textarea id="issuRemark" name="issuRemark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
 				    </tr>
 			    </table>
 			    
 			    
 			</form>
 			
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitReissue();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitReissue();">
 			补发
 			</button>
 			
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitReissueAdd();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitReissueAdd();">
 			确定
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="cancelReissue();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="cancelReissue();">
 			清除
 			</button>
-			<table>
-			
-			
-			</table>
-			
 			<div>
 				<div ><span id="reissueInf1" style="color: red;font-size: 19px;"></span></div>
 				<div ><span id="reissueInf2" style="color: red;font-size: 19px;"></span></div>
@@ -446,7 +504,7 @@
 		</div>
 		</div>
 		
-		 <div style="width:30%;position:absolute;right:1px;top:368px;">
+		 <div style="width:28%;position:absolute;right:1px;top:368px;">
 		
 		<div id="searchErlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchErlistForm" method="post">
@@ -483,13 +541,13 @@
 				    </tr>
 			    </table>
 			</form>
-			<button style="margin: 40px 60px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitSearch();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitSearch();">
 			确定
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchClear();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchClear();">
 			清除
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchCancel();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchCancel();">
 			取消
 			</button>
 		</div>

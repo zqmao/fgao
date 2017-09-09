@@ -12,12 +12,14 @@
 	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
 	<script type="text/javascript">
 			var courierNum = "";
 			var shopName ="";
 			var goodsName ="";
 			var orderNum = "";
 			var phoneNum = "";
+			var allSearch="";
 			var expressName2 = "";
 			var option_express = "0";
 			var option_express2 = "0";
@@ -91,7 +93,7 @@
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum},
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
@@ -215,6 +217,7 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
+            	allSearch = $("#allSearch").val();
             	expressName2 = $("#option_express2").val();
             	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
@@ -222,6 +225,7 @@
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.shopName = shopName;
+            	queryParams.allSearch = allSearch;
             	queryParams.expressName2 = expressName2;
             	$("#searchAscrForm").form("submit",{
             		url:"../afterSaleComeRecordServlet.do?sign=search",
@@ -297,8 +301,6 @@
 						    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
 						    <option value="altay旗舰店" >altay旗舰店</option>
 						</select><td>
-						
-						
 				    </tr>
 				 	<tr >
 						<td>物品名称:</td>
@@ -334,12 +336,25 @@
 				    </tr>
 			    </table>
 			</form>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitAdd();">
+			
+			<div class="margin-tb manage-detail-con clearfix" >
+				<table>
+					<tr>
+						<td>
+							<a class="custom" onclick="submitAdd();">确定</a>
+						</td>
+						<td>
+							<a class="recharge" onclick="cancel();">取消</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- <button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitAdd();">
 			确定
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="cancel();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="cancel();">
 			取消
-			</button>
+			</button> -->
 		</div>
 		
 		</div>
@@ -350,13 +365,27 @@
 		<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchAscrForm" method="post">
 				<table>
+					
+					
+					<tr  >
+						<td >全文搜索:</td>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
+				    </tr>
+				    <tr >
+						<td></td>
+						<td><input class="easyui-validatebox" name="" type="text" style="width: 250px;visibility:hidden; " id=""/><td>
+				    </tr>
+				    <tr >
+						<td></td>
+						<td><input class="easyui-validatebox" name="" type="text" style="width: 250px;visibility:hidden; " id=""/><td>
+				    </tr>
 					<tr >
 						<td>快递单号:</td>
 						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/><td>
 				    </tr>
 				    <tr >
-				        <label for="option_express2" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
-				        <input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" />
+				        <td><label for="option_express2" style="font-size: 16px;">快递名称:</label></td>
+				        <td><input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" /></td>
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
@@ -380,15 +409,19 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
+				    <tr >
+						<td>全文搜索:</td>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
+				    </tr>
 			    </table>
 			</form>
-			<button style="margin: 40px 60px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitSearch();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitSearch();">
 			确定
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchClear();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchClear();">
 			清除
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchCancel();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchCancel();">
 			取消
 			</button>
 		</div>
@@ -416,13 +449,13 @@
 				    </tr>
 			    </table>
 			</form>
-			<button style="margin: 40px 60px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitCourierNum();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitCourierNum();">
 			确定
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumClear();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumClear();">
 			清除
 			</button>
-			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumCancel();">
+			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumCancel();">
 			取消
 			</button>
 		</div>

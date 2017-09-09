@@ -41,8 +41,10 @@ public class AfterSaleComeRecordVO {
 		this.orderNum = afterSaleComeRecord.getOrderNum();
 		User user = UserDAO.getInstance().load(afterSaleComeRecord.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
-		this.createTime = DateUtil.toString(afterSaleComeRecord.getCreateTime());
-		this.entryTime = DateUtil.toString(afterSaleComeRecord.getEntryTime());
+		//long cTime = afterSaleComeRecord.getCreateTime()!=null ? afterSaleComeRecord.getCreateTime():"";
+		this.createTime = afterSaleComeRecord.getCreateTime()!= 0 ? DateUtil.toString(afterSaleComeRecord.getCreateTime()):"";
+		//this.createTime = DateUtil.toString(cTime);
+		this.entryTime = afterSaleComeRecord.getEntryTime()!=0 ? DateUtil.toString(afterSaleComeRecord.getEntryTime()):"";
 		this.remark = afterSaleComeRecord.getRemark()!=null ? afterSaleComeRecord.getRemark():" ";
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
 	}

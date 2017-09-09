@@ -15,6 +15,7 @@ public class ExpressReissueVO {
 	private String orderNum;//订单号
 	private String wangwang;//用户旺旺
 	private String remark;//备注
+	private String bounceType;//退件类型
 	
 	private String issueDocumentor;//打单人员
 	private String expressName;//快递名称
@@ -27,23 +28,34 @@ public class ExpressReissueVO {
 		this.id = expressReissue.getId();
 		User user = UserDAO.getInstance().load(expressReissue.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
-		this.entryTime = DateUtil.toString(expressReissue.getEntryTime());
+		this.entryTime = expressReissue.getEntryTime()!=0 ? DateUtil.toString(expressReissue.getEntryTime()):"";
 		this.address = expressReissue.getAddress();
 		this.shopName = expressReissue.getShopName();
 		this.goodsName = expressReissue.getGoodsName();
 		this.orderNum = expressReissue.getOrderNum();
 		this.wangwang = expressReissue.getWangwang();
 		this.remark = expressReissue.getRemark();
+		this.bounceType = expressReissue.getBounceType();
+		
 		user = UserDAO.getInstance().load(expressReissue.getIssueDocumentor());
 		this.issueDocumentor = user != null ? user.getName() : "";
-		
+		//this.createTime = afterSaleComeRecord.getCreateTime()!= 0 ? DateUtil.toString(afterSaleComeRecord.getCreateTime()):"";
 		this.expressName = expressReissue.getExpressName();
 		this.courierNum = expressReissue.getCourierNum();
-		this.issuTime = DateUtil.toString(expressReissue.getIssuTime());
+		this.issuTime = expressReissue.getIssuTime()!=0 ? DateUtil.toString(expressReissue.getIssuTime()):"";
 		this.issuRemark = expressReissue.getIssuRemark();
 		this.status = expressReissue.getStatus()==1?"已处理":"待处理";
 	}
 	
+	public String getBounceType() {
+		return bounceType;
+	}
+
+	public void setBounceType(String bounceType) {
+		this.bounceType = bounceType;
+	}
+
+
 	public String getIssueDocumentor() {
 		return issueDocumentor;
 	}

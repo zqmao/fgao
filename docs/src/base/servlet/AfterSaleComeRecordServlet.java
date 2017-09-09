@@ -42,6 +42,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
+			String allSearch = (String) request.getParameter("allSearch");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName2");
 			String shopName = (String) request.getParameter("shopName");
@@ -69,30 +70,36 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				result = AfterSaleComeRecordDAO.getInstance().list(index, rows);
 			}
 			*/
-			BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO.getInstance().new QueryBuilder();
-			if((courierNum!=null&&courierNum.length()!=0)){
-				builder.eq("courierNum", courierNum);
-			}
-			if(expressName!=null && expressName.length()!=0){
-				builder.eq("expressName", expressName);
-			}
-			if(shopName!=null&&shopName.length()!=0){
-				builder.eq("shopName", shopName);
-			}
-			if(goodsName!=null&&goodsName.length()!=0){
-				builder.eq("goodsName", goodsName);
-			}
-			if(orderNum!=null&&orderNum.length()!=0){
-				builder.eq("orderNum", orderNum);
-			}
-			if(phoneNum!=null&&phoneNum.length()!=0){
-				builder.eq("phoneNum", phoneNum);
-			}
-			builder.orderBy("id", true);
-			builder.limit(index, rows);
-			total = builder.queryCount();
-			result = builder.queryList();
+			if(allSearch==null||allSearch.length()==0){
+				
 			
+				BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO.getInstance().new QueryBuilder();
+				if((courierNum!=null&&courierNum.length()!=0)){
+					builder.eq("courierNum", courierNum);
+				}
+				if(expressName!=null && expressName.length()!=0){
+					builder.eq("expressName", expressName);
+				}
+				if(shopName!=null&&shopName.length()!=0){
+					builder.eq("shopName", shopName);
+				}
+				if(goodsName!=null&&goodsName.length()!=0){
+					builder.eq("goodsName", goodsName);
+				}
+				if(orderNum!=null&&orderNum.length()!=0){
+					builder.eq("orderNum", orderNum);
+				}
+				if(phoneNum!=null&&phoneNum.length()!=0){
+					builder.eq("phoneNum", phoneNum);
+				}
+				builder.orderBy("id", true);
+				builder.limit(index, rows);
+				total = builder.queryCount();
+				result = builder.queryList();
+			}else{
+				total = AfterSaleComeRecordDAO.getInstance().queryCount();
+				result = AfterSaleComeRecordDAO.getInstance().list(allSearch);
+			}
 			List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
 			for(AfterSaleComeRecord record : result){
 				AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
@@ -139,9 +146,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 			}else{
 				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
-				long entryTime = afterSaleComeRecord.getEntryTime();
+				//long entryTime = afterSaleComeRecord.getEntryTime();
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
-				afterSaleComeRecord.setEntryTime(entryTime);
+				//afterSaleComeRecord.setEntryTime(entryTime);
 			}
 			//afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 			afterSaleComeRecord.setCourierNum(courierNum);
