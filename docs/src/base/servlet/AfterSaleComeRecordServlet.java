@@ -88,7 +88,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			if(phoneNum!=null&&phoneNum.length()!=0){
 				builder.eq("phoneNum", phoneNum);
 			}
-			//builder.orderBy(key, desc);
+			builder.orderBy("id", true);
 			builder.limit(index, rows);
 			total = builder.queryCount();
 			result = builder.queryList();

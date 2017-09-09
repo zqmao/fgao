@@ -20,8 +20,16 @@ public class AfterSaleComeRecord {
 	private long createTime;//创建时间
 	private String remark;//备注
 	private int status;//处理状态:1已处理；0未处理
+	private long entryTime;//打单时间
 	
+	public void setEntryTime(long entryTime) {
+		this.entryTime = entryTime;
+	}
 	
+	public long getEntryTime() {
+		return entryTime;
+	}
+
 	public String getExpressName() {
 		return expressName;
 	}
