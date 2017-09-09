@@ -27,9 +27,4 @@ public class BugOperationDAO extends BaseDAO<BugOperation> {
 		List<BugOperation> objs = JDBCUtil.queryObjectList(sql, BugOperation.class, bugId);
 		return objs;
 	}
-
-	public BugOperation load(int id) {
-		String sql = "select * from t_bug_operation where id=?";
-		return JDBCUtil.queryObject(sql, BugOperation.class, id);
-	}
 }

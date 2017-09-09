@@ -28,11 +28,6 @@ public class CategoryDAO extends BaseDAO<Category> {
 		return objs;
 	}
 
-	public Category load(int id) {
-		String sql = "select * from t_category where id=?";
-		return JDBCUtil.queryObject(sql, Category.class, id);
-	}
-	
 	public Category query(String name) {
 		String sql = "select * from t_category where name=?";
 		return JDBCUtil.queryObject(sql, Category.class, name);

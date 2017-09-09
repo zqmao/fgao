@@ -36,7 +36,7 @@ public class GoodsOutServlet extends BaseServlet {
 		if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = GoodsOutDAO.getInstance().listCount();
+			long total = GoodsOutDAO.getInstance().queryCount();
 			int index = (page - 1) * rows;
 			List<GoodsOutRecord> result = GoodsOutDAO.getInstance().list(index, rows);
 			List<GoodsOutRecordVO> objs = new ArrayList<GoodsOutRecordVO>();

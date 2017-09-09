@@ -28,16 +28,6 @@ public class GoodsInDAO extends BaseDAO<GoodsInRecord> {
 		return objs;
 	}
 	
-	public long listCount() {
-		String sql = "select count(id) from t_goods_in";
-		return JDBCUtil.queryCount(sql);
-	}
-	
-	public GoodsInRecord load(int id) {
-		String sql = "select * from t_goods_in where id=?";
-		return JDBCUtil.queryObject(sql, GoodsInRecord.class, id);
-	}
-	
 	public boolean goodsIng(int goodsId){
 		//查询该货物是否正在进货
 		String sql = "select * from t_goods_in where goodsId=? and status=0";

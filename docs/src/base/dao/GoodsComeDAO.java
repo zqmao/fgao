@@ -32,9 +32,4 @@ public class GoodsComeDAO extends BaseDAO<GoodsComeRecord> {
 		String sql = "select sum(c.count) from t_goods_come c where c.inRecordId=? ";
 		return JDBCUtil.queryCount(sql, recordId);
 	}
-	
-	public GoodsComeRecord load(int id) {
-		String sql = "select * from t_goods_come where id=?";
-		return JDBCUtil.queryObject(sql, GoodsComeRecord.class, id);
-	}
 }

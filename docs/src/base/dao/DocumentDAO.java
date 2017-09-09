@@ -46,11 +46,6 @@ public class DocumentDAO extends BaseDAO<Document> {
 		String sql = "select count(id) from t_document where (title like ? or content like ?)" + sub;
 		return JDBCUtil.queryCount(sql, "%"+key+"%", "%"+key+"%");
 	}
-
-	public Document load(int id) {
-		String sql = "select * from t_document where id=?";
-		return JDBCUtil.queryObject(sql, Document.class, id);
-	}
 	
 	public Document query(String name) {
 		String sql = "select * from t_document where name=?";

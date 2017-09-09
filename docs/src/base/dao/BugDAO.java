@@ -28,11 +28,6 @@ public class BugDAO extends BaseDAO<Bug> {
 		List<Bug> objs = JDBCUtil.queryObjectList(sql, Bug.class, index, pagesize);
 		return objs;
 	}
-	//全部的总数
-	public long listCount() {
-		String sql = "select count(*) from t_bug order by id desc";
-		return JDBCUtil.queryCount(sql);
-	}
 	//我创建的
 	public List<Bug> listUserCreate(int userId, int index, int pagesize) {
 		String sql = "select * from t_bug where createrId = ? order by createTime desc limit ?, ? ";
@@ -76,11 +71,6 @@ public class BugDAO extends BaseDAO<Bug> {
 	public long listUserPartCount(int userId) {
 		String sql = "select count(DISTINCT b.id) from t_bug_operation bo, t_bug b where b.id=bo.bugId and bo.targetId = ? ORDER BY b.createTime desc";
 		return JDBCUtil.queryCount(sql, userId);
-	}
-
-	public Bug load(int id) {
-		String sql = "select * from t_bug where id=?";
-		return JDBCUtil.queryObject(sql, Bug.class, id);
 	}
 
 	public List<Bug> search(String key) {

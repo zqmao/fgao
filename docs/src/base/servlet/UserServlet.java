@@ -55,7 +55,7 @@ public class UserServlet extends BaseServlet {
 		} else if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = UserDAO.getInstance().listCount();
+			long total = UserDAO.getInstance().queryCount();
 			int index = (page - 1) * rows;
 			List<User> result = UserDAO.getInstance().list(index, rows);
 			JSONObject obj = new JSONObject();
@@ -100,7 +100,7 @@ public class UserServlet extends BaseServlet {
 			}
 			responseSuccess("删除成功");
 		} else if ("select".equals(sign)) {// 查询列表
-			List<User> result = UserDAO.getInstance().list();
+			List<User> result = UserDAO.getInstance().queryForAll();
 			JSONArray array = new JSONArray();
 			for(User user : result){
 				JSONObject obj = new JSONObject();

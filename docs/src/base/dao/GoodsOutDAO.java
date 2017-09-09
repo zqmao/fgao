@@ -27,14 +27,4 @@ public class GoodsOutDAO extends BaseDAO<GoodsOutRecord> {
 		List<GoodsOutRecord> objs = JDBCUtil.queryObjectList(sql, GoodsOutRecord.class, index, pagesize);
 		return objs;
 	}
-	
-	public long listCount() {
-		String sql = "select count(id) from t_goods_out";
-		return JDBCUtil.queryCount(sql);
-	}
-	
-	public GoodsOutRecord load(int id) {
-		String sql = "select * from t_goods_out where id=?";
-		return JDBCUtil.queryObject(sql, GoodsOutRecord.class, id);
-	}
 }

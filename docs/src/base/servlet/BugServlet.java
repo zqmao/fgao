@@ -58,7 +58,7 @@ public class BugServlet extends BaseServlet {
 			List<Bug> result = null;
 			if(option == 0){
 				result = BugDAO.getInstance().list(index, rows);
-				total = BugDAO.getInstance().listCount();
+				total = BugDAO.getInstance().queryCount();
 			}else if(option == 1){
 				result = BugDAO.getInstance().listUserCreate(selectUser, index, rows);
 				total = BugDAO.getInstance().listUserCreateCount(selectUser);

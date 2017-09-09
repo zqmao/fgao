@@ -1,20 +1,17 @@
 package base.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import base.api.Coupon;
-import base.dao.CouponDAO;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import base.api.Coupon;
+import base.dao.CouponDAO;
 
 public class CouponServlet extends BaseServlet{
 	
@@ -33,9 +30,9 @@ public class CouponServlet extends BaseServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
-			List<Coupon> result = CouponDAO.getInstance().list();
+			List<Coupon> result = CouponDAO.getInstance().queryForAll();
 			JSONObject obj = new JSONObject();
-			obj.put("total", CouponDAO.getInstance().listCount());
+			obj.put("total", CouponDAO.getInstance().queryCount());
 			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
 		} else if ("add".equals(sign)) {// 查询评论货物列表

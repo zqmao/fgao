@@ -49,7 +49,7 @@
              	}
             	/* 获取快递名称 */
             	 $("#option_express").combobox({
-                     url:'../afterSaleComeRecordServlet.do?sign=select',
+                     url:'../expressReissueServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -64,7 +64,7 @@
                  );
             	 /* 添加记录时获取快递名称 */
             	 $("#option_express3").combobox({
-                     url:'../afterSaleComeRecordServlet.do?sign=select',
+                     url:'../expressReissueServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -80,7 +80,7 @@
             	
             	 /* 查询时获取快递名称 */
             	 $("#option_express2").combobox({
-                     url:'../afterSaleComeRecordServlet.do?sign=select',
+                     url:'../expressReissueServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -382,6 +382,13 @@
 			<form id="searchAscrForm" method="post">
 				<table>
 					<tr >
+						<td>全文搜索:</td>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
+				    </tr>
+				    <tr >
+				    	<td><br/><br/></td>
+				    </tr>
+					<tr >
 						<td>快递单号:</td>
 						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/><td>
 				    </tr>
@@ -411,10 +418,7 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
-				    <tr >
-						<td>全文搜索:</td>
-						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
-				    </tr>
+				    
 			    </table>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >

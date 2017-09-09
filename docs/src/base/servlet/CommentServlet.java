@@ -58,7 +58,7 @@ public class CommentServlet extends BaseServlet{
 			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
 		}else if ("selectAll".equals(sign)) {// 查询评论货物列表
-			List<CommentGoods> result = CommentGoodsDAO.getInstance().list();
+			List<CommentGoods> result = CommentGoodsDAO.getInstance().queryForAll();
 			JSONArray array = new JSONArray();
 			JSONObject all = new JSONObject();
 			all.put("id", -1);
@@ -76,7 +76,7 @@ public class CommentServlet extends BaseServlet{
 			}
 			responseSuccess(JSON.toJSON(array));
 		}else if ("select".equals(sign)) {// 查询评论货物列表
-			List<CommentGoods> result = CommentGoodsDAO.getInstance().list();
+			List<CommentGoods> result = CommentGoodsDAO.getInstance().queryForAll();
 			JSONArray array = new JSONArray();
 			JSONObject def = new JSONObject();
 			def.put("id", -3);

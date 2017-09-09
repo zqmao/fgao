@@ -62,9 +62,4 @@ public class CommentDAO extends BaseDAO<Comment>{
 			return JDBCUtil.queryCount(sql);
 		}
 	}
-	
-	public Comment load(int id) {
-		String sql = "select * from t_comment where id=?";
-		return JDBCUtil.queryObject(sql, Comment.class, id);
-	}
 }

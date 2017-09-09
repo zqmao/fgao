@@ -35,7 +35,7 @@ public class GoodsServlet extends BaseServlet {
 		if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = GoodsDAO.getInstance().listCount();
+			long total = GoodsDAO.getInstance().queryCount();
 			int index = (page - 1) * rows;
 			List<Goods> result = GoodsDAO.getInstance().list(index, rows);
 			List<GoodsVO> objs = new ArrayList<GoodsVO>();
@@ -79,7 +79,7 @@ public class GoodsServlet extends BaseServlet {
 			}
 			responseSuccess("删除成功");
 		} else if ("select".equals(sign)) {// 查询列表
-			List<Goods> result = GoodsDAO.getInstance().list();
+			List<Goods> result = GoodsDAO.getInstance().queryForAll();
 			JSONArray array = new JSONArray();
 			for(Goods goods : result){
 				JSONObject obj = new JSONObject();

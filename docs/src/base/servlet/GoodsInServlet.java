@@ -39,7 +39,7 @@ public class GoodsInServlet extends BaseServlet {
 		if ("list".equals(sign)) {// 查询列表
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = GoodsInDAO.getInstance().listCount();
+			long total = GoodsInDAO.getInstance().queryCount();
 			int index = (page - 1) * rows;
 			List<GoodsInRecord> result = GoodsInDAO.getInstance().list(index, rows);
 			List<GoodsInRecordVO> objs = new ArrayList<GoodsInRecordVO>();
