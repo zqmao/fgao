@@ -10,8 +10,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 	<title>用户中心</title>
 	<link href="../bootstrap-3.3.5-dist/css/bootstrap.min.css" title=""
 		rel="stylesheet" />
