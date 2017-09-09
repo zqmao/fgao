@@ -7,16 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import base.api.Arrange;
-import base.api.User;
-import base.dao.ArrangeDAO;
-import base.dao.UserDAO;
-import base.dao.core.BaseDAO;
-import base.util.PermissionUtil;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
+import base.api.User;
+import base.dao.UserDAO;
 
 public class UserServlet extends BaseServlet {
 
@@ -35,12 +31,6 @@ public class UserServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("login".equals(sign)) {// 登陆
-//			BaseDAO<Arrange>.QueryBuilder builder = ArrangeDAO.getInstance().creatBuilder();
-//			List<Arrange> re = builder.eq("userId", 2).eq("status", 2).limit(0, 2).orderBy("day", true).queryList();
-//			for(Arrange a : re) {
-//				System.out.println(a.getId());
-//			}
-//			System.out.println(re + "---" + builder.queryCount());
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
 			if(password == null || password.length() == 0){

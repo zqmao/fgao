@@ -309,12 +309,11 @@
 				<table>
 					<tr >
 						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 250px;" data-options="required:true"/><td>
+						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 250px;" data-options="required:true"/></td>
 				    </tr>
 				    <tr >
-						<label for="option_express" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
-						
-				        <input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" />
+						<td>快递名称:</td>
+				        <td><input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" /></td>
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
@@ -372,12 +371,6 @@
 					</tr>
 				</table>
 			</div>
-			<!-- <button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitAdd();">
-			确定
-			</button>
-			<button style="margin: 30px 30px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="cancel();">
-			取消
-			</button> -->
 		</div>
 		
 		</div>
@@ -388,20 +381,6 @@
 		<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchAscrForm" method="post">
 				<table>
-					
-					
-					<tr  >
-						<td >全文搜索:</td>
-						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
-				    </tr>
-				    <tr >
-						<td></td>
-						<td><input class="easyui-validatebox" name="" type="text" style="width: 250px;visibility:hidden; " id=""/><td>
-				    </tr>
-				    <tr >
-						<td></td>
-						<td><input class="easyui-validatebox" name="" type="text" style="width: 250px;visibility:hidden; " id=""/><td>
-				    </tr>
 					<tr >
 						<td>快递单号:</td>
 						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/><td>
@@ -461,15 +440,15 @@
 		
 		<div id="courierNumAscr" class="easyui-panel" title="添加扫码记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="courierNumAscrForm" method="post">
-				<table>
 				<input type="hidden" name="courierNumId" value="" />
+				<table>
+					<tr>
+				        <td>快递名称:</td>
+				        <td><input class="easyui-combobox" id="option_express3" style="width:250px;margin-left:5px;" name="expressName3" /></td>
+				    </tr>
 					<tr>
 						<td>快递单号:</td>
-						<td><textarea name="courierNums" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
-				    </tr>
-				    <tr>
-				        <label for="option_express3" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
-				        <input class="easyui-combobox" id="option_express3" style="width:250px;margin-left:5px;" name="expressName3" />
+						<td><textarea name="courierNums" style="width:250px;height:100px" style="width: 400px;" ></textarea></td>
 				    </tr>
 			    </table>
 			</form>
