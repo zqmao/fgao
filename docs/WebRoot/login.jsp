@@ -30,9 +30,9 @@
 			    		var backUrl = "<%=backUrl%>";
 			    		if(backUrl === ""){
 			    			if(data.data.admin == 0){
-			    				backUrl = "<%=basePath%>/customer/main.jsp";
+			    				backUrl = "<%=basePath%>/customer/index.jsp";
 			    			}else{
-			    				backUrl = "<%=basePath%>/admin/main.jsp";
+			    				backUrl = "<%=basePath%>/admin/index.jsp";
 			    			}
 			    		}
 		    			window.location.href=backUrl;

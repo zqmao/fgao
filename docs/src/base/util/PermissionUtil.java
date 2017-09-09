@@ -8,6 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 import base.api.User;
 
 public class PermissionUtil {
+	
+	/*
+	 * 获取当前登录人员
+	 */
+	public static User getCurrentUser(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			return new User();
+		}
+		return user;
+	}
 	/*
 	 * 普通成员页面的权限
 	 */
@@ -104,7 +115,7 @@ public class PermissionUtil {
 		}
 	}
 	
-	private static void redirectLogin(HttpServletRequest request, HttpServletResponse response){
+	public static void redirectLogin(HttpServletRequest request, HttpServletResponse response){
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		try {
 			String backUrl = "";

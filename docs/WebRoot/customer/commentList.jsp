@@ -98,14 +98,14 @@
                             {field: 'ck', checkbox: true},
                             {title: '序号', field: 'id', width: 60, hidden:true},
                             {title: '录入者', field: 'creator', width: 100, align: 'center'},
-                            {title: '首评', field: 'firstComment', width: 400, align: 'center'},
+                            {title: '首评', field: 'firstComment', width: 300, align: 'center',formatter:formatCellTooltip},
                             {title: '', field: 'firstCommentPic', width: 400, align: 'center',hidden:'true'},
                             {title: '首评图片', field: 'left', width: 300, align: 'center', formatter:leftFormatter },
                             {title: '追评论天数', field: 'timeDes', width: 80, align: 'center'},
-                            {title: '追评', field: 'secondComment', width: 400, align: 'center'},
+                            {title: '追评', field: 'secondComment', width: 300, align: 'center'},
                             {title: '', field: 'secondCommentPic', width: 400, align: 'center',hidden:'true'},
                             {title: '追评图片', field: 'right', width: 300, align: 'center', formatter:rightFormatter },
-                            {title: '备注', field: 'remark', width: 200, align: 'center'},
+                            {title: '备注', field: 'remark', width: 100, align: 'center',formatter:formatCellTooltip},
                             {title: '审核状态', field: 'isVerify', width: 100, align: 'center', formatter:verifyFormatter}
                         ]],
                     loadFilter: function(data){
@@ -217,6 +217,10 @@
                 });
             }
             
+            function formatCellTooltip(value){  
+	            return "<span title='" + value + "'>" + value + "</span>";  
+	        } 
+            
             function leftFormatter(value, rowData, rowIndex) {
             	var pics = "";
             	var urls = rowData.firstCommentPic;
@@ -303,7 +307,7 @@
         </script>
 	</head>
 
-	<body class="easyui-layout">
+	<body class="easyui-layout" style="width: 100%">
 		<div style="padding-left: 5px;padding-top: 10px;padding-bottom: 10px;">
 			<label for="option_goods">筛选商品:</label>
 			<input id="option_goods" />

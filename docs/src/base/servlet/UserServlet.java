@@ -12,6 +12,7 @@ import base.api.User;
 import base.dao.ArrangeDAO;
 import base.dao.UserDAO;
 import base.dao.core.BaseDAO;
+import base.util.PermissionUtil;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -145,6 +146,9 @@ public class UserServlet extends BaseServlet {
 			}
 			UserDAO.getInstance().saveOrUpdate(currentUser);
 			responseSuccess("修改成功");
+		} else if ("logout".equals(sign)) {// 退出登录
+			request.getSession().setAttribute("loginUser", null);
+			responseSuccess("退出成功");
 		}
 	}
 

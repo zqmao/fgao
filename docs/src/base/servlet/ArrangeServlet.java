@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import base.api.Arrange;
-import base.api.User;
 import base.api.vo.ArrangeVO;
 import base.dao.ArrangeDAO;
-import base.dao.core.BaseDAO;
-import base.dao.core.BaseDAO.QueryBuilder;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -45,7 +42,6 @@ public class ArrangeServlet extends BaseServlet {
 			obj.put("total", objs.size());
 			obj.put("rows", JSON.toJSON(objs));
 			responseSuccess(JSON.toJSON(obj));
-			BaseDAO<Arrange>.QueryBuilder builder = ArrangeDAO.getInstance().new QueryBuilder();
 		}
 	}
 
