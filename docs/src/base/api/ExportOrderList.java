@@ -11,4 +11,41 @@ public class ExportOrderList {
 	private String alipayNum;//支付宝账号
 	private String actualMoney;//实际金额
 	private int orderStatus;//订单状态
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getCourierNum() {
+		return courierNum;
+	}
+	public void setCourierNum(String courierNum) {
+		this.courierNum = courierNum;
+	}
+	public String getWangwang() {
+		return wangwang;
+	}
+	public void setWangwang(String wangwang) {
+		this.wangwang = wangwang;
+	}
+	public String getAlipayNum() {
+		return alipayNum;
+	}
+	public void setAlipayNum(String alipayNum) {
+		this.alipayNum = alipayNum;
+	}
+	public String getActualMoney() {
+		return actualMoney;
+	}
+	public void setActualMoney(String actualMoney) {
+		this.actualMoney = actualMoney;
+	}
+	public int getOrderStatus() {
+		return orderStatus;
+	}
+	public void setOrderStatus(int orderStatus) {
+		this.orderStatus = orderStatus;
+	}
 }

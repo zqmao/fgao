@@ -11,14 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
-import base.api.Express;
 import base.api.vo.AfterSaleComeRecordVO;
 import base.dao.AfterSaleComeRecordDAO;
-import base.dao.ExpressDAO;
 import base.dao.core.BaseDAO;
 
 public class AfterSaleComeRecordServlet extends BaseServlet {
@@ -177,7 +174,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			AfterSaleComeRecord afterSaleComeRecord = null;
 			String courierNums = (String) request.getParameter("courierNums");
 			String expressName = (String) request.getParameter("expressName3");
-			String id = (String) request.getParameter("courierNumId");
 			if ("请选择:".equals(expressName)) {
 				expressName = "";
 			}
