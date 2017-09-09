@@ -10,7 +10,7 @@ import java.util.Set;
 
 import base.util.ReflectUtil;
 
-public abstract class BaseDAO<T> implements IDao<T>{
+public class BaseDAO<T> implements IDao<T>{
 	
 	private Class<T> entityClass;
 	private String tableName;
