@@ -510,34 +510,36 @@
 			<form id="searchErlistForm" method="post">
 				<table>
 					<tr >
-						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/><td>
+				        <td>快递名称:</td>
+				        <td><input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" /></td>
 				    </tr>
-				    <tr >
-				        <label for="option_express2" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
-				        <input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" />
+					<tr >
+						<td>快递单号:</td>
+						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/></td>
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
-						<td><select class="easyui-combobox" name="shopName2" id="shopName" style="width:250px;">
-							<option value="" selected="selected" >全部</option>
-						    <option value="新祈源数码专营店" >新祈源数码专营店</option>
-						    <option value="义吉隆数码专营店" >义吉隆数码专营店</option>
-						    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
-						    <option value="altay旗舰店" >altay旗舰店</option>
-						</select><td>
+						<td>
+							<select class="easyui-combobox" name="shopName2" id="shopName" style="width:250px;">
+								<option value="" selected="selected" >全部</option>
+							    <option value="新祈源数码专营店" >新祈源数码专营店</option>
+							    <option value="义吉隆数码专营店" >义吉隆数码专营店</option>
+							    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
+							    <option value="altay旗舰店" >altay旗舰店</option>
+							</select>
+						</td>
 				    </tr>
 				 	<tr >
 						<td>补发物品:</td>
-						<td><input class="easyui-validatebox" name="goodsName2" id="goodsName" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="goodsName2" id="goodsName" type="text" style="width: 250px;"/></td>
 				    </tr>
 				    <tr >
 						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum2" id="orderNum" type="text" style="width: 250px;" /><td>
+						<td><input class="easyui-validatebox" name="orderNum2" id="orderNum" type="text" style="width: 250px;" /></td>
 				    </tr>
 				    <tr >
 						<td>手机号:</td>
-						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr>
 			    </table>
 			</form>

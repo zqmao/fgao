@@ -332,24 +332,14 @@
 					<label for="firstComment">首评图片:</label>
 					<input type="file" name="first_pic_1" accept="image/jpeg,image/png"/>
 				    <input type="file" name="first_pic_2" accept="image/jpeg,image/png"/>
-				    <input type="file" name="first_pic_3" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="first_pic_4" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="first_pic_5" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
+				    <input type="file" name="first_pic_3" accept="image/jpeg,image/png"/>
+				    <input type="file" name="first_pic_4" accept="image/jpeg,image/png"/>
+				    <input type="file" name="first_pic_5" accept="image/jpeg,image/png"/>
 			    </div>
 			    <br/>
 			    <div >
 					<label for="timeDes">追评时间:</label>
 					<input class="easyui-numberbox" type="text" name="timeDes" style="width:100px;height:30px;" value="7" data-options="min:0,precision:0"/> 天后    <font style="color: red;">&nbsp;&nbsp;*请输入数字，如果不输入，默认7天后</font>
-					<!-- select class="easyui-combobox" id="timeDes" name="timeDes" style="width:170PX;">
-					    <option value="不限时间" checked="true">不限时间</option>
-					    <option value="1天后">1天后</option>
-					    <option value="2天后">2天后</option>
-					    <option value="3天后">3天后</option>
-					    <option value="4天后">4天后</option>
-					    <option value="5天后">5天后</option>
-					    <option value="6天后">6天后</option>
-					    <option value="7天后">7天后</option>
-					</select> -->
 			    </div>
 			    <br/>
 			    <div >
@@ -358,11 +348,11 @@
 			    </div>
 			    <div >
 					<label for="firstComment">追评图片:</label>
-					<input type="file" name="second_pic_1" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="second_pic_2" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="second_pic_3" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="second_pic_4" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
-				    <input type="file" name="second_pic_5" enctype="multipart/form-data" accept="image/jpeg,image/png"/>
+					<input type="file" name="second_pic_1" accept="image/jpeg,image/png"/>
+				    <input type="file" name="second_pic_2" accept="image/jpeg,image/png"/>
+				    <input type="file" name="second_pic_3" accept="image/jpeg,image/png"/>
+				    <input type="file" name="second_pic_4" accept="image/jpeg,image/png"/>
+				    <input type="file" name="second_pic_5" accept="image/jpeg,image/png"/>
 			    </div>
 			    <br/>
 			    <div >

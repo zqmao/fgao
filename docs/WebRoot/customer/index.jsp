@@ -9,54 +9,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>用户中心</title>
-	<link href="../bootstrap-3.3.5-dist/css/bootstrap.min.css" title=""
-		rel="stylesheet" />
-	<link title="" href="../css/style.css" rel="stylesheet" type="text/css" />
-	<link title="blue" href="../css/dermadefault.css" rel="stylesheet"
-		type="text/css" />
-	<link title="green" href="../css/dermagreen.css" rel="stylesheet"
-		type="text/css" disabled="disabled" />
-	<link title="orange" href="../css/dermaorange.css" rel="stylesheet"
-		type="text/css" disabled="disabled" />
-	<link href="../css/templatecss.css" rel="stylesheet" title=""
-		type="text/css" />
-	<script src="../script/jquery-1.11.1.min.js" type="text/javascript"></script>
-	<script src="../script/jquery.cookie.js" type="text/javascript"></script>
-	<script src="../bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
-		
+	<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/dermadefault.css" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/dermagreen.css" title="green" disabled="disabled" />
+	<link rel="stylesheet" type="text/css" href="../css/dermaorange.css" title="orange" disabled="disabled" />
+	<link rel="stylesheet" type="text/css" href="../css/templatecss.css" />
+	<script type="text/javascript" src="../script/jquery-1.11.1.min.js"/>
+	<script type="text/javascript" src="../script/jquery.cookie.js"/>
+	<script type="text/javascript" src="../bootstrap-3.3.5-dist/js/bootstrap.min.js"/>
+	
 	<script type="text/javascript">
-		$(document).ready(function(){
-		  $(".subNavBox a").click(function(){
-		    clickLi(this);
-		  })
+		$(document).ready(function() {
+			$(".subNavBox a").click(function() {
+				clickLi(this);
+			})
 		})
-		function clickLi(dom){
+		function clickLi(dom) {
 			//找到所有的li，取消选中
 			//找到点击的a标签，设置它对于的li选中
 			var lis = $(".subNavBox li");
-			for(var i = 0; i < lis.length; i++){
+			for (var i = 0; i < lis.length; i++) {
 				var liObj = lis[i];
 				$(liObj).removeClass("active");
 			}
 			$(dom).parent().addClass("active");
 		}
-		
-		function logout(){
+	
+		function logout() {
 			$.ajax({
-                type: "POST",
-                url: "../userServlet.do?sign=logout",
-                success: function(msg) {
-                	alert("退出成功");
-                	window.location.href="../login.jsp";
-                },
-                error: function(msg) {
-                    alert(msg.toString());
-                }
-            });
+				type : "POST",
+				url : "../userServlet.do?sign=logout",
+				success : function(msg) {
+					alert("退出成功");
+					window.location.href = "../login.jsp";
+				},
+				error : function(msg) {
+					alert(msg.toString());
+				}
+			});
 		}
 	</script>
 </head>
@@ -64,12 +57,12 @@
 <body>
 	<nav class="nav navbar-default navbar-mystyle navbar-fixed-top">
 	<div class="navbar-header">
-		<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<button class="navbar-toggle" data-toggle="collapse"
+			data-target=".navbar-collapse">
 			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand"><span
-			class="glyphicon glyphicon-home"></span></a>
+		<a class="navbar-brand"><span class="glyphicon glyphicon-home"></span></a>
 	</div>
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
@@ -110,16 +103,14 @@
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />评论搜集
-							</div> 
-							<a href="/customer/commentList.jsp" target="content"><span
+							</div> <a href="/customer/commentList.jsp" target="content"><span
 								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
 								class="sub-title">评论搜集</span></a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />待办管理
-							</div> 
-							<a href="/customer/bugList.jsp" target="content"><span
+							</div> <a href="/customer/bugList.jsp" target="content"><span
 								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
 								class="sub-title">待办管理</span></a>
 						</li>
@@ -166,7 +157,7 @@
 							class="sublist-title">管理相关</span>
 					</div>
 					<ul class="navContent" style="display: none">
-						
+
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />排班情况
@@ -182,7 +173,7 @@
 		<div class="right-product my-index right-full">
 			<div class="container-fluid">
 				<iframe id="content" name="content" src="../default.jsp"
-					style="width: 100%; height: 1500px; border: 1px; background-color: #eceff3;" >
+					style="width: 100%; height: 1500px; border: 1px; background-color: #eceff3;">
 				</iframe>
 			</div>
 		</div>

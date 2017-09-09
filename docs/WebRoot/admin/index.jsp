@@ -9,22 +9,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>用户中心</title>
-	<link href="../bootstrap-3.3.5-dist/css/bootstrap.min.css" title=""
-		rel="stylesheet" />
-	<link title="" href="../css/style.css" rel="stylesheet" type="text/css" />
-	<link title="blue" href="../css/dermadefault.css" rel="stylesheet"
-		type="text/css" />
-	<link title="green" href="../css/dermagreen.css" rel="stylesheet"
-		type="text/css" disabled="disabled" />
-	<link title="orange" href="../css/dermaorange.css" rel="stylesheet"
-		type="text/css" disabled="disabled" />
-	<link href="../css/templatecss.css" rel="stylesheet" title=""
-		type="text/css" />
-	<script src="../script/jquery-1.11.1.min.js" type="text/javascript"></script>
-	<script src="../script/jquery.cookie.js" type="text/javascript"></script>
-	<script src="../bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/dermadefault.css" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/dermagreen.css" title="green" disabled="disabled" />
+	<link rel="stylesheet" type="text/css" href="../css/dermaorange.css" title="orange" disabled="disabled" />
+	<link rel="stylesheet" type="text/css" href="../css/templatecss.css" />
+	<script type="text/javascript" src="../script/jquery-1.11.1.min.js"/>
+	<script type="text/javascript" src="../script/jquery.cookie.js"/>
+	<script type="text/javascript" src="../bootstrap-3.3.5-dist/js/bootstrap.min.js"/>
 		
 	<script type="text/javascript">
 		$(document).ready(function(){
