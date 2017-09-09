@@ -152,7 +152,7 @@
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />售后收货
-							</div> <a href="/admin/afterSaleComeRecordList.jsp" target="content"><span
+							</div> <a href="/customer/afterSaleComeRecordList.jsp" target="content"><span
 								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
 								class="sub-title">售后收货</span></a>
 						</li>
