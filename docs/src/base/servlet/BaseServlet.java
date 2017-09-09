@@ -47,7 +47,16 @@ public class BaseServlet extends HttpServlet{
 		}
 		out.close();
 	}
-	
+	protected void responseSuccess2(String reason){
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+			out.write(getResponseStr("1", "",reason));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		out.close();
+	}
 	protected void responseError(String reason) {
 		PrintWriter out = null;
 		try {

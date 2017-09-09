@@ -23,6 +23,7 @@ public class AfterSaleComeRecordVO {
 	private String orderNum;//订单号
 	private String creator;//创建者
 	private String createTime;//创建时间
+	private String entryTime;//录入时间
 	private String remark;//备注
 	private String status;//处理状态
 	
@@ -31,7 +32,9 @@ public class AfterSaleComeRecordVO {
 		this.courierNum = afterSaleComeRecord.getCourierNum();
 		this.expressName = afterSaleComeRecord.getExpressName();
 		this.shopName = afterSaleComeRecord.getShopName();
+		
 		this.goodsName = afterSaleComeRecord.getGoodsName();
+		
 		this.checkResult = afterSaleComeRecord.getCheckResult();
 		this.wangwang = afterSaleComeRecord.getWangwang();
 		this.phoneNum = afterSaleComeRecord.getPhoneNum();
@@ -39,10 +42,19 @@ public class AfterSaleComeRecordVO {
 		User user = UserDAO.getInstance().load(afterSaleComeRecord.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
 		this.createTime = DateUtil.toString(afterSaleComeRecord.getCreateTime());
-		this.remark = afterSaleComeRecord.getRemark();
+		this.entryTime = DateUtil.toString(afterSaleComeRecord.getEntryTime());
+		this.remark = afterSaleComeRecord.getRemark()!=null ? afterSaleComeRecord.getRemark():" ";
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
 	}
 	
+	public String getEntryTime() {
+		return entryTime;
+	}
+
+	public void setEntryTime(String entryTime) {
+		this.entryTime = entryTime;
+	}
+
 	public String getExpressName() {
 		return expressName;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.api.AfterSaleComeRecord;
+import base.api.User;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
@@ -52,6 +53,10 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		String sql = "select * from t_after_sale_come_record where id=?";
 		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, id);
 	}
+	public AfterSaleComeRecord query(String courierNum) {
+		String sql = "select * from t_after_sale_come_record where courierNum=? ";
+		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, courierNum);
+	}
 	
 	public List<AfterSaleComeRecord> search(String courierNum,String expressName,String shopName,String goodsName,String orderNum,String phoneNum,int index, int pagesize ) {
 		String sql = "select * from t_after_sale_come_record where 1=1 ";
@@ -60,7 +65,7 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 			sql = sql+" and courierNum=? ";
 			list.add(courierNum);
 		}
-		if(expressName!=null&&expressName!=""&&expressName!="全部"){
+		if(expressName!=null&&expressName!=""){
 			sql = sql+" and expressName=? ";
 			list.add(expressName);
 		}

@@ -165,7 +165,26 @@
 		<servlet-name>AfterSaleComeRecordServlet</servlet-name>
 		<url-pattern>/afterSaleComeRecordServlet.do</url-pattern>
 	</servlet-mapping>
-	
+	<servlet>
+		<description>AfterSaleEntryServlet</description>
+		<display-name>AfterSaleEntryServlet</display-name>
+		<servlet-name>AfterSaleEntryServlet</servlet-name>
+		<servlet-class>base.servlet.AfterSaleEntryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AfterSaleEntryServlet</servlet-name>
+		<url-pattern>/afterSaleEntryServlet.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>ExpressReissueServlet</description>
+		<display-name>ExpressReissueServlet</display-name>
+		<servlet-name>ExpressReissueServlet</servlet-name>
+		<servlet-class>base.servlet.ExpressReissueServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExpressReissueServlet</servlet-name>
+		<url-pattern>/expressReissueServlet.do</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>

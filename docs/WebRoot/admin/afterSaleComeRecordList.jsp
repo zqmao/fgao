@@ -13,18 +13,27 @@
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
-			var first_express = 1;
+			var courierNum = "";
+			var shopName ="";
+			var goodsName ="";
+			var orderNum = "";
+			var phoneNum = "";
+			var expressName2 = "";
 			var option_express = "0";
-			var second_express = 1;
 			var option_express2 = "0";
+			var option_express3 = "0";
             $(function() {
             	
             	$("#addAscr").panel({
-            		title: '添加售后收货记录',
+            		title: '添加拆包记录',
             		
             		});
             	$("#searchAscr").panel({
-            		title: '售后收货记录搜索',
+            		title: '搜索',
+            		
+            	});
+            	$("#courierNumAscr").panel({
+            		title: '收货记录',
             		
             	});
             	/* 获取快递名称 */
@@ -34,7 +43,7 @@
                      textField:'text',
                      loadFilter: function(data){
                     		if (data.data){
-                    			$("#option_express").combobox('select',"请选择:");<%-- <%=userId%> --%>
+                    			$("#option_express").combobox('select',"请选择:");
                     			return data.data;
                     		} else {
                     			return data;
@@ -42,6 +51,22 @@
                     	}
                  }
                  );
+            	 /* 添加记录时获取快递名称 */
+            	 $("#option_express3").combobox({
+                     url:'../afterSaleComeRecordServlet.do?sign=select',
+                     valueField:'text',
+                     textField:'text',
+                     loadFilter: function(data){
+                    		if (data.data){
+                    			$("#option_express3").combobox('select',"请选择:");
+                    			return data.data;
+                    		} else {
+                    			return data;
+                    		}
+                    	}
+                 }
+                 );
+            	
             	 /* 查询时获取快递名称 */
             	 $("#option_express2").combobox({
                      url:'../afterSaleComeRecordServlet.do?sign=select',
@@ -49,7 +74,7 @@
                      textField:'text',
                      loadFilter: function(data){
                     		if (data.data){
-                    			$("#option_express2").combobox('select',"请选择:");<%-- <%=userId%> --%>
+                    			$("#option_express2").combobox('select',"全部");
                     			return data.data;
                     		} else {
                     			return data;
@@ -65,7 +90,8 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : option_express},
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum, 
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
@@ -78,7 +104,8 @@
                             {title: '手机号', field: 'phoneNum', width: 120, align: 'center'},
                             {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '创建人员', field: 'creator', width: 100, align: 'center'},
-                            {title: '创建时间', field: 'createTime', width: 180, align: 'center'},
+                            {title: '拆包时间', field: 'createTime', width: 180, align: 'center'},
+                            {title: '收件时间', field: 'entryTime', width: 180, align: 'center'},
                             {title: '备注', field: 'remark', width: 100, align: 'center', formatter:formatCellTooltip},
                             {title: '状态', field: 'status', width: 100, align: 'center'}
                         ]],
@@ -163,6 +190,16 @@
             function searchCancel(){
             	$("#searchAscr").panel("close");
             }
+            function searchClear(){
+            	$("#searchAscrForm").form("clear");
+            }
+            //
+            function courierNumCancel(){
+            	$("#courierNumAscr").panel("close");
+            }
+            function courierNumClear(){
+            	$("#courierNumAscrForm").form("clear");
+            }
             function getChecked(id) {
                 var ids = [];
                 var rows = $('#' + id).datagrid("getChecked");
@@ -173,6 +210,19 @@
             }
             //查询
             function submitSearch(){
+            	courierNum = $("#courierNum").val();
+            	goodsName = $("#goodsName").val();
+            	orderNum = $("#orderNum").val();
+            	phoneNum = $("#phoneNum").val();
+            	shopName = $("#shopName").val();
+            	expressName2 = $("#option_express2").val();
+            	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
+            	queryParams.courierNum = courierNum;
+            	queryParams.goodsName = goodsName;
+            	queryParams.orderNum = orderNum;
+            	queryParams.phoneNum = phoneNum;
+            	queryParams.shopName = shopName;
+            	queryParams.expressName2 = expressName2;
             	$("#searchAscrForm").form("submit",{
             		url:"../afterSaleComeRecordServlet.do?sign=search",
             		success:function(result){
@@ -180,7 +230,7 @@
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
-							$("#searchAscrForm").form("clear");
+							/* $("#searchAscrForm").form("clear"); */
         					$("#ascrGrid").datagrid("reload");
         					
 				    	}
@@ -202,17 +252,30 @@
 				    }
 				});
 			}
-			
+            function submitCourierNum() {
+				$("#courierNumAscrForm").form("submit", {
+				    url:"../afterSaleComeRecordServlet.do?sign=addCourierNum",
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+				    		alert(data.reason);
+							$("#courierNumAscrForm").form("clear");
+        					$("#ascrGrid").datagrid("reload");
+				    	}
+				    }
+				});
+			}
         </script>
 	</head>
 
 	<body class="easyui-layout">
-	
-		<div title="售后收货记录列表" class="easyui-panel" style="width: 100%">
+		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
 			<table id="ascrGrid" style="height: 340px;"></table>
 		</div>
-	<div style="width:48%; position:relative">
-		<div id="addAscr" class="easyui-panel" title="添加售后收货记录" style="width: 98%; height: 500px;padding: 10px;">
+	<div style="width:40%; position:relative">
+		<div id="addAscr" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="addAscrForm" method="post">
 				<input type="hidden" name="ascrId" value="" />
 				<table>
@@ -222,15 +285,17 @@
 				    </tr>
 				    <tr >
 						<label for="option_express" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
+						
 				        <input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" />
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
 						<td><select class="easyui-combobox" name="shopName" id="" style="width:250px;">
-				    <option value="新祈源数码专营店" >新祈源数码专营店</option>
-				    <option value="义吉隆数码专营店" selected="selected">义吉隆数码专营店</option>
-				    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
-				    <option value="altay旗舰店" >altay旗舰店</option>
+							<option value="" selected="selected">请选择:</option>
+						    <option value="新祈源数码专营店" >新祈源数码专营店</option>
+						    <option value="义吉隆数码专营店" >义吉隆数码专营店</option>
+						    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
+						    <option value="altay旗舰店" >altay旗舰店</option>
 						</select><td>
 						
 						
@@ -247,8 +312,6 @@
 						<td>订单号:</td>
 						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;" /><td>
 				    </tr>
-					
-				   
 				    <tr >
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 250px;"/><td>
@@ -280,11 +343,11 @@
 		</div>
 		
 		</div>
+	
 		
+		<div style="width:30%;position:absolute;right:1px;top:368px">
 		
-		<div style="width:48%;position:absolute;right:1px;top:368px">
-		
-		<div id="searchAscr" class="easyui-panel" title="售后收货记录搜索" style="width: 98%; height: 500px;padding: 10px;">
+		<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchAscrForm" method="post">
 				<table>
 					<tr >
@@ -297,34 +360,75 @@
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
-						<td><select class="easyui-combobox" name="shopName2" id="" style="width:250px;">
-				    <option value="新祈源数码专营店" >新祈源数码专营店</option>
-				    <option value="义吉隆数码专营店" selected="selected">义吉隆数码专营店</option>
-				    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
-				    <option value="altay旗舰店" >altay旗舰店</option>
+						<td><select class="easyui-combobox" name="shopName2" id="shopName" style="width:250px;">
+							<option value="" selected="selected" >全部</option>
+						    <option value="新祈源数码专营店" >新祈源数码专营店</option>
+						    <option value="义吉隆数码专营店" >义吉隆数码专营店</option>
+						    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
+						    <option value="altay旗舰店" >altay旗舰店</option>
 						</select><td>
 				    </tr>
 				 	<tr >
 						<td>物品名称:</td>
-						<td><input class="easyui-validatebox" name="goodsName2" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="goodsName2" id="goodsName" type="text" style="width: 250px;"/><td>
 				    </tr>
 				    <tr >
 						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum2" type="text" style="width: 250px;" /><td>
+						<td><input class="easyui-validatebox" name="orderNum2" id="orderNum" type="text" style="width: 250px;" /><td>
 				    </tr>
 				    <tr >
 						<td>手机号:</td>
-						<td><input class="easyui-validatebox" name="phoneNum2" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
 			    </table>
 			</form>
 			<button style="margin: 40px 60px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitSearch();">
 			确定
 			</button>
+			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchClear();">
+			清除
+			</button>
 			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="searchCancel();">
 			取消
 			</button>
 		</div>
+	
+		
+		
+		
 		</div>
+		
+		
+		
+	<div style="width:30%;position:absolute;left:40%;top:368px">
+		
+		<div id="courierNumAscr" class="easyui-panel" title="添加扫码记录" style="width: 98%; height: 500px;padding: 10px;">
+			<form id="courierNumAscrForm" method="post">
+				<table>
+				<input type="hidden" name="courierNumId" value="" />
+					<tr>
+						<td>快递单号:</td>
+						<td><textarea name="courierNums" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
+				    </tr>
+				    <tr>
+				        <label for="option_express3" style="font-size: 16px;margin-left: 3px;margin-right:3px">快递名称:</label>
+				        <input class="easyui-combobox" id="option_express3" style="width:250px;margin-left:5px;" name="expressName3" />
+				    </tr>
+			    </table>
+			</form>
+			<button style="margin: 40px 60px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="submitCourierNum();">
+			确定
+			</button>
+			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumClear();">
+			清除
+			</button>
+			<button style="margin: 30px 50px;font-size: 24px;border-radius: 9px;background-color: #b7d2ff;" onclick="courierNumCancel();">
+			取消
+			</button>
+		</div>
+		
+	</div>	
+		
+		
 	</body>
 </html>
