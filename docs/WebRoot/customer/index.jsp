@@ -11,15 +11,20 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>用户中心</title>
-	<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/dermadefault.css" title="blue"/>
-	<link rel="stylesheet" type="text/css" href="../css/dermagreen.css" title="green" disabled="disabled" />
-	<link rel="stylesheet" type="text/css" href="../css/dermaorange.css" title="orange" disabled="disabled" />
-	<link rel="stylesheet" type="text/css" href="../css/templatecss.css" />
-	<script type="text/javascript" src="../script/jquery-1.11.1.min.js"/>
-	<script type="text/javascript" src="../script/jquery.cookie.js"/>
-	<script type="text/javascript" src="../bootstrap-3.3.5-dist/js/bootstrap.min.js"/>
+	<link href="../bootstrap-3.3.5-dist/css/bootstrap.min.css" title=""
+		rel="stylesheet" />
+	<link title="" href="../css/style.css" rel="stylesheet" type="text/css" />
+	<link title="blue" href="../css/dermadefault.css" rel="stylesheet"
+		type="text/css" />
+	<link title="green" href="../css/dermagreen.css" rel="stylesheet"
+		type="text/css" disabled="disabled" />
+	<link title="orange" href="../css/dermaorange.css" rel="stylesheet"
+		type="text/css" disabled="disabled" />
+	<link href="../css/templatecss.css" rel="stylesheet" title=""
+		type="text/css" />
+	<script src="../script/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="../script/jquery.cookie.js" type="text/javascript"></script>
+	<script src="../bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -57,11 +62,6 @@
 <body>
 	<nav class="nav navbar-default navbar-mystyle navbar-fixed-top">
 	<div class="navbar-header">
-		<button class="navbar-toggle" data-toggle="collapse"
-			data-target=".navbar-collapse">
-			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-				class="icon-bar"></span>
-		</button>
 		<a class="navbar-brand"><span class="glyphicon glyphicon-home"></span></a>
 	</div>
 	<div class="collapse navbar-collapse">
@@ -69,22 +69,22 @@
 			<li class="li-border"><a class="mystyle-color" href="#">管理控制台</a></li>
 		</ul>
 		<ul class="nav navbar-nav pull-right">
-			<li class="dropdown li-border"><a href="#"
-				class="dropdown-toggle mystyle-color" data-toggle="dropdown"><%=user.getName()%><span
-					class="caret"></span></a>
+			<li class="dropdown li-border">
+				<a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown"><%=user.getName()%><span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li><a href="#" onclick="logout();">退出</a></li>
-				</ul></li>
-			<li class="dropdown"><a href="#"
-				class="dropdown-toggle mystyle-color" data-toggle="dropdown">换肤<span
-					class="caret"></span></a>
+				</ul>
+			</li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">换肤<span class="caret"></span></a>
 				<ul class="dropdown-menu changecolor">
 					<li id="blue"><a href="#">蓝色</a></li>
 					<li class="divider"></li>
 					<li id="green"><a href="#">绿色</a></li>
 					<li class="divider"></li>
 					<li id="orange"><a href="#">橙色</a></li>
-				</ul></li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 	</nav>
@@ -96,58 +96,72 @@
 			<div class="subNavBox">
 				<div class="sBox">
 					<div class="subNav sublist-down">
-						<span class="title-icon glyphicon glyphicon-chevron-down"></span><span
-							class="sublist-title">工作相关</span>
+						<span class="title-icon glyphicon glyphicon-chevron-down"></span>
+						<span class="sublist-title">工作相关</span>
 					</div>
 					<ul class="navContent" style="display: block">
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />评论搜集
-							</div> <a href="/customer/commentList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">评论搜集</span></a>
+							</div> 
+							<a href="/customer/commentList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">评论搜集</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />待办管理
-							</div> <a href="/customer/bugList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">待办管理</span></a>
+							</div> 
+							<a href="/customer/bugList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">待办管理</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />知识库
-							</div> <a href="/customer/articleList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">知识库</span></a>
+							</div> 
+							<a href="/customer/articleList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">知识库</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />进销存系统
-							</div> <a href="/admin/goods.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">进销存系统</span></a>
+							</div> 
+							<a href="/admin/goods.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">进销存系统</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />优惠券管理
-							</div> <a href="/customer/couponList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">优惠券管理</span></a>
+							</div> 
+							<a href="/customer/couponList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">优惠券管理</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />补发快递
-							</div> <a href="/admin/expressReissueList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">补发快递</span></a>
+							</div> 
+							<a href="/admin/expressReissueList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">补发快递</span>
+							</a>
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />售后收货
-							</div> <a href="/customer/afterSaleComeRecordList.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-credit-card"></span><span
-								class="sub-title">售后收货</span></a>
+							</div> 
+							<a href="/customer/afterSaleComeRecordList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">售后收货</span>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -157,13 +171,14 @@
 							class="sublist-title">管理相关</span>
 					</div>
 					<ul class="navContent" style="display: none">
-
 						<li>
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />排班情况
-							</div> <a href="/customer/arrange.jsp" target="content"><span
-								class="sublist-icon glyphicon glyphicon-user"></span><span
-								class="sub-title">排班情况</span></a>
+							</div> 
+							<a href="/customer/arrange.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-user"></span>
+								<span class="sub-title">排班情况</span>
+							</a>
 						</li>
 
 					</ul>
