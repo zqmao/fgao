@@ -192,7 +192,7 @@
 		</div>
 		<div class="right-product my-index right-full">
 			<div class="container-fluid">
-				<iframe id="content" name="content"
+				<iframe id="content" name="content" src="../default.jsp"
 					style="width: 100%; height: 1500px; border: 1px; background-color: #eceff3;" >
 				</iframe>
 			</div>
