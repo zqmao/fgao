@@ -16,20 +16,22 @@
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
-	
 	<script type="text/javascript">
+	
 			var courierNum = "";
 			var shopName ="";
 			var goodsName ="";
 			var orderNum = "";
 			var phoneNum = "";
+			var wangwang = "";
 			var allSearch="";
 			var expressName2 = "";
 			var option_express = "0";
 			var option_express2 = "0";
 			var option_express3 = "0";
+			var option_express4 = "0";
             $(function() {
-            	
+            	$("#displayId").hide(); 
             	$("#addAscr").panel({
             		title: '添加拆包记录',
             		
@@ -46,6 +48,7 @@
                  	$("#courierNumAscr").panel("open");
              	}else{
              		$("#courierNumAscr").panel("close");
+             		$("#moveLeft").css("right","35%");
              	}
             	/* 获取快递名称 */
             	 $("#option_express").combobox({
@@ -93,6 +96,21 @@
                     	}
                  }
                  );
+            	 /* 查询时获取快递名称 */
+            	 $("#reissueExpressName").combobox({
+                     url:'../expressReissueServlet.do?sign=select',
+                     valueField:'text',
+                     textField:'text',
+                     loadFilter: function(data){
+                    		if (data.data){
+                    			$("#reissueExpressName").combobox('select',"请选择:");
+                    			return data.data;
+                    		} else {
+                    			return data;
+                    		}
+                    	}
+                 }
+                 );
             	
                 $("#addAscr").panel("open");
                 $("#grant").dialog("close");
@@ -102,23 +120,28 @@
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,allSearch : allSearch},
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
-                            {title: '编号', field: 'id', width: 60},
-                            {title: '快递单号', field: 'courierNum', width: 120},
-                            {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
-                            {title: '店铺名称', field: 'shopName', width: 120, align: 'center'},
-                            {title: '快递名称', field: 'expressName', width: 120, align: 'center'},
-                            {title: '检查结果', field: 'checkResult', width: 120, align: 'center'},
-                            {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
-                            {title: '手机号', field: 'phoneNum', width: 120, align: 'center'},
-                            {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
-                            {title: '创建人员', field: 'creator', width: 100, align: 'center'},
-                            {title: '拆包时间', field: 'createTime', width: 180, align: 'center'},
-                            {title: '收件时间', field: 'entryTime', width: 180, align: 'center'},
+                            {title: '编号', field: 'id', width: 50},
+                            {title: '快递单号', field: 'courierNum', width: 100},
+                            {title: '物品名称', field: 'goodsName', width: 100, align: 'center'},
+                            {title: '店铺名称', field: 'shopName', width: 100, align: 'center'},
+                            {title: '快递名称', field: 'expressName', width: 50, align: 'center'},
+                            {title: '检查结果', field: 'checkResult', width: 100, align: 'center'},
+                            {title: '旺旺', field: 'wangwang', width: 100, align: 'center'},
+                            {title: '手机号', field: 'phoneNum', width: 90, align: 'center'},
+                            {title: '订单号', field: 'orderNum', width: 100, align: 'center'},
+                            {title: '创建人员', field: 'creator', width: 90, align: 'center'},
+                            {title: '退件类型', field: 'bounceType', width: 90, align: 'center'},
+                            {title: '补发快递单号', field: 'reissueCourierNum', width: 100, align: 'center'},
+                            {title: '补发快递名称', field: 'reissueExpressName', width: 80, align: 'center'},
+                            {title: '补发物品名称', field: 'reissueGoodsName', width: 100, align: 'center'},
+                            
+                            {title: '拆包时间', field: 'createTime', width: 130, align: 'center'},
+                            {title: '收件时间', field: 'entryTime', width: 130, align: 'center'},
                             {title: '备注', field: 'remark', width: 100, align: 'center', formatter:formatCellTooltip},
-                            {title: '状态', field: 'status', width: 100, align: 'center'}
+                            {title: '状态', field: 'status', width: 80, align: 'center'}
                         ]],
                     loadFilter: function(data){
                    		if (data.data){
@@ -172,7 +195,11 @@
                                     phoneNum: row[0].phoneNum,
                                     orderNum: row[0].orderNum,
                                     remark: row[0].remark,
-                                    status: row[0].status
+                                    status: row[0].status,
+                                    bounceType: row[0].bounceType,
+                                    reissueCourierNum:row[0].reissueCourierNum,
+                                    reissueExpressName:row[0].reissueExpressName,
+                                    reissueGoodsName:row[0].reissueGoodsName
                                 });
                             }
                         }
@@ -213,13 +240,16 @@
             function cancel(){
             	$("#addAscr").panel("close");
             }
+            function allClear(){
+            	//$("#addAscr").form("clear");
+            	 $("#addAscrForm").form("clear");
+            }
             function searchCancel(){
             	$("#searchAscr").panel("close");
             }
             function searchClear(){
             	$("#searchAscrForm").form("clear");
             }
-            //
             function courierNumCancel(){
             	$("#courierNumAscr").panel("close");
             }
@@ -234,12 +264,23 @@
                 }
                 return ids;
             }
+            function changeGoods(){
+            	//var value  = $('input[name="bounceType"]:checked').val(); //获取被选中Radio的Value值
+            	$("#displayId").show();
+            	//$('#courierNum3').attr("disabled",true); 
+            	//var Num3 = $('#courierNum3').html();
+            }
+            function changeDisplay(){
+            	$("#displayId").hide();
+            	$("#displayId").form("clear");
+            }
             //查询
             function submitSearch(){
             	courierNum = $("#courierNum").val();
             	goodsName = $("#goodsName").val();
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
+            	wangwang = $("#wangwang").val();
             	shopName = $("#shopName").val();
             	allSearch = $("#allSearch").val();
             	expressName2 = $("#option_express2").val();
@@ -248,6 +289,7 @@
             	queryParams.goodsName = goodsName;
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
+            	queryParams.wangwang = wangwang;
             	queryParams.shopName = shopName;
             	queryParams.allSearch = allSearch;
             	queryParams.expressName2 = expressName2;
@@ -266,6 +308,23 @@
             	});
             	
             }
+           /*  function addMessage(){
+            	var bounceVal = $('input[name="bounceType"]:checked').val();
+            	if("换货"==bounceVal){
+            		var rcn = $("#reissueCourierNum").val();
+            		var rgn = $("#reissueGoodsName").val();
+            		//var opt = $("#option_express3").val();   ||(opt==null || opt.length==0)
+            		if((rcn==null || rcn.length==0) || (rgn==null || rgn.length==0)){
+            			 $.messager.alert('提示', '当选择换货时，快递单号和货品名称不能为空', 'Warning');
+            			/*  alert("当选择换货时，快递名称和快递单号不能为空"); 
+            		}else{
+            			submitAdd();
+            		}
+            	}else{
+            		submitAdd();
+            	}
+            } */
+              
             function submitAdd() {
 				$("#addAscrForm").form("submit", {
 				    url:"../afterSaleComeRecordServlet.do?sign=add",
@@ -274,6 +333,7 @@
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
+				    		$("#displayId").hide();
 							$("#addAscrForm").form("clear");
         					$("#ascrGrid").datagrid("reload");
 				    	}
@@ -295,6 +355,7 @@
 				    }
 				});
 			}
+            
         </script>
 	</head>
 
@@ -302,7 +363,7 @@
 		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
 			<table id="ascrGrid" style="height: 340px;"></table>
 		</div>
-	<div style="width:40%; position:relative">
+	<div style="width:44%; position:relative">
 		<div id="addAscr" class="easyui-panel" title="添加拆包记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="addAscrForm" method="post">
 				<input type="hidden" name="ascrId" value="" />
@@ -347,16 +408,45 @@
 				    </tr>
 				    <tr >
 						<td>备注:</td>
-						<td><textarea name="remark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
+						<td><textarea name="remark" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
+				    </tr>
+				     <tr >
+						<td>退件类型:</td>
+						<td>
+							<input type="radio" name="bounceType" value="退货" id="returnGood" onclick="changeDisplay()" /><label for="returnGood">退货</label>
+							<input type="radio" name="bounceType" value="换货" id="changeGood" onclick="changeGoods()" /><label for="changeGood">换货</label>
+							<input type="radio" name="bounceType" value="拦截件" id="intercept" onclick="changeDisplay()" /><label for="intercept">拦截件</label>
+							<input type="radio" name="bounceType" value="无信息" id="noMessage" onclick="changeDisplay()" checked="checked"/><label for="noMessage">无信息</label> 
+							<!-- <input type="radio" name="status" value="已处理" />已处理
+							<input type="radio" name="status" value="待处理" checked="checked" />待处理 -->
+						<td>
 				    </tr>
 				    <tr >
 						<td>处理状态:</td>
 						<td>
-							<input type="radio" name="status" value="待处理" checked="checked" />待处理
-							<input type="radio" name="status" value="已处理" />已处理
+							<input type="radio" name="status" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
+							<input type="radio" name="status" value="已处理" id="overManage"/><label for="overManage">已处理</label>
 						<td>
-						
 				    </tr>
+			    </table>
+			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 350px;">
+			    	<tr >
+						<td>补发快递单号:</td>
+						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 150px;" /><td>
+				    </tr>
+				     <tr >
+						<td><label for="reissueExpressName" style="font-size: 16px;">补发快递名称:</label></td>
+						
+				        <td><input class="easyui-combobox" id="reissueExpressName" style="width:150px;margin-left:5px;" name="reissueExpressName" /></td>
+				    </tr>
+				    <tr >
+						<td>补发货物名称:</td>
+						<td><input class="easyui-validatebox" id="reissueGoodsName" name="reissueGoodsName" type="text" style="width: 150px;" /><td>
+				    </tr>
+					<!-- <tr >
+						<td>快递名称:</td>
+						<td><input class="easyui-validatebox" name="expressName3" type="text" style="width: 250px;" data-options="required:true" /><td>
+				    </tr> -->
 			    </table>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
@@ -366,18 +456,18 @@
 							<a class="custom" onclick="submitAdd();">确定</a>
 						</td>
 						<td>
+							<a class="recharge" onclick="allClear();">清除</a>
+						</td>
+						<td>
 							<a class="recharge" onclick="cancel();">取消</a>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
 		</div>
-	
 		
-		<div style="width:30%;position:absolute;right:1px;top:368px">
-		
+		<div id="moveLeft" style="width:28%;position:absolute;right:1px;top:368px">
 		<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchAscrForm" method="post">
 				<table>
@@ -418,7 +508,10 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
-				    
+				    <tr >
+						<td>旺旺:</td>
+						<td><input class="easyui-validatebox" name="wangwang2" id="wangwang" type="text" style="width: 250px;"/><td>
+				    </tr>
 			    </table>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
@@ -437,11 +530,9 @@
 				</table>
 			</div>
 		</div>
-		
 		</div>
 		
-	<div style="width:30%;position:absolute;left:40%;top:368px">
-		
+	<div style="width:28%;position:absolute;left:44%;top:368px">
 		<div id="courierNumAscr" class="easyui-panel" title="添加扫码记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="courierNumAscrForm" method="post">
 				<input type="hidden" name="courierNumId" value="" />
@@ -472,11 +563,8 @@
 					</tr>
 				</table>
 			</div>
-			
 		</div>
-		
 	</div>	
-		
 		
 	</body>
 </html>

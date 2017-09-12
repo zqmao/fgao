@@ -22,6 +22,20 @@ public class AfterSaleComeRecord {
 	private int status;//处理状态:1已处理；0未处理
 	private long entryTime;//打单时间
 	
+	private String bounceType;//退件类型
+	private String reissueCourierNum;//补发快递单号
+	private String reissueExpressName;//补发快递名称
+	private String reissueGoodsName;//补发物品名称
+	
+	
+	public String getBounceType() {
+		return bounceType;
+	}
+
+	public void setBounceType(String bounceType) {
+		this.bounceType = bounceType;
+	}
+
 	public void setEntryTime(long entryTime) {
 		this.entryTime = entryTime;
 	}
@@ -108,4 +122,30 @@ public class AfterSaleComeRecord {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	public String getReissueCourierNum() {
+		return reissueCourierNum;
+	}
+
+	public void setReissueCourierNum(String reissueCourierNum) {
+		this.reissueCourierNum = reissueCourierNum;
+	}
+
+	public String getReissueExpressName() {
+		return reissueExpressName;
+	}
+
+	public void setReissueExpressName(String reissueExpressName) {
+		this.reissueExpressName = reissueExpressName;
+	}
+
+	public String getReissueGoodsName() {
+		return reissueGoodsName;
+	}
+
+	public void setReissueGoodsName(String reissueGoodsName) {
+		this.reissueGoodsName = reissueGoodsName;
+	}
+	
+	
 }

@@ -26,11 +26,11 @@
 			var ids = "";
             $(function() {
             	/* $("#displayId").hide();  */
-            	$("#addErlist").panel({
+            	$("#addOrderlist").panel({
             		title: '添加需要补发记录',
             		
             		});
-            	$("#searchErlist").panel({
+            	$("#searchOrderlist").panel({
             		title: '搜索',
             		
             	});
@@ -40,7 +40,7 @@
             	});
             	/* 获取快递名称 */
             	 $("#option_express").combobox({
-                     url:'../expressReissueServlet.do?sign=select',
+                     url:'../exportOrderListServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -54,7 +54,7 @@
                  });
             	 /* 添加记录时获取快递名称 */
             	 $("#option_express3").combobox({
-                     url:'../expressReissueServlet.do?sign=select',
+                     url:'../exportOrderListServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -70,7 +70,7 @@
             	
             	 /* 查询时获取快递名称 */
             	 $("#option_express2").combobox({
-                     url:'../expressReissueServlet.do?sign=select',
+                     url:'../exportOrderListServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
@@ -84,35 +84,33 @@
                  }
                  );
             	
-                $("#addErlist").panel("open");
+                $("#addOrderlist").panel("open");
                 $("#grant").dialog("close");
-                $("#erlistGrid").datagrid({
+                $("#eolistGrid").datagrid({
                     selectOnCheck: true,
                     checkOnSelect: true,
                     pagination: true,
-                    url: "../expressReissueServlet.do?sign=list",
+                    url: "../exportOrderListServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
-                            {title: '创建人员', field: 'creator', width: 90, align: 'center'},
-                            {title: '登记时间', field: 'entryTime', width: 130, align: 'center'},
-                            {title: '补发地址', field: 'address', width: 120, align: 'center',formatter:formatCellTooltip},
+                            {title: '数据导入者', field: 'exportor', width: 90, align: 'center'},
+                           
                             {title: '店铺名称', field: 'shopName', width: 120, align: 'center'},
-                            {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
-                            {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
+                            {title: '订单编号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
-                            {title: '备注', field: 'remark', width: 120, align: 'center', formatter:formatCellTooltip},
+                            {title: '收货地址', field: 'address', width: 120, align: 'center', formatter:formatCellTooltip},
+                            {title: '手机号码', field: 'phoneNum', width: 120, align: 'center'},
+                            {title: '宝贝标题', field: 'goodsHeadline', width: 120, align: 'center'},
                             
-                            {title: '状态', field: 'status', width: 100, align: 'center'},
-                            
-                            
-                            {title: '打单人员', field: 'issueDocumentor', width: 90,align: 'center'},
-                            {title: '快递名称', field: 'expressName', width: 80, align: 'center'},
-                            {title: '快递单号', field: 'courierNum', width: 100,align: 'center'},
-                            {title: '打单时间', field: 'issuTime', width: 130, align: 'center'},
-                            {title: '打单备注', field: 'issuRemark', width: 120, align: 'center', formatter:formatCellTooltip},
+                            {title: '支付宝账号', field: 'alipayNum', width: 90,align: 'center'},
+                            {title: '实际金额', field: 'actualMoney', width: 80, align: 'center'},
+                            {title: '收货人姓名', field: 'consigneeName', width: 100,align: 'center'},
+                            {title: '导入时间', field: 'exportTime', width: 130, align: 'center'},
+                            {title: '订单创建时间', field: 'orderCreateTime', width: 120, align: 'center'},
+                            {title: '订单付款时间', field: 'orderTime', width: 120, align: 'center'},
                         ]],
                     loadFilter: function(data){
                    		if (data.data){
@@ -125,24 +123,24 @@
                         iconCls: 'icon-add',
                         text: '增加',
                         handler: function() {
-                            $("#addErlist").form("clear");
-                            $("#addErlist").panel("open");
+                            $("#addOrderlist").form("clear");
+                            $("#addOrderlist").panel("open");
                         }
                     }, {
                         iconCls: 'icon-edit',
                         text: '修改',
                         handler: function() {
-                            ids = getChecked("erlistGrid");
+                            ids = getChecked("eolistGrid");
                             var len = ids.length;
                             if (len == 0) {
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
                             } else if (len > 1) {
                                 $.messager.alert('提示', '只能选择一个', 'Warning');
                             } else {
-                                var row = $("#erlistGrid").datagrid("getChecked");
-                                $("#addErlist").panel("open");
-                                $("#addErlist").form("load", {
-                                    erlistId: row[0].id,
+                                var row = $("#eolistGrid").datagrid("getChecked");
+                                $("#addOrderlist").panel("open");
+                                $("#addOrderlist").form("load", {
+                                	orderlistId: row[0].id,
                                     address:row[0].address,
                                     shopName:row[0].shopName,
                                     goodsName: row[0].goodsName,
@@ -151,6 +149,12 @@
                                     courierNum: row[0].courierNum,
                                     expressName:row[0].expressName,
                                     remark:row[0].remark,
+                                    /* bounceType:row[0].bounceType
+                                    status: row[0].status,
+                                    issueDocumentor:row[0].issueDocumentor,
+                                    expressName:row[0].expressName,
+                                    courierNum: row[0].courierNum,
+                                    issuRemark:row[0].issuRemark, */
                                 });
                             }
                         }
@@ -158,7 +162,7 @@
                         iconCls: 'icon-remove',
                         text: '删除',
                         handler: function() {
-                            var ids = getChecked("erlistGrid");
+                            var ids = getChecked("eolistGrid");
                             var len = ids.length;
                             if (len == 0) {
                                 $.messager.alert('提示', '至少选择一个', 'Warning');
@@ -167,10 +171,10 @@
                                     if (r) {
                                         $.ajax({
                                             type: "POST",
-                                            url: "../expressReissueServlet.do?sign=delete",
-                                            data: "erlistIds=" + ids,
+                                            url: "../exportOrderListServlet.do?sign=delete",
+                                            data: "orderlistIds=" + ids,
                                             success: function(msg) {
-                                                $("#erlistGrid").datagrid("reload");
+                                                $("#eolistGrid").datagrid("reload");
                                             },
                                             error: function(msg) {
                                                 alert(msg.toString());
@@ -188,17 +192,17 @@
 	            return "<span title='" + value + "'>" + value + "</span>";  
 	        } 
             function cancel(){
-            	$("#addErlistForm").form("clear");
+            	$("#addOrderlistForm").form("clear");
             }
             function cancelReissue(){
             	$("#addEreissuelistForm").form("clear");
             }
             
             function searchCancel(){
-            	$("#searchErlist").panel("close");
+            	$("#searchOrderlist").panel("close");
             }
             function searchClear(){
-            	$("#searchErlistForm").form("clear");
+            	$("#searchOrderlistForm").form("clear");
             }
             //
             function getChecked(id) {
@@ -228,22 +232,22 @@
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
             	expressName2 = $("#option_express2").val();
-            	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
+            	var queryParams =$("#eolistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
             	queryParams.goodsName = goodsName;
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.shopName = shopName;
             	queryParams.expressName2 = expressName2;
-            	$("#searchErlistForm").form("submit",{
-            		url:"../expressReissueServlet.do?sign=search",
+            	$("#searchOrderlistForm").form("submit",{
+            		url:"../exportOrderListServlet.do?sign=search",
             		success:function(result){
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
 							/* $("#searchAscrForm").form("clear"); */
-        					$("#erlistGrid").datagrid("reload");
+        					$("#eolistGrid").datagrid("reload");
         					
 				    	}
 				    }		
@@ -253,14 +257,14 @@
             
             function submitReissue(){
          
-            	var erlistId; 
-            	var ids = getChecked("erlistGrid");
+            	var orderlistId; 
+            	var ids = getChecked("eolistGrid");
             	
-            	var shopName=getFormDate("erlistGrid","shopName");
+            	var shopName=getFormDate("eolistGrid","shopName");
             	
-            	var goodsName = getFormDate("erlistGrid","goodsName");
+            	var goodsName = getFormDate("eolistGrid","goodsName");
             	
-            	var address = getFormDate("erlistGrid","address");
+            	var address = getFormDate("eolistGrid","address");
             	
             	$("#updateId").val(ids);
                 var len = ids.length;
@@ -293,33 +297,33 @@
             		//var opt = $("#option_express3").val();   ||(opt==null || opt.length==0)
             		if((cou==null || cou.length==0)){
             			 $.messager.alert('提示', '当选择换货时，快递单号不能为空', 'Warning');
-            			 alert("当选择换货时，快递名称和快递单号不能为空"); 
+            			 alert("当选择换货时，快递名称和快递单号不能为空");
             		}else{
             			submitAdd();
             		}
             	}else{
             		submitAdd();
             	}
-            } 
-            */
+            }
+             */
             function submitAdd() {
-				$("#addErlistForm").form("submit", {
-				    url:"../expressReissueServlet.do?sign=add",
+				$("#addOrderlistForm").form("submit", {
+				    url:"../exportOrderListServlet.do?sign=add",
 				    success:function(result){
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
-				    		$("#displayId").hide();
-							$("#addErlistForm").form("clear");
-        					$("#erlistGrid").datagrid("reload");
+				    		
+							$("#addOrderlistForm").form("clear");
+        					$("#eolistGrid").datagrid("reload");
 				    	}
 				    }
 				});
 			}
             function submitReissueAdd(){
-            	var erlistId;
-            	var ids = getChecked("erlistGrid");
+            	var orderlistId;
+            	var ids = getChecked("eolistGrid");
                 $("#updateId").val(ids);
                 
                 var len = ids.length;
@@ -335,14 +339,14 @@
                      		alert( '当选择待处理时,打单备注不能为空');
                      	}else{
                      		$("#addEreissuelistForm").form("submit", {
-            				    url:"../expressReissueServlet.do?sign=reissueAdd",
+            				    url:"../exportOrderListServlet.do?sign=reissueAdd",
             				    success:function(result){
             				    	var data = eval('(' + result + ')');
             				    	if(data.result == 0){
             				    		alert(data.reason);
             				    	}else{
             							$("#addEreissuelistForm").form("clear");
-                    					$("#erlistGrid").datagrid("reload");
+                    					$("#eolistGrid").datagrid("reload");
                     					//成功时将显示数据清除
                     					$("#reissueInf1").html("");
                                     	$("#reissueInf2").html("");
@@ -354,14 +358,14 @@
                      	}
                      }else{
                     	 $("#addEreissuelistForm").form("submit", {
-         				    url:"../expressReissueServlet.do?sign=reissueAdd",
+         				    url:"../exportOrderListServlet.do?sign=reissueAdd",
          				    success:function(result){
          				    	var data = eval('(' + result + ')');
          				    	if(data.result == 0){
          				    		alert(data.reason);
          				    	}else{
          							$("#addEreissuelistForm").form("clear");
-                 					$("#erlistGrid").datagrid("reload");
+                 					$("#eolistGrid").datagrid("reload");
          				    	}
          				    }
          				}); 
@@ -372,14 +376,14 @@
             }
             function submitCourierNum() {
 				$("#courierNumAscrForm").form("submit", {
-				    url:"../expressReissueServlet.do?sign=addcourierNum",
+				    url:"../exportOrderListServlet.do?sign=addcourierNum",
 				    success:function(result){
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
 							$("#courierNumAscrForm").form("clear");
-        					$("#erlistGrid").datagrid("reload");
+        					$("#eolistGrid").datagrid("reload");
 				    	}
 				    }
 				});
@@ -388,117 +392,47 @@
 	</head>
 
 	<body class="easyui-layout">
-		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
-			<table id="erlistGrid" style="height: 340px;"></table>
+		<div title="excle表记录" class="easyui-panel" style="width: 100%">
+			<table id="eolistGrid" style="height: 340px;"></table>
 		</div>
 	<div style="width:40%; position:relative">
-		<div id="addErlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
-			<form id="addErlistForm" method="post">
-				<input type="hidden"  name="erlistId" value="" />
-				<table style="" >
-					<tr id="ershopName" >
-						<td>商铺名称:</td>
-						<td><select class="easyui-combobox" name="shopName"  style="width:250px;">
-							<option value="" selected="selected">请选择:</option>
-						    <option value="新祈源数码专营店" >新祈源数码专营店</option>
-						    <option value="义吉隆数码专营店" >义吉隆数码专营店</option>
-						    <option value="索爱恒先专卖店" >索爱恒先专卖店</option>
-						    <option value="altay旗舰店" >altay旗舰店</option>
-						</select><td>
-				    </tr>
-				    <tr >
-						<td>补发地址:</td>
-						<td><input class="easyui-validatebox" name="address" type="text" style="width: 250px;" data-options="required:true" /><td>
-				    </tr>
-					<tr >
-						<td>补发物品:</td>
-						<td><input class="easyui-validatebox" name="goodsName" type="text" style="width: 250px;" data-options="required:true" /><td>
-				    </tr>
-				    <tr >
-						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;"/><td>
-				    <tr >
-						<td>旺旺:</td>
-						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 250px;"/><td>
-				    </tr>
-				    <tr >
-						<td>备注:</td>
-						<td><textarea name="remark" style="width:250px;height:100px" ></textarea><td>
-				    </tr>
-			    </table>
-			</form>
-			<div class="margin-tb manage-detail-con clearfix" >
+		<div id="addOrderlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
+			 <!-- <form id="addOrderlistForm" method="post">
+				<input type="hidden"  name="orderlistId" value="" />
 				<table>
 					<tr>
 						<td>
 							<a class="custom" onclick="submitAdd();">确定</a>
 						</td>
-						<td>
-							<a class="recharge" onclick="cancel();">清除</a>
-						</td>
 					</tr>
 				</table>
-			</div>
-		</div>
-		</div>
+				<input type="file">
+			</form> -->
+			<form id="addOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">
+		        <table border="0" align="center">
+		            <tr>
+		                <td>上传文件：</td>
+		                <td><input name="file" type="file" size="20"></td>
+		            </tr>
+		            <tr>
+		                <td></td>
+		                <td><a class="custom" onclick="submitAdd();">确定</a>
+		                <!-- <input type="reset" name="reset" value="重置"></td> -->
+		            </tr>
+		        </table>
+    </form>
+			
+		</div> 
 		
-			<div style="width:30%;position:absolute;left:40%;top:368px">
-		<div id="addEreissuelist" class="easyui-panel" title="补发快递记录" style="width: 98%; height: 500px;padding: 10px;">
-			<form id="addEreissuelistForm" method="post">
-				<input type="hidden" id="updateId" name="updateId" value="" />
-				<table>
-				    <tr >
-						<td>处理状态:</td>
-						<td>
-							<input type="radio" name="status" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
-							<input type="radio" name="status" value="已处理" id="overManage"/><label for="overManage">已处理</label>
-						<td>
-				    </tr>
-					<tr >
-						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 250px;"/><td>
-				    </tr>
-				    <tr >
-						<td><label for="option_express" style="font-size: 16px;">快递名称:</label></td>
-						
-				        <td><input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" /></td>
-				    </tr>
-				    <tr >
-						<td>打单备注:</td>
-						<td><textarea id="issuRemark" name="issuRemark" style="width:100%;height:100px" style="width: 400px;" ></textarea><td>
-				    </tr>
-			    </table>
-			</form>
-			
-			<div class="margin-tb manage-detail-con clearfix" >
-				<table>
-					<tr>
-						<td>
-							<a class="custom" onclick="submitReissue();">补发</a>
-						</td>
-						<td>
-							<a class="recharge" onclick="submitReissueAdd();">确定</a>
-						</td>
-						<td>
-							<a class="recharge" onclick="cancelReissue();">清除</a>
-						</td>
-					</tr>
-				</table>
-			</div>
-			
-			<div>
-				<div ><span id="reissueInf1" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf2" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf3" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf4" style="color: red;font-size: 19px;"></span></div>
-			</div>
-		</div>
+		
+		
+		
 		</div>
 		
 		 <div style="width:30%;position:absolute;right:1px;top:368px;">
 		
-		<div id="searchErlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
-			<form id="searchErlistForm" method="post">
+		<div id="searchOrderlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
+			<form id="searchOrderlistForm" method="post">
 				<table>
 					<tr >
 				        <td>快递名称:</td>
@@ -539,7 +473,7 @@
 				<table>
 					<tr>
 						<td>
-							<a class="custom" onclick="submitSearch();">确定</a>
+							<a class="custom" onclick="addMessage();">确定</a>
 						</td>
 						<td>
 							<a class="recharge" onclick="searchClear();">清除</a>

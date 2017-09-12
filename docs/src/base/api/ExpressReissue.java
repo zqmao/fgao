@@ -15,8 +15,6 @@ public class ExpressReissue {
 	private String orderNum;//订单号
 	private String wangwang;//用户旺旺
 	private String remark;//备注
-	private String bounceType;//退件类型
-	
 	private int issueDocumentor;//打单人员
 	private String expressName;//快递名称
 	private String courierNum;//快递单号
@@ -24,13 +22,6 @@ public class ExpressReissue {
 	private String issuRemark;//打单备注
 	private int status;//处理状态:1已处理；0未处理
 	
-	
-	public String getBounceType() {
-		return bounceType;
-	}
-	public void setBounceType(String bounceType) {
-		this.bounceType = bounceType;
-	}
 	public String getShopName() {
 		return shopName;
 	}

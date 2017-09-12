@@ -25,15 +25,18 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		}
 		return dao;
 	}
-
+	public long count(String allSearch){
+		String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? ";
+		return JDBCUtil.queryCount(sql, allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);
+	}
 	public List<AfterSaleComeRecord> list() {
 		String sql = "select * from t_after_sale_come_record order by courierNum ";
 		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class);
 		return objs;
 	}
-	public List<AfterSaleComeRecord> list(String allSearch) {
-		String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? ";
-		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);
+	public List<AfterSaleComeRecord> list(String allSearch,int index, int pagesize ) {
+		String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? order by id desc limit ?, ?";
+		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,index,pagesize);
 		return objs;
 	}
 	public List<AfterSaleComeRecord> list(int index, int pagesize) {

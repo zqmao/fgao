@@ -37,6 +37,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
 			String allSearch = (String) request.getParameter("allSearch");
+			String wangwang = (String) request.getParameter("wangwang");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName2");
 			String shopName = (String) request.getParameter("shopName");
@@ -75,13 +76,16 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				if (phoneNum != null && phoneNum.length() != 0) {
 					builder.eq("phoneNum", phoneNum);
 				}
+				if (wangwang != null && wangwang.length() != 0){
+					builder.eq("wangwang", wangwang);
+				}
 				builder.orderBy("id", true);
 				builder.limit(index, rows);
 				total = builder.queryCount();
 				result = builder.queryList();
 			} else {
-				total = AfterSaleComeRecordDAO.getInstance().queryCount();
-				result = AfterSaleComeRecordDAO.getInstance().list(allSearch);
+				total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
+				result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
 			}
 			List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
 			for (AfterSaleComeRecord record : result) {
@@ -109,7 +113,18 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String remark = (String) request.getParameter("remark");
 			String status = (String) request.getParameter("status");
-			// String entryTime = (String) request.getParameter("entryTime");
+			
+			String bounceType = (String) request.getParameter("bounceType");
+			String reissueCourierNum = (String) request.getParameter("reissueCourierNum");
+			String reissueExpressName = (String) request.getParameter("reissueExpressName");
+			String reissueGoodsName = (String) request.getParameter("reissueGoodsName");
+			if("请选择:".equals(expressName)){
+				expressName = "";
+			}
+			if("请选择:".equals(reissueExpressName)){
+				reissueExpressName="";
+			}
+			
 			String id = (String) request.getParameter("ascrId");
 			if (id == null || id.length() == 0) {
 				if (couesult != null) {
@@ -130,14 +145,16 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 			} else {
 				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
-				// long entryTime = afterSaleComeRecord.getEntryTime();
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
-				// afterSaleComeRecord.setEntryTime(entryTime);
 			}
-			// afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
+			afterSaleComeRecord.setBounceType(bounceType);
+			if("换货".equals(bounceType)){
+				afterSaleComeRecord.setReissueCourierNum(reissueCourierNum);
+				afterSaleComeRecord.setReissueExpressName(reissueExpressName);
+				afterSaleComeRecord.setReissueGoodsName(reissueGoodsName);
+			}
 			afterSaleComeRecord.setCourierNum(courierNum);
 			afterSaleComeRecord.setExpressName(expressName);
-
 			afterSaleComeRecord.setShopName(shopName);
 			afterSaleComeRecord.setGoodsName(goodsName);
 			afterSaleComeRecord.setCheckResult(checkResult);
@@ -193,7 +210,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					responseError("快递单号有误");
 				}
 			}
-
 			responseSuccess2("新建售后记录成功");
 		}
 

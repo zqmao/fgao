@@ -27,12 +27,16 @@ public class AfterSaleComeRecordVO {
 	private String remark;//备注
 	private String status;//处理状态
 	
+	private String bounceType;//退件类型
+	private String reissueCourierNum;//补发快递单号
+	private String reissueExpressName;//补发快递名称
+	private String reissueGoodsName;//补发物品名称
+	
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
 		this.id = afterSaleComeRecord.getId();
 		this.courierNum = afterSaleComeRecord.getCourierNum();
 		this.expressName = afterSaleComeRecord.getExpressName();
 		this.shopName = afterSaleComeRecord.getShopName();
-		
 		this.goodsName = afterSaleComeRecord.getGoodsName();
 		
 		this.checkResult = afterSaleComeRecord.getCheckResult();
@@ -41,14 +45,25 @@ public class AfterSaleComeRecordVO {
 		this.orderNum = afterSaleComeRecord.getOrderNum();
 		User user = UserDAO.getInstance().load(afterSaleComeRecord.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
-		//long cTime = afterSaleComeRecord.getCreateTime()!=null ? afterSaleComeRecord.getCreateTime():"";
 		this.createTime = afterSaleComeRecord.getCreateTime()!= 0 ? DateUtil.toString(afterSaleComeRecord.getCreateTime()):"";
-		//this.createTime = DateUtil.toString(cTime);
 		this.entryTime = afterSaleComeRecord.getEntryTime()!=0 ? DateUtil.toString(afterSaleComeRecord.getEntryTime()):"";
 		this.remark = afterSaleComeRecord.getRemark()!=null ? afterSaleComeRecord.getRemark():" ";
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
+		
+		this.bounceType = afterSaleComeRecord.getBounceType();
+		this.reissueCourierNum = afterSaleComeRecord.getReissueCourierNum();
+		this.reissueExpressName = afterSaleComeRecord.getReissueExpressName();
+		this.reissueGoodsName = afterSaleComeRecord.getReissueGoodsName();
 	}
 	
+	public String getBounceType() {
+		return bounceType;
+	}
+
+	public void setBounceType(String bounceType) {
+		this.bounceType = bounceType;
+	}
+
 	public String getEntryTime() {
 		return entryTime;
 	}
@@ -159,4 +174,29 @@ public class AfterSaleComeRecordVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getReissueCourierNum() {
+		return reissueCourierNum;
+	}
+
+	public void setReissueCourierNum(String reissueCourierNum) {
+		this.reissueCourierNum = reissueCourierNum;
+	}
+
+	public String getReissueExpressName() {
+		return reissueExpressName;
+	}
+
+	public void setReissueExpressName(String reissueExpressName) {
+		this.reissueExpressName = reissueExpressName;
+	}
+
+	public String getReissueGoodsName() {
+		return reissueGoodsName;
+	}
+
+	public void setReissueGoodsName(String reissueGoodsName) {
+		this.reissueGoodsName = reissueGoodsName;
+	}
+	
 }

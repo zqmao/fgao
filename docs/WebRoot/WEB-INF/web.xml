@@ -186,6 +186,22 @@
 		<url-pattern>/expressReissueServlet.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<description>ExportOrderListServlet</description>
+		<display-name>ExportOrderListServlet</display-name>
+		<servlet-name>ExportOrderListServlet</servlet-name>
+		<servlet-class>base.servlet.ExportOrderListServlet</servlet-class>
+		<!--设置初始化参数 --> 
+        <init-param>  
+            <param-name>savePath</param-name>  
+            <param-value>upload</param-value>  
+        </init-param>  
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExportOrderListServlet</servlet-name>
+		<url-pattern>/exportOrderListServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>

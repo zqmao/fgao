@@ -60,21 +60,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			long total = 0;
 			int index = (page - 1) * rows;
 			List<ExpressReissue> result = new ArrayList<ExpressReissue>();
-			/*
-			 * if((courierNum!=null&&courierNum.length()!=0)||(expressName!=null
-			 * && expressName.length()!=0 )
-			 * ||(shopName!=null&&shopName.length()!=0)||(goodsName!=null&&
-			 * goodsName.length()!=0)
-			 * ||(orderNum!=null&&orderNum.length()!=0)||(phoneNum!=null&&
-			 * phoneNum.length()!=0)){ total =
-			 * ExpressReissueDAO.getInstance().searchCount(courierNum,
-			 * expressName,shopName,goodsName,orderNum,phoneNum); result =
-			 * ExpressReissueDAO.getInstance().search(courierNum,expressName,
-			 * shopName,goodsName,orderNum,phoneNum,index, rows); }else{ total =
-			 * ExpressReissueDAO.getInstance().listCount(); result =
-			 * ExpressReissueDAO.getInstance().list(index,rows); }
-			 */
-
+			
 			BaseDAO<ExpressReissue>.QueryBuilder builder = ExpressReissueDAO.getInstance().new QueryBuilder();
 			if ((courierNum != null && courierNum.length() != 0)) {
 				builder.eq("courierNum", courierNum);
@@ -119,10 +105,12 @@ public class ExpressReissueServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String wangwang = (String) request.getParameter("wangwang");
 			String remark = (String) request.getParameter("remark");
-			String courierNum = (String) request.getParameter("courierNum3");
+			/*String courierNum = (String) request.getParameter("courierNum3");
 			String expressName = (String) request.getParameter("expressName3");
 			String bounceType = (String) request.getParameter("bounceType");
-
+			if("请选择:".equals(expressName)){
+				expressName = "";
+			}*/
 			String id = (String) request.getParameter("erlistId");
 			ExpressReissue expressReissue = null;
 			if (id == null || id.length() == 0) {
@@ -135,38 +123,15 @@ public class ExpressReissueServlet extends BaseServlet {
 				expressReissue.setOrderNum(orderNum);
 				expressReissue.setWangwang(wangwang);
 				expressReissue.setRemark(remark);
-				expressReissue.setBounceType(bounceType);
-
-				if ((courierNum != null && courierNum.length() != 0)
-						|| (expressName != null && expressName.length() != 0)) {
-					expressReissue.setCourierNum(courierNum);
-					expressReissue.setExpressName(expressName);
-					expressReissue.setIssuTime(System.currentTimeMillis());
-				}
 
 			} else {// 修改
 				expressReissue = ExpressReissueDAO.getInstance().load(Integer.parseInt(id));
-				/*
-				 * expressReissue.setShopName(expressReissue.getShopName());
-				 * expressReissue.setAddress(expressReissue.getAddress());
-				 * expressReissue.setGoodsName(expressReissue.getGoodsName());
-				 * expressReissue.setOrderNum(expressReissue.getOrderNum());
-				 * expressReissue.setWangwang(expressReissue.getWangwang());
-				 * expressReissue.setRemark(expressReissue.getRemark());
-				 */
 				expressReissue.setShopName(shopName);
 				expressReissue.setAddress(address);
 				expressReissue.setGoodsName(goodsName);
 				expressReissue.setOrderNum(orderNum);
 				expressReissue.setWangwang(wangwang);
 				expressReissue.setRemark(remark);
-				expressReissue.setBounceType(bounceType);
-				if ((courierNum != null && courierNum.length() != 0)
-						|| (expressName != null && expressName.length() != 0)) {
-					expressReissue.setCourierNum(courierNum);
-					expressReissue.setExpressName(expressName);
-					expressReissue.setIssuTime(System.currentTimeMillis());
-				}
 			}
 			ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
 			if (id == null || id.length() == 0) {
@@ -182,6 +147,9 @@ public class ExpressReissueServlet extends BaseServlet {
 			String status = (String) request.getParameter("status");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName");
+			if("请选择:".equals(expressName)){
+				expressName = "";
+			}
 			String issuRemark = (String) request.getParameter("issuRemark");
 			String id = (String) request.getParameter("updateId");
 
