@@ -15,6 +15,10 @@
 	<script type="text/javascript">
 			var first = 1;
 			var option = "";
+			var isopen = false; 
+			var newImg; 
+			var w = 500; //将图片宽度+500 
+			var h = 500; // 将图片高度 +500 
             $(function() {
                 $("#addComment").panel({
                 	title: '添加',
@@ -217,6 +221,7 @@
                 });
             }
             
+            
             function formatCellTooltip(value){  
 	            return "<span title='" + value + "'>" + value + "</span>";  
 	        } 
@@ -230,13 +235,47 @@
             	var array = rowData.firstCommentPic.split(",");
             	for(var i = 0; i < array.length; i++){
             		if(array[i] != ""){
-            			var pic = "<img src='"+array[i]+"' style='width:60px; height:60px;' border='1'/>";
+            			var pic = "<img src='"+array[i]+"' onclick='changeSize()' style='width:60px; height:60px;' border='1'/>";
                 		pics += pic;
             		}
             	}
             	return pics;
         	}
             
+            function changeSize(){
+            	 $("img").bind("click", function(){ 
+            		newImg = this; 
+            		var width = $(this).width();
+            		
+            		if (width<400) 
+            		{ 
+            		//isopen = true; 
+            		$(this).width($(this).width() + w); 
+            		$(this).height($(this).height() + h); 
+            		} 
+            		else 
+            		{ 
+            		//isopen = false; 
+            		$(this).width($(this).width() - w); 
+            		$(this).height($(this).height() - h); 
+            		} 
+            		});  
+            		
+            }
+          
+           /*  function moveImg(left,top) 
+            { 
+            var i = 0; 
+            var offset = $(newImg).offset(); 
+            $(newImg).offset({ top: offset.top + top, left: offset.left + left}); 
+            if (i == 10) 
+            { 
+            i =0; 
+            return; 
+            } 
+            setTimeout("moveImg("+left+","+top+")", 10); 
+            i++; 
+            }  */
             function rightFormatter(value, rowData, rowIndex) {
             	var pics = "";
             	var urls = rowData.secondCommentPic;

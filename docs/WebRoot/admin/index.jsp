@@ -163,6 +163,15 @@
 								<span class="sub-title">售后收货</span>
 							</a>
 						</li>
+						<li>
+							<div class="showtitle" style="width: 100px;">
+								<img src="../img/leftimg.png" />查询数据
+							</div> 
+							<a href="/admin/exportOrderList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">查询数据</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 				<div class="sBox">

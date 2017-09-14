@@ -2,6 +2,7 @@ package base.dao;
 
 import java.util.List;
 
+import base.api.AfterSaleComeRecord;
 import base.api.ExpressReissue;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
@@ -22,9 +23,9 @@ public class ExpressReissueDAO extends BaseDAO<ExpressReissue>{
 		List<ExpressReissue> objs = JDBCUtil.queryObjectList(sql, ExpressReissue.class);
 		return objs;
 	}
-	public List<ExpressReissue> list(String courierNum) {
-		String sql = "select * from t_express_reissue where courierNum=? ";
-		List<ExpressReissue> objs = JDBCUtil.queryObjectList(sql, ExpressReissue.class,courierNum);
+	public ExpressReissue list(String orderNum) {
+		String sql = "select * from t_express_reissue where orderNum=? ";
+		ExpressReissue objs = JDBCUtil.queryObject(sql, ExpressReissue.class,orderNum);
 		return objs;
 	}
 	public List<ExpressReissue> list(int index, int pagesize) {
@@ -32,4 +33,5 @@ public class ExpressReissueDAO extends BaseDAO<ExpressReissue>{
 		List<ExpressReissue> objs = JDBCUtil.queryObjectList(sql, ExpressReissue.class, index, pagesize);
 		return objs;
 	}
+	
 }

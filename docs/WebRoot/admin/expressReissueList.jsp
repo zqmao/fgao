@@ -19,6 +19,7 @@
 			var goodsName ="";
 			var orderNum = "";
 			var phoneNum = "";
+			var status = "";
 			var expressName2 = "";
 			var option_express = "0";
 			var option_express2 = "0";
@@ -92,7 +93,7 @@
                     pagination: true,
                     url: "../expressReissueServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum},
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum, status :status},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
@@ -227,12 +228,14 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
+            	var status = $('input[name="statuss"]:checked').val();
             	expressName2 = $("#option_express2").val();
             	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
             	queryParams.goodsName = goodsName;
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
+            	queryParams.status = status;
             	queryParams.shopName = shopName;
             	queryParams.expressName2 = expressName2;
             	$("#searchErlistForm").form("submit",{
@@ -317,6 +320,14 @@
 				    }
 				});
 			}
+            function changeStatus(){
+            	$('#courierNum3').attr("disabled","disabled"); 
+            	$("#expressName3").hide();
+            }
+            function changeStatus2(){
+            	$('#courierNum3').attr("disabled",false); 
+            	$("#expressName3").show();
+            }
             function submitReissueAdd(){
             	var erlistId;
             	var ids = getChecked("erlistGrid");
@@ -416,7 +427,7 @@
 				    </tr>
 				    <tr >
 						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;" data-options="required:true" /><td>
 				    <tr >
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 250px;"/><td>
@@ -450,15 +461,15 @@
 				    <tr >
 						<td>处理状态:</td>
 						<td>
-							<input type="radio" name="status" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
-							<input type="radio" name="status" value="已处理" id="overManage"/><label for="overManage">已处理</label>
+							<input type="radio" name="status" value="待处理" onclick="changeStatus()" id="waitManage" /><label for="waitManage">待处理</label>
+							<input type="radio" name="status" value="已处理" onclick="changeStatus2()" checked="checked" id="overManage"/><label for="overManage">已处理</label>
 						<td>
 				    </tr>
 					<tr >
 						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 250px;"/><td>
+						<td><input class="easyui-validatebox" name="courierNum" id="courierNum3" type="text" style="width: 250px;"/><td>
 				    </tr>
-				    <tr >
+				    <tr id="expressName3" >
 						<td><label for="option_express" style="font-size: 16px;">快递名称:</label></td>
 						
 				        <td><input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" /></td>
@@ -532,6 +543,18 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr>
+				    <tr >
+						<td>处理状态:</td>
+						<td>
+							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
+							<input type="radio" name="statuss" value="已处理" id="overManage"/><label for="overManage">已处理</label>
+						<td>
+				    </tr>
+				    
+				    <!-- <tr >
+						<td>处理状态:</td>
+						<td><input class="easyui-validatebox" name="status2" id="status" type="text" style="width: 250px;"/></td>
+				    </tr> -->
 			    </table>
 			</form>
 			

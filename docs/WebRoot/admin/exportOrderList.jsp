@@ -19,6 +19,7 @@
 			var goodsName ="";
 			var orderNum = "";
 			var phoneNum = "";
+			var allSearch = "";
 			var expressName2 = "";
 			var option_express = "0";
 			var option_express2 = "0";
@@ -38,35 +39,6 @@
             		title: '补发快递记录',
             		
             	});
-            	/* 获取快递名称 */
-            	 $("#option_express").combobox({
-                     url:'../exportOrderListServlet.do?sign=select',
-                     valueField:'text',
-                     textField:'text',
-                     loadFilter: function(data){
-                    		if (data.data){
-                    			$("#option_express").combobox('select',"请选择:");
-                    			return data.data;
-                    		} else {
-                    			return data;
-                    		}
-                    	}
-                 });
-            	 /* 添加记录时获取快递名称 */
-            	 $("#option_express3").combobox({
-                     url:'../exportOrderListServlet.do?sign=select',
-                     valueField:'text',
-                     textField:'text',
-                     loadFilter: function(data){
-                    		if (data.data){
-                    			$("#option_express3").combobox('select',"请选择:");
-                    			return data.data;
-                    		} else {
-                    			return data;
-                    		}
-                    	}
-                 }
-                 );
             	
             	 /* 查询时获取快递名称 */
             	 $("#option_express2").combobox({
@@ -92,7 +64,7 @@
                     pagination: true,
                     url: "../exportOrderListServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum},
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
@@ -226,18 +198,16 @@
             } */
             //查询
             function submitSearch(){
-            	courierNum = $("#courierNum").val();
-            	goodsName = $("#goodsName").val();
-            	orderNum = $("#orderNum").val();
-            	phoneNum = $("#phoneNum").val();
-            	shopName = $("#shopName").val();
-            	expressName2 = $("#option_express2").val();
+            	
+            	allSearch = $("#allSearch").val();
+            	
             	var queryParams =$("#eolistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
             	queryParams.goodsName = goodsName;
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.shopName = shopName;
+            	queryParams.allSearch = allSearch;
             	queryParams.expressName2 = expressName2;
             	$("#searchOrderlistForm").form("submit",{
             		url:"../exportOrderListServlet.do?sign=search",
@@ -255,57 +225,7 @@
             	
             }
             
-            function submitReissue(){
          
-            	var orderlistId; 
-            	var ids = getChecked("eolistGrid");
-            	
-            	var shopName=getFormDate("eolistGrid","shopName");
-            	
-            	var goodsName = getFormDate("eolistGrid","goodsName");
-            	
-            	var address = getFormDate("eolistGrid","address");
-            	
-            	$("#updateId").val(ids);
-                var len = ids.length;
-                if (len == 0) {
-                    $.messager.alert('提示', '至少选择一个', 'Warning');
-                } else if (len > 1) {
-                    $.messager.alert('提示', '只能选择一个', 'Warning');
-                } else {
-                	$("#reissueInf1").html("你正在补发的是编号为"+ids+"的数据");
-                	$("#reissueInf2").html("商铺名称是:"+shopName);
-                	$("#reissueInf3").html("物品名称是:"+goodsName);
-                	$("#reissueInf4").html("地址是:"+address);
-                }      
-                  
-            }
-            
-            function getFormDate(id,valName) {
-            	var ids = [];
-                var rows = $('#' + id).datagrid("getChecked");
-             
-                for (var i = 0; i < rows.length; i++) {
-                    ids.push(rows[i][valName]);
-                }
-                return ids;
-            }
-           /*  function addMessage(){
-            	var bounceVal = $('input[name="bounceType"]:checked').val();
-            	if("换货"==bounceVal){
-            		var cou = $("#courierNum3").val();
-            		//var opt = $("#option_express3").val();   ||(opt==null || opt.length==0)
-            		if((cou==null || cou.length==0)){
-            			 $.messager.alert('提示', '当选择换货时，快递单号不能为空', 'Warning');
-            			 alert("当选择换货时，快递名称和快递单号不能为空");
-            		}else{
-            			submitAdd();
-            		}
-            	}else{
-            		submitAdd();
-            	}
-            }
-             */
             function submitAdd() {
 				$("#addOrderlistForm").form("submit", {
 				    url:"../exportOrderListServlet.do?sign=add",
@@ -314,66 +234,14 @@
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
-				    		
+				    		alert(data.reason);
 							$("#addOrderlistForm").form("clear");
         					$("#eolistGrid").datagrid("reload");
 				    	}
 				    }
 				});
 			}
-            function submitReissueAdd(){
-            	var orderlistId;
-            	var ids = getChecked("eolistGrid");
-                $("#updateId").val(ids);
-                
-                var len = ids.length;
-                if (len == 0) {
-                    $.messager.alert('提示', '至少选择一个', 'Warning');
-                } else if (len > 1) {
-                    $.messager.alert('提示', '只能选择一个', 'Warning');
-                } else {
-                	 var value  = $('input[name="status"]:checked').val(); //获取被选中Radio的Value值
-                     if(value == "待处理"){
-                     	var iss = $("#issuRemark").val();
-                     	if(iss==null||iss.length==0){
-                     		alert( '当选择待处理时,打单备注不能为空');
-                     	}else{
-                     		$("#addEreissuelistForm").form("submit", {
-            				    url:"../exportOrderListServlet.do?sign=reissueAdd",
-            				    success:function(result){
-            				    	var data = eval('(' + result + ')');
-            				    	if(data.result == 0){
-            				    		alert(data.reason);
-            				    	}else{
-            							$("#addEreissuelistForm").form("clear");
-                    					$("#eolistGrid").datagrid("reload");
-                    					//成功时将显示数据清除
-                    					$("#reissueInf1").html("");
-                                    	$("#reissueInf2").html("");
-                                    	$("#reissueInf3").html("");
-                                    	$("#reissueInf4").html("");
-            				    	}
-            				    }
-            				});
-                     	}
-                     }else{
-                    	 $("#addEreissuelistForm").form("submit", {
-         				    url:"../exportOrderListServlet.do?sign=reissueAdd",
-         				    success:function(result){
-         				    	var data = eval('(' + result + ')');
-         				    	if(data.result == 0){
-         				    		alert(data.reason);
-         				    	}else{
-         							$("#addEreissuelistForm").form("clear");
-                 					$("#eolistGrid").datagrid("reload");
-         				    	}
-         				    }
-         				}); 
-                     }
-                }
-            	
-            	
-            }
+            
             function submitCourierNum() {
 				$("#courierNumAscrForm").form("submit", {
 				    url:"../exportOrderListServlet.do?sign=addcourierNum",
@@ -409,32 +277,49 @@
 				<input type="file">
 			</form> -->
 			<form id="addOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">
-		        <table border="0" align="center">
+		        <!-- <table border="0" align="center">
 		            <tr>
 		                <td>上传文件：</td>
 		                <td><input name="file" type="file" size="20"></td>
 		            </tr>
 		            <tr>
 		                <td></td>
-		                <td><a class="custom" onclick="submitAdd();">确定</a>
-		                <!-- <input type="reset" name="reset" value="重置"></td> -->
+		                <a class="custom" onclick="submitAdd();">确定</a>
+		                <td><input type="submit" onclick="submitAdd();" name="submit" value="确定"></td>
 		            </tr>
-		        </table>
+		        </table> -->
+		        <div class="margin-tb manage-detail-con clearfix" >
+				<table>
+					<tr>
+						<td >
+							<input name="file" style="margin-left:50px;margin-top:20px;" type="file" size="20">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a style="margin-left:50px;margin-top:20px;" class="custom" onclick="submitAdd();">确定</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		        
+		        
     </form>
-			
 		</div> 
-		
-		
-		
 		
 		</div>
 		
-		 <div style="width:30%;position:absolute;right:1px;top:368px;">
+		 <div style="width:40%;position:absolute;right:1px;top:368px;">
 		
 		<div id="searchOrderlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchOrderlistForm" method="post">
 				<table>
+				
 					<tr >
+						<td>全文搜索:</td>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
+				    </tr>
+					<!-- <tr >
 				        <td>快递名称:</td>
 				        <td><input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" /></td>
 				    </tr>
@@ -465,7 +350,7 @@
 				    <tr >
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
-				    </tr>
+				    </tr> -->
 			    </table>
 			</form>
 			
@@ -473,7 +358,7 @@
 				<table>
 					<tr>
 						<td>
-							<a class="custom" onclick="addMessage();">确定</a>
+							<a class="custom" onclick="submitSearch();">确定</a>
 						</td>
 						<td>
 							<a class="recharge" onclick="searchClear();">清除</a>

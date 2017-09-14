@@ -1,9 +1,12 @@
 package base.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -14,11 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.csvreader.CsvReader;
 
 import base.api.ExportOrderList;
 import base.api.ExpressReissue;
 import base.api.vo.ExportOrderListVO;
 import base.api.vo.ExpressReissueVO;
+import base.dao.AfterSaleComeRecordDAO;
 import base.dao.ExportOrderListDAO;
 import base.dao.ExpressReissueDAO;
 import base.dao.core.BaseDAO;
@@ -27,6 +32,7 @@ import base.dao.core.BaseDAO.QueryBuilder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.Iterator;
 import java.util.List;
@@ -58,17 +64,13 @@ public class ExportOrderListServlet extends BaseServlet{
 	private static final long serialVersionUID = 1L;
 	private ServletContext sc;
 	 
-    private String savePath;
+   
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		this.doPost(req, resp);
 	}
-	public void init(ServletConfig config) {
-        // 在web.xml中设置的一个初始化参数
-        savePath = config.getInitParameter("savePath");
-        sc = config.getServletContext();
-    }
+	
  
 	
 	@Override
@@ -76,24 +78,23 @@ public class ExportOrderListServlet extends BaseServlet{
 		
 		super.doPost(request, response);
 		if ("list".equals(sign)) {
-			/*String courierNum = (String) request.getParameter("courierNum");
-			String expressName = (String) request.getParameter("expressName2");
-			String shopName = (String) request.getParameter("shopName");
-			String goodsName = (String) request.getParameter("goodsName");
-			String orderNum = (String) request.getParameter("orderNum");
-			String phoneNum = (String) request.getParameter("phoneNum");
-
-			if ("全部".equals(expressName)) {
-				expressName = "";
-			}
-			if ("全部".equals(shopName)) {
-				shopName = "";
-			}*/
+			
+			String allSearch = (String) request.getParameter("allSearch");
+			
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
 			long total = 0;
 			int index = (page - 1) * rows;
-			List<ExportOrderList> result = ExportOrderListDAO.getInstance().list(index,rows);
+			List<ExportOrderList> result = new ArrayList<ExportOrderList>();
+			//List<ExportOrderList> result = ExportOrderListDAO.getInstance().list(index,rows);
+			if(allSearch == null || allSearch.length() == 0){
+				total = ExportOrderListDAO.getInstance().queryCount();
+				result = ExportOrderListDAO.getInstance().list(index,rows);
+			}else{
+				total = ExportOrderListDAO.getInstance().count(allSearch);
+				result = ExportOrderListDAO.getInstance().list(allSearch,index,rows);
+			}
+			
 			
 			/*BaseDAO<ExpressReissue>.QueryBuilder builder = ExpressReissueDAO.getInstance().new QueryBuilder();
 			if ((courierNum != null && courierNum.length() != 0)) {
@@ -129,101 +130,112 @@ public class ExportOrderListServlet extends BaseServlet{
 			obj.put("rows", JSON.toJSON(vos));
 			responseSuccess(JSON.toJSON(obj));
 		} else if("add".equals(sign)){
+			String path = "";
+			String isCsv ="";
 			request.setCharacterEncoding("UTF-8");
-			/*if (currentUser == null) {
+			if (currentUser == null) {
 				responseError("需要登录");
 				return;
-			}*/
-			//判断请求类型是否是文件上传
-	        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-	 
-	        if (isMultipart) {
-	            try {
-	                DiskFileItemFactory factory = new DiskFileItemFactory();
-	                ServletFileUpload upload = new ServletFileUpload(factory);
-	 
-	                // 得到所有的表单域，它们目前都被当作FileItem
-	                List<FileItem> items = upload.parseRequest(request);
-	                Iterator<FileItem> itr = items.iterator();
-	                 
-	                // 依次处理每个表单域
-	                while (itr.hasNext()) {
-	                    FileItem item = (FileItem) itr.next();
-	                    if (item.isFormField()) {
-	                        // 如果item是正常的表单域
-	                        System.out.println("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
-	                    } else {
-	                        if (item.getName() != null && !item.getName().equals("")) {
-	                            System.out.println("上传文件的大小:" + item.getSize());
-	                            System.out.println("上传文件的类型:" + item.getContentType());
-	                            // item.getName()返回上传文件在客户端的完整路径名称
-	                            System.out.println("上传文件的名称:" + item.getName());
-	 
-	                            File tempFile = new File(item.getName());
-	                            //PrintStream printStream = new PrintStream(tempFile);
-	                            FileInputStream is =new FileInputStream(tempFile);  	
-	                            byte[] data = new byte[1024];  
-	                            // 读取内容，放到字节数组里面  
-	                            is.read(data);  
-	                            System.out.println(new String(data));  
-	                            
-	                       System.out.println(tempFile+"44444444444444");
-	                            }
-	                         
-	                    }
-	                }
-	            } catch (FileUploadException e) {
-	                e.printStackTrace();
-	                request.setAttribute("upload.message", "上传文件失败！");
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                request.setAttribute("upload.message", "上传文件失败！");
-	            }
-	        } else {
-	            System.out.println("the enctype must be multipart/form-data");
-	        }
-	        request.getRequestDispatcher("/result.jsp").forward(request, response);
-			
-			
+			}
+			try{
+			//创建一个解析器工厂
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			 //得到解析器
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			//upload.setHeaderEncoding("utf-8");
+			//对相应的请求进行解析，有几个输入项，就有几个FileItem对象
+			List<FileItem> items = upload.parseRequest(request);
+			 //要迭代list集合，获取list集合中每一个输入项
+			for(FileItem item :items){
+				//判断输入的类型
+				if(item.isFormField()){
+					 //普通输入项
+                    String inputName=item.getFieldName();
+                    String inputValue=item.getString();
+                    System.out.println(inputName+"::"+inputValue);
+				}else{
+					//上传文件输入项
+					  String filename=item.getName();//上传文件的文件名
+					  System.out.println(filename+"::"+"filename");
+                      //filename=filename.substring(filename.lastIndexOf("\\"));
+                      InputStream is=item.getInputStream();
+                      FileOutputStream fos=new FileOutputStream("c:\\"+"updown\\"+filename);
+                      path = "c:\\updown\\"+filename;
+                      
+                      File file = new File(path);
+                      
+                      isCsv = path.substring(path.lastIndexOf("."));
+                      if(!".csv".equals(isCsv)){
+                    	  responseError("请导入csv文件");
+                      }else{byte[] buff=new byte[1024];
+                      @SuppressWarnings("unused")
+					  int len=0;
+                      while((len=is.read(buff))>0){
+                               fos.write(buff);
+                      }
+                      System.out.println("文件生成成功");
+                      is.close();
+                      fos.close();
+                      }
+                     /* byte[] buff=new byte[1024];
+                      @SuppressWarnings("unused")
+					  int len=0;
+                      while((len=is.read(buff))>0){
+                               fos.write(buff);
+                      }
+                      System.out.println("文件生成成功");
+                      is.close();
+                      fos.close();*/
+                      if(path!=null&& ".csv".equals(isCsv)){
+                    	  try {
+							readCsvAndInstallDB(path);
+							if(file.exists()){
+								 file.delete();//删除原文件
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+                      }
+				}
+			}
+            }catch (FileUploadException e) {
+                     e.printStackTrace();
+            }
+			responseSuccess2("新建售后记录成功");
+		}else if("search".equals(sign)){
+			responseSuccess("查询成功");
 		}
-		
 	}
-	/*public static void readCsvAndInstallDB(String path) throws Exception {  
-        File file = new File(path);  
-        BufferedReader bReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));  
-        String line = "";  
-        List<ExportOrderList> beanList = new ArrayList<ExportOrderList>();  
-        int count = 0;  
-        // 忽略前几行标题  
-        if(ignoreRows > 0) {  
-            for (int i = 0; i < ignoreRows; i++) {  
-                line = bReader.readLine();  
-            }  
-        }  
+	@SuppressWarnings("null")
+	public void readCsvAndInstallDB(String path) throws Exception { 
+       //String filePath = "";  
+       //BufferedReader bReader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));  
+        ExportOrderList exportOrderList = new ExportOrderList();
+        CsvReader reader = new CsvReader(path, ',', Charset.forName("GBK"));
+        System.out.println(path);
         try {  
-            while((line = bReader.readLine()) != null) {  
-    //          System.out.println(++count+"  "+line);  
-                if(line.trim() != "") {  
-                    String[] pills = line.split(",");  
-                    ExportOrderList bean = new ExportOrderList(pills[0].trim(), pills[1].trim(), pills[2].trim(), pills[3].trim());  
-                    beanList.add(bean);  
-                    if(++count%Constants.BATCH_NUM == 0) {  
-                        // 数据库操作， 见“jdbc批量插入一文”  
-                        DBHelp.executeUpate(DBHelp.SQL_INSTALL_IDNO_THIRD, beanList, Constants.DATE_FORMATE_DEFAULT);  
-                        beanList.clear();  
-                    }  
-                }  
-            }  
-            // 操作集合中最后一批数据  <span style="font-family: Arial, Helvetica, sans-serif;">数据库操作， 见“jdbc批量插入一文”</span>  
-            DBHelp.executeUpate(DBHelp.SQL_INSTALL_IDNO_THIRD, beanList, Constants.DATE_FORMATE_DEFAULT);  
-            beanList.clear();  
-            DBHelp.closeSources(DBHelp.getConn(), DBHelp.getPs());  
-            beanList = null;  
-        }finally {  
-            if(bReader != null) {  
-                bReader.close();  
-            }  
+        	    reader.readRecord();
+        		while(reader.readRecord()){
+        		  
+        		exportOrderList.setOrderNum(reader.get(0));//订单编号
+        		exportOrderList.setWangwang(reader.get(1));//买家会员名
+        		exportOrderList.setActualMoney(reader.get(8));//买家支付宝账号
+        		exportOrderList.setAddress(reader.get(13).trim());//收件人地址
+        		exportOrderList.setConsigneeName(reader.get(12));//收件人姓名
+        		exportOrderList.setAlipayNum(reader.get(2).trim());//买家支付宝账号
+        		exportOrderList.setExportor(currentUser.getId());//导入人
+        		exportOrderList.setExportTime(System.currentTimeMillis());//导入时间
+        		exportOrderList.setGoodsHeadline(reader.get(19).trim());//宝贝标题
+        		exportOrderList.setOrderCreateTime(reader.get(17).trim());//订单创建时间
+        		exportOrderList.setOrderTime(reader.get(18).trim());//订单付款时间
+        		exportOrderList.setPhoneNum(reader.get(16).substring(1));//联系手机
+        		exportOrderList.setShopName(reader.get(26).trim());//店铺名称
+        		ExportOrderListDAO.getInstance().saveOrUpdate(exportOrderList);
+        	
+        	}
+        }catch(IOException e){
+        	e.printStackTrace();
         }  
-    }  */
+    }  
 }
 

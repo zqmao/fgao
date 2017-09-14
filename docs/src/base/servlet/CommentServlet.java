@@ -112,6 +112,7 @@ public class CommentServlet extends BaseServlet{
 				list = (List<FileItem>) upload.parseRequest(request);
 				for (FileItem item : list) {
 					String name = item.getFieldName();
+					System.out.println("name666"+name);
 					if (item.isFormField()) {
 						//获取普通表单参数
 						String value = new String(item.getString().getBytes("ISO8859_1"),"utf-8");
@@ -215,9 +216,11 @@ public class CommentServlet extends BaseServlet{
 	private String saveImage(HttpServletRequest request, FileItem item, int commentId){
 		// 获取文件需要上传到的路径
 		String path = request.getRealPath("/upload");
-		
+		System.out.println("path"+path);
 		String filename = commentId + "_" + item.getFieldName() + ".png";
+		System.out.println("filename"+filename);
 		String netPath = "../upload/" + filename;
+		System.out.println("netPath"+netPath);
 		OutputStream out;
 		try {
 			out = new FileOutputStream(new File(path, filename));

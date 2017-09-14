@@ -429,7 +429,7 @@
 						<td>
 				    </tr>
 			    </table>
-			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 350px;">
+			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 350px; background-color: #eeeeee;">
 			    	<tr >
 						<td>补发快递单号:</td>
 						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 150px;" /><td>
