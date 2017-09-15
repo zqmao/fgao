@@ -120,6 +120,9 @@
 				$("#day").text(t.getDate());
 				var h = t.getHours(); //获取当前小时数(0-23)
 				var m = t.getMinutes();
+				if(m < 10){
+					m = "0" + m;
+				}
 				$("#sj").text(h + ":" + m);
 			}
 		</script>
