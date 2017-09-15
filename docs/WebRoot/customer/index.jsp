@@ -66,7 +66,7 @@
 	</div>
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			<li class="li-border"><a class="mystyle-color" href="#">管理控制台</a></li>
+			<li class="li-border"><a class="mystyle-color" href="../default.jsp" target="content">管理控制台</a></li>
 		</ul>
 		<ul class="nav navbar-nav pull-right">
 			<li class="dropdown li-border">
@@ -187,6 +187,15 @@
 							<a href="/customer/userEdit.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-user"></span>
 								<span class="sub-title">修改个人信息</span>
+							</a>
+						</li>
+						<li>
+							<div class="showtitle" style="width: 100px;">
+								<img src="../img/leftimg.png" />考勤情况
+							</div> 
+							<a href="/customer/signList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-user"></span>
+								<span class="sub-title">考勤情况</span>
 							</a>
 						</li>
 					</ul>

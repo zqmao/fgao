@@ -9,6 +9,86 @@
 <head>
 <title>默认页面</title>
 <script src="script/jquery-1.11.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="css/templatecss.css"/>
+<script type="text/javascript">
+	$(document).ready(function(){
+	  //请求当前人员的签到和签退状态，刷新按钮
+		$.ajax({
+            type: "POST",
+            url: "../signRecordServlet.do?sign=query",
+            success: function(msg) {
+            	var data = eval('('+msg+')');
+            	if(data.result == 0){
+            		alert(data.reason);
+            	}else{
+            		if(data.data == "00"){
+            			disableSignIn(true)
+            			disableSignOut(true);
+            		}else if(data.data == "01"){
+            			disableSignIn(true)
+            			disableSignOut(false);
+            		}else if(data.data == "10"){
+            			disableSignIn(false)
+            			disableSignOut(true);
+            		}else if(data.data == "11"){
+            			disableSignIn(false)
+            			disableSignOut(false);
+            		}
+            	}
+            }
+        });
+	})
+	function signIn(){
+		$.ajax({
+            type: "POST",
+            url: "../signRecordServlet.do?sign=signIn",
+            success: function(msg) {
+            	var data = eval('('+msg+')');
+            	if(data.result == 0){
+            		alert(data.reason);
+            	}else{
+            		alert("签到成功");
+            		disableSignIn(false);
+            	}
+            }
+        });
+	}
+	
+	function signOut(){
+		$.ajax({
+            type: "POST",
+            url: "../signRecordServlet.do?sign=signOut",
+            success: function(msg) {
+            	var data = eval('('+msg+')');
+            	if(data.result == 0){
+            		alert(data.reason);
+            	}else{
+            		alert("签退成功");
+            		disableSignOut(false);
+            	}
+            }
+        });
+	}
+	
+	function disableSignIn(disable){
+		if(disable){
+			$("#signIn").text("签到");
+		}else{
+			$("#signIn").text("已签到");
+			$("#signIn").parent().css("background-color","#b9c7cc");	
+		}
+		
+	}
+	
+	function disableSignOut(disable){
+		if(disable){
+			$("#signOut").text("签退");
+		}else{
+			$("#signOut").text("已签退");
+			$("#signOut").parent().css("background-color","#b9c7cc");
+		}
+	}
+</script>
 </head>
 
 <body>
@@ -43,6 +123,19 @@
 				$("#sj").text(h + ":" + m);
 			}
 		</script>
+		
+		<div class="margin-tb manage-detail-con clearfix" >
+			<table>
+				<tr>
+					<td>
+						<a class="custom" onclick="signIn();" style="line-height:50px;height:50px;"><b id="signIn">签到</b></a>
+					</td>
+					<td>
+						<a class="recharge" onclick="signOut();" style="line-height:50px;height:50px;"><b id="signOut">签退</b></a>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </body>
 </html>

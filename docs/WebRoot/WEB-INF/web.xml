@@ -200,6 +200,16 @@
 		<servlet-name>ExportOrderListServlet</servlet-name>
 		<url-pattern>/exportOrderListServlet.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<description>SignRecordServlet</description>
+		<display-name>SignRecordServlet</display-name>
+		<servlet-name>SignRecordServlet</servlet-name>
+		<servlet-class>base.servlet.SignRecordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SignRecordServlet</servlet-name>
+		<url-pattern>/signRecordServlet.do</url-pattern>
+	</servlet-mapping>
 	
 	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
