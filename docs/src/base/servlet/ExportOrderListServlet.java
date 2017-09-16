@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -132,7 +133,7 @@ public class ExportOrderListServlet extends BaseServlet{
 		} else if("add".equals(sign)){
 			String path = "";
 			String isCsv ="";
-			request.setCharacterEncoding("UTF-8");
+			request.setCharacterEncoding("GBK");
 			if (currentUser == null) {
 				responseError("需要登录");
 				return;
@@ -159,6 +160,7 @@ public class ExportOrderListServlet extends BaseServlet{
 					  System.out.println(filename+"::"+"filename");
                       //filename=filename.substring(filename.lastIndexOf("\\"));
                       InputStream is=item.getInputStream();
+                     // System.out.println("File has " + is.available() + " bytes"); 
                       FileOutputStream fos=new FileOutputStream("c:\\"+"updown\\"+filename);
                       path = "c:\\updown\\"+filename;
                       
@@ -167,16 +169,27 @@ public class ExportOrderListServlet extends BaseServlet{
                       isCsv = path.substring(path.lastIndexOf("."));
                       if(!".csv".equals(isCsv)){
                     	  responseError("请导入csv文件");
-                      }else{byte[] buff=new byte[1024];
-                      @SuppressWarnings("unused")
-					  int len=0;
-                      while((len=is.read(buff))>0){
-                               fos.write(buff);
-                      }
+                      }else{
+                     byte[] buff=new byte[1024];
+					  
+                      while(is.available()>=1024){
+                    		  is.read(buff);
+                              fos.write(buff);
+                    	  }
+                      	byte[] buff1=new byte[is.available()];
+                    	  is.read(buff1);
+                          fos.write(buff1);
+                          fos.flush();  	
+                      //System.out.println("File has " + fos.available() + " bytes"); 
                       System.out.println("文件生成成功");
                       is.close();
                       fos.close();
                       }
+                      /* FileInputStream fis = null;    
+                      fis = new FileInputStream(path);
+                      System.out.println("File has " + fis.available() + " bytes"); 
+                      */
+                     
                      /* byte[] buff=new byte[1024];
                       @SuppressWarnings("unused")
 					  int len=0;
@@ -201,7 +214,7 @@ public class ExportOrderListServlet extends BaseServlet{
             }catch (FileUploadException e) {
                      e.printStackTrace();
             }
-			responseSuccess2("新建售后记录成功");
+			responseSuccess2("导入记录成功");
 		}else if("search".equals(sign)){
 			responseSuccess("查询成功");
 		}
@@ -213,23 +226,37 @@ public class ExportOrderListServlet extends BaseServlet{
         ExportOrderList exportOrderList = new ExportOrderList();
         CsvReader reader = new CsvReader(path, ',', Charset.forName("GBK"));
         System.out.println(path);
+        
         try {  
         	    reader.readRecord();
         		while(reader.readRecord()){
         		  
-        		exportOrderList.setOrderNum(reader.get(0));//订单编号
+        		String orderNo = reader.get(0);
+        		//System.out.println("----"+orderNo+"----");
+        		if(orderNo!=null&&orderNo.length()>3){
+        			exportOrderList.setOrderNum(reader.get(0).substring(2,19));//订单编号
+        		}else{
+        			exportOrderList.setOrderNum("");//订单编号
+        		}
+        		//exportOrderList.setOrderNum(reader.get(0).substring(2,19));//订单编号
         		exportOrderList.setWangwang(reader.get(1));//买家会员名
         		exportOrderList.setActualMoney(reader.get(8));//买家支付宝账号
-        		exportOrderList.setAddress(reader.get(13).trim());//收件人地址
+        		exportOrderList.setAddress(reader.get(13));//收件人地址
         		exportOrderList.setConsigneeName(reader.get(12));//收件人姓名
-        		exportOrderList.setAlipayNum(reader.get(2).trim());//买家支付宝账号
+        		exportOrderList.setAlipayNum(reader.get(2));//买家支付宝账号
         		exportOrderList.setExportor(currentUser.getId());//导入人
         		exportOrderList.setExportTime(System.currentTimeMillis());//导入时间
-        		exportOrderList.setGoodsHeadline(reader.get(19).trim());//宝贝标题
-        		exportOrderList.setOrderCreateTime(reader.get(17).trim());//订单创建时间
-        		exportOrderList.setOrderTime(reader.get(18).trim());//订单付款时间
-        		exportOrderList.setPhoneNum(reader.get(16).substring(1));//联系手机
-        		exportOrderList.setShopName(reader.get(26).trim());//店铺名称
+        		exportOrderList.setGoodsHeadline(reader.get(19));//宝贝标题
+        		exportOrderList.setOrderCreateTime(reader.get(17));//订单创建时间
+        		exportOrderList.setOrderTime(reader.get(18));//订单付款时间
+        		
+        		String phone = reader.get(16);
+        		if(phone!=null&&phone.length()>=2){
+        			exportOrderList.setPhoneNum(phone.substring(1));//联系手机
+        		}else{
+        			exportOrderList.setPhoneNum("");
+        		}
+        		exportOrderList.setShopName(reader.get(26));//店铺名称
         		ExportOrderListDAO.getInstance().saveOrUpdate(exportOrderList);
         	
         	}

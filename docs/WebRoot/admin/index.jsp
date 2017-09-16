@@ -165,11 +165,11 @@
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
-								<img src="../img/leftimg.png" />查询数据
+								<img src="../img/leftimg.png" />订单查询
 							</div> 
 							<a href="/admin/exportOrderList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
-								<span class="sub-title">查询数据</span>
+								<span class="sub-title">订单查询</span>
 							</a>
 						</li>
 					</ul>

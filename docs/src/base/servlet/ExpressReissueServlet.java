@@ -121,45 +121,46 @@ public class ExpressReissueServlet extends BaseServlet {
 			
 			Pattern p = Pattern.compile("^[0-9]{17}$");
 			Matcher m = p.matcher(orderNum);
-			if (m.find()==false){
+			if (m.find()){
+				String id = (String) request.getParameter("erlistId");
+				ExpressReissue express = (ExpressReissue) ExpressReissueDAO.getInstance().list(orderNum);
+				if(express!=null){
+					responseError("不能输入重复订单号");
+				}else{
+					ExpressReissue expressReissue = null;
+					if (id == null || id.length() == 0) {
+						expressReissue = new ExpressReissue();
+						expressReissue.setCreatorId(currentUser.getId());
+						expressReissue.setEntryTime(System.currentTimeMillis());
+						expressReissue.setShopName(shopName);
+						expressReissue.setAddress(address);
+						expressReissue.setGoodsName(goodsName);
+						expressReissue.setOrderNum(orderNum);
+						expressReissue.setWangwang(wangwang);
+						expressReissue.setRemark(remark);
+
+					} else {// 修改
+						expressReissue = ExpressReissueDAO.getInstance().load(Integer.parseInt(id));
+						expressReissue.setShopName(shopName);
+						expressReissue.setAddress(address);
+						expressReissue.setGoodsName(goodsName);
+						expressReissue.setOrderNum(orderNum);
+						expressReissue.setWangwang(wangwang);
+						expressReissue.setRemark(remark);
+					}
+					ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
+					if (id == null || id.length() == 0) {
+						responseSuccess("新建售后记录成功");
+					} else {
+						responseSuccess("修改售后记录成功");
+					}
+				}
+				
+				
+			}else{
 				responseError("输入的订单号不合法");
 			}
-			String id = (String) request.getParameter("erlistId");
-			ExpressReissue express = (ExpressReissue) ExpressReissueDAO.getInstance().list(orderNum);
-			if(express!=null){
-				responseError("不能输入重复订单号");
-			}
-				ExpressReissue expressReissue = null;
-				if (id == null || id.length() == 0) {
-					expressReissue = new ExpressReissue();
-					expressReissue.setCreatorId(currentUser.getId());
-					expressReissue.setEntryTime(System.currentTimeMillis());
-					expressReissue.setShopName(shopName);
-					expressReissue.setAddress(address);
-					expressReissue.setGoodsName(goodsName);
-					expressReissue.setOrderNum(orderNum);
-					expressReissue.setWangwang(wangwang);
-					expressReissue.setRemark(remark);
-
-				} else {// 修改
-					expressReissue = ExpressReissueDAO.getInstance().load(Integer.parseInt(id));
-					expressReissue.setShopName(shopName);
-					expressReissue.setAddress(address);
-					expressReissue.setGoodsName(goodsName);
-					expressReissue.setOrderNum(orderNum);
-					expressReissue.setWangwang(wangwang);
-					expressReissue.setRemark(remark);
-				}
-				ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
 			
-			
-			
-			
-			if (id == null || id.length() == 0) {
-				responseSuccess("新建售后记录成功");
-			} else {
-				responseSuccess("修改售后记录成功");
-			}
 		} else if ("reissueAdd".equals(sign)) {
 			if (currentUser == null) {
 				responseError("需要登录");

@@ -28,7 +28,7 @@
             $(function() {
             	/* $("#displayId").hide();  */
             	$("#addOrderlist").panel({
-            		title: '添加需要补发记录',
+            		title: '添加记录',
             		
             		});
             	$("#searchOrderlist").panel({
@@ -260,11 +260,11 @@
 	</head>
 
 	<body class="easyui-layout">
-		<div title="excle表记录" class="easyui-panel" style="width: 100%">
+		<div title="记录列表" class="easyui-panel" style="width: 100%">
 			<table id="eolistGrid" style="height: 340px;"></table>
 		</div>
 	<div style="width:40%; position:relative">
-		<div id="addOrderlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
+		<div id="addOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
 			 <!-- <form id="addOrderlistForm" method="post">
 				<input type="hidden"  name="orderlistId" value="" />
 				<table>

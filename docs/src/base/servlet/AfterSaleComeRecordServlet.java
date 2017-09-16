@@ -14,8 +14,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
+import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
 import base.dao.AfterSaleComeRecordDAO;
+import base.dao.UserDAO;
 import base.dao.core.BaseDAO;
 
 public class AfterSaleComeRecordServlet extends BaseServlet {
@@ -44,6 +46,8 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String goodsName = (String) request.getParameter("goodsName");
 			String orderNum = (String) request.getParameter("orderNum");
 			String phoneNum = (String) request.getParameter("phoneNum");
+			String creator = (String) request.getParameter("creator");
+			
 			if ("全部".equals(expressName)) {
 				expressName = "";
 			}
@@ -56,6 +60,17 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			int index = (page - 1) * rows;
 			List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
 			if (allSearch == null || allSearch.length() == 0) {
+				User user = new User();
+				int creatorId = 0;
+				if(creator!=null && creator.length()>0){
+					//creatorId = (Integer) (UserDAO.getInstance().query(creator)!=null? UserDAO.getInstance().query(creator).getId():-1);
+					user = UserDAO.getInstance().query(creator);
+					System.out.println(user);
+					if(user!=null){
+						creatorId = user.getId();
+					}
+				}
+				
 				BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO
 						.getInstance().new QueryBuilder();
 				if ((courierNum != null && courierNum.length() != 0)) {
@@ -78,6 +93,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				}
 				if (wangwang != null && wangwang.length() != 0){
 					builder.eq("wangwang", wangwang);
+				}
+				if (creator !=null && creator.length() != 0) {
+					builder.eq("creatorId", creatorId);
 				}
 				builder.orderBy("id", true);
 				builder.limit(index, rows);
@@ -118,6 +136,12 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String reissueCourierNum = (String) request.getParameter("reissueCourierNum");
 			String reissueExpressName = (String) request.getParameter("reissueExpressName");
 			String reissueGoodsName = (String) request.getParameter("reissueGoodsName");
+			
+			/*String changeStatus = (String) request.getParameter("changeStatus");
+			if("他人处理".equals(changeStatus)){
+				
+			}*/
+			
 			if("请选择:".equals(expressName)){
 				expressName = "";
 			}

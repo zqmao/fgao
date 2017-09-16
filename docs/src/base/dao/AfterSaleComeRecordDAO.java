@@ -3,6 +3,7 @@ package base.dao;
 import java.util.List;
 
 import base.api.AfterSaleComeRecord;
+import base.api.User;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
 
@@ -26,8 +27,24 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		return dao;
 	}
 	public long count(String allSearch){
-		String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? ";
-		return JDBCUtil.queryCount(sql, allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);
+		User user = new User();
+		int creatorId = 0;
+		
+			user = UserDAO.getInstance().query(allSearch);
+			System.out.println(user);
+			
+			if(user!=null){
+				creatorId = user.getId(); 
+				String sql = "select count(id) from t_after_sale_come_record where creatorId=? order by id ";
+				return JDBCUtil.queryCount(sql,creatorId);
+			}else{
+				String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? or creatorId=? order by id";
+				return JDBCUtil.queryCount(sql,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);
+			}
+		
+		
+		/*String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? or creatorId=? ";
+		return JDBCUtil.queryCount(sql, allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);*/
 	}
 	public List<AfterSaleComeRecord> list() {
 		String sql = "select * from t_after_sale_come_record order by courierNum ";
@@ -35,8 +52,23 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		return objs;
 	}
 	public List<AfterSaleComeRecord> list(String allSearch,int index, int pagesize ) {
-		String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? order by id desc limit ?, ?";
-		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,index,pagesize);
+		User user = new User();
+		int creatorId = 0;
+		
+			user = UserDAO.getInstance().query(allSearch);
+			System.out.println(user);
+			List<AfterSaleComeRecord> objs;
+			if(user!=null){
+				creatorId = user.getId(); 
+				String sql = "select * from t_after_sale_come_record where creatorId=? order by id desc limit ?, ?";
+				objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,creatorId,index,pagesize);
+			}else{
+				String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? or creatorId=? order by id desc limit ?, ?";
+				objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,index,pagesize);
+			}
+		
+		
+		
 		return objs;
 	}
 	public List<AfterSaleComeRecord> list(int index, int pagesize) {

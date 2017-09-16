@@ -24,6 +24,7 @@
 			var orderNum = "";
 			var phoneNum = "";
 			var wangwang = "";
+			var creator = "";
 			var allSearch="";
 			var expressName2 = "";
 			var option_express = "0";
@@ -120,7 +121,7 @@
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
                     queryParams:{selectExpress : expressName2, courierNum : courierNum, 
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,allSearch : allSearch},
+                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 50},
@@ -267,6 +268,7 @@
             function changeGoods(){
             	//var value  = $('input[name="bounceType"]:checked').val(); //获取被选中Radio的Value值
             	$("#displayId").show();
+            	
             	//$('#courierNum3').attr("disabled",true); 
             	//var Num3 = $('#courierNum3').html();
             }
@@ -281,6 +283,7 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	wangwang = $("#wangwang").val();
+            	creator = $("#creator").val();
             	shopName = $("#shopName").val();
             	allSearch = $("#allSearch").val();
             	expressName2 = $("#option_express2").val();
@@ -290,6 +293,7 @@
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.wangwang = wangwang;
+            	queryParams.creator = creator;
             	queryParams.shopName = shopName;
             	queryParams.allSearch = allSearch;
             	queryParams.expressName2 = expressName2;
@@ -360,10 +364,10 @@
 	</head>
 
 	<body class="easyui-layout">
-		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
-			<table id="ascrGrid" style="height: 340px;"></table>
-		</div>
-	<div style="width:44%; position:relative">
+		<table style="width:100%">
+			<tr>
+				<td style="width:46%;">
+					
 		<div id="addAscr" class="easyui-panel" title="添加拆包记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="addAscrForm" method="post">
 				<input type="hidden" name="ascrId" value="" />
@@ -396,7 +400,7 @@
 				    </tr>
 				    <tr >
 						<td>订单号:</td>
-						<td><input class="easyui-validatebox" name="orderNum" type="text" style="width: 250px;" /><td>
+						<td><input class="easyui-validatebox" name="orderNum" id="orderNO" type="text" style="width: 250px;" /><td>
 				    </tr>
 				    <tr >
 						<td>旺旺:</td>
@@ -429,8 +433,16 @@
 						<td>
 				    </tr>
 			    </table>
-			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 350px; background-color: #eeeeee;">
-			    	<tr >
+			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 340px; background-color: #eeeeee;">
+			    	 <!-- <tr >
+						<td>处理方式:</td>
+						<td>
+							<input type="radio" name="changeStatus" value="自己发货" checked="checked" id="handle" /><label for="handle">自己发货</label>
+							<input type="radio" name="changeStatus" value="他人发货" id="handleOther" onclick="handleOther()"/><label for="handleOther">他人发货</label>
+							<input type="radio" name="changeStatus" value="不处理"  id="handleNo" /><label for="handleNo">不处理</label>
+						<td>
+				    </tr> -->
+			    	<tr>
 						<td>补发快递单号:</td>
 						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 150px;" /><td>
 				    </tr>
@@ -465,10 +477,11 @@
 				</table>
 			</div>
 		</div>
-		</div>
 		
-		<div id="moveLeft" style="width:28%;position:absolute;right:1px;top:368px">
-		<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
+				
+				</td>
+				<td style="width:27%;">
+					<div id="searchAscr" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchAscrForm" method="post">
 				<table>
 					<tr >
@@ -512,6 +525,10 @@
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang2" id="wangwang" type="text" style="width: 250px;"/><td>
 				    </tr>
+				    <tr >
+						<td>创建人:</td>
+						<td><input class="easyui-validatebox" name="creator" id="creator" type="text" style="width: 250px;"/><td>
+				    </tr>
 			    </table>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
@@ -530,10 +547,10 @@
 				</table>
 			</div>
 		</div>
-		</div>
-		
-	<div style="width:28%;position:absolute;left:44%;top:368px">
-		<div id="courierNumAscr" class="easyui-panel" title="添加扫码记录" style="width: 98%; height: 500px;padding: 10px;">
+				
+				</td>
+				<td style="width:27%;" >
+					<div id="courierNumAscr" class="easyui-panel" title="添加扫码记录" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="courierNumAscrForm" method="post">
 				<input type="hidden" name="courierNumId" value="" />
 				<table>
@@ -564,7 +581,21 @@
 				</table>
 			</div>
 		</div>
-	</div>	
+				
+				</td>
+			</tr>
+		</table>	
+	
 		
+		
+		
+		
+		
+	
+		
+	
+	<div title="售后收货记录" class="easyui-panel" style="width: 100%">
+			<table id="ascrGrid" style="height: 340px;"></table>
+		</div>	
 	</body>
 </html>

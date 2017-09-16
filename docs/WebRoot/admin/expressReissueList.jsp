@@ -228,7 +228,8 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
-            	var status = $('input[name="statuss"]:checked').val();
+            	/* var status = $('input[name="statuss"]:checked').val(); */
+            	status = $("#status").val();
             	expressName2 = $("#option_express2").val();
             	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
@@ -399,11 +400,15 @@
 	</head>
 
 	<body class="easyui-layout">
-		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
+		<!-- <div title="售后收货记录" class="easyui-panel" style="width: 100%">
 			<table id="erlistGrid" style="height: 340px;"></table>
-		</div>
-	<div style="width:40%; position:relative">
-		<div id="addErlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
+		</div> -->
+		<table style="width:100%">
+			<tr>
+				<td style="width:40%">
+					
+					<div>
+		<div id="addErlist" class="easyui-panel" title="拆包记录列表" style="width: 98%; height: 450px;padding: 10px;z-index:3">
 			<form id="addErlistForm" method="post">
 				<input type="hidden"  name="erlistId" value="" />
 				<table style="" >
@@ -453,8 +458,12 @@
 		</div>
 		</div>
 		
-			<div style="width:30%;position:absolute;left:40%;top:368px">
-		<div id="addEreissuelist" class="easyui-panel" title="补发快递记录" style="width: 98%; height: 500px;padding: 10px;">
+					
+				</td>
+				<td style="width:30%">
+				
+				<div>
+		<div id="addEreissuelist" class="easyui-panel" title="补发快递记录" style="width: 98%; height: 450px;padding: 10px;">
 			<form id="addEreissuelistForm" method="post">
 				<input type="hidden" id="updateId" name="updateId" value="" />
 				<table>
@@ -506,9 +515,13 @@
 		</div>
 		</div>
 		
-		 <div style="width:30%;position:absolute;right:1px;top:368px;">
+				
+				</td>
+				<td style="width:30%">
+				
+					 <div>
 		
-		<div id="searchErlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
+		<div id="searchErlist" class="easyui-panel" title="搜索" style="width: 98%; height: 450px;padding: 10px;">
 			<form id="searchErlistForm" method="post">
 				<table>
 					<tr >
@@ -543,18 +556,17 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr>
-				    <tr >
+				    <!-- <tr >
 						<td>处理状态:</td>
 						<td>
 							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
 							<input type="radio" name="statuss" value="已处理" id="overManage"/><label for="overManage">已处理</label>
 						<td>
-				    </tr>
-				    
-				    <!-- <tr >
+				    </tr> -->
+				     <tr >
 						<td>处理状态:</td>
 						<td><input class="easyui-validatebox" name="status2" id="status" type="text" style="width: 250px;"/></td>
-				    </tr> -->
+				    </tr> 
 			    </table>
 			</form>
 			
@@ -576,5 +588,16 @@
 			
 		</div>
 		</div> 
+				
+				</td>
+				
+			</tr>
+		</table>
+	
+			
+		
+		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
+			<table id="erlistGrid" style="height: 340px;"></table>
+		</div>
 	</body>
 </html>
