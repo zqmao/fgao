@@ -47,5 +47,9 @@ public class ExportOrderListDAO extends BaseDAO<ExportOrderList>{
 		List<ExportOrderList> objs = JDBCUtil.queryObjectList(sql, ExportOrderList.class, index, pagesize);
 		return objs;
 	}
+	public ExportOrderList query(String orderNum) {
+		String sql = "select * from t_export_order_list where orderNum=? ";
+		return JDBCUtil.queryObject(sql, ExportOrderList.class, orderNum);
+	}
 
 }

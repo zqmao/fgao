@@ -22,16 +22,18 @@ public class AfterSaleComeRecordVO {
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
 	private String creator;//创建者
+	private String unpackor;//拆包人员
 	private String createTime;//创建时间
 	private String entryTime;//录入时间
 	private String remark;//备注
 	private String status;//处理状态
 	
 	private String bounceType;//退件类型
-	private String reissueCourierNum;//补发快递单号
+	/*private String reissueCourierNum;//补发快递单号
 	private String reissueExpressName;//补发快递名称
 	private String reissueGoodsName;//补发物品名称
-	
+	private String reissueAddress;//补发地址
+*/	
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
 		this.id = afterSaleComeRecord.getId();
 		this.courierNum = afterSaleComeRecord.getCourierNum();
@@ -49,13 +51,20 @@ public class AfterSaleComeRecordVO {
 		this.entryTime = afterSaleComeRecord.getEntryTime()!=0 ? DateUtil.toString(afterSaleComeRecord.getEntryTime()):"";
 		this.remark = afterSaleComeRecord.getRemark()!=null ? afterSaleComeRecord.getRemark():" ";
 		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
-		
+		user = UserDAO.getInstance().load(afterSaleComeRecord.getUnpackId());
+		this.unpackor = user != null ? user.getName() : "";
 		this.bounceType = afterSaleComeRecord.getBounceType();
-		this.reissueCourierNum = afterSaleComeRecord.getReissueCourierNum();
-		this.reissueExpressName = afterSaleComeRecord.getReissueExpressName();
-		this.reissueGoodsName = afterSaleComeRecord.getReissueGoodsName();
+		
 	}
 	
+	public String getUnpackor() {
+		return unpackor;
+	}
+
+	public void setUnpackor(String unpackor) {
+		this.unpackor = unpackor;
+	}
+
 	public String getBounceType() {
 		return bounceType;
 	}
@@ -175,28 +184,5 @@ public class AfterSaleComeRecordVO {
 		this.status = status;
 	}
 
-	public String getReissueCourierNum() {
-		return reissueCourierNum;
-	}
 
-	public void setReissueCourierNum(String reissueCourierNum) {
-		this.reissueCourierNum = reissueCourierNum;
-	}
-
-	public String getReissueExpressName() {
-		return reissueExpressName;
-	}
-
-	public void setReissueExpressName(String reissueExpressName) {
-		this.reissueExpressName = reissueExpressName;
-	}
-
-	public String getReissueGoodsName() {
-		return reissueGoodsName;
-	}
-
-	public void setReissueGoodsName(String reissueGoodsName) {
-		this.reissueGoodsName = reissueGoodsName;
-	}
-	
 }

@@ -17,17 +17,32 @@ public class AfterSaleComeRecord {
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
 	private int creatorId;//创建者
+	private int unpackId;//拆包人员
 	private long createTime;//创建时间
 	private String remark;//备注
 	private int status;//处理状态:1已处理；0未处理
 	private long entryTime;//打单时间
 	
 	private String bounceType;//退件类型
-	private String reissueCourierNum;//补发快递单号
+	
+	/*private String reissueCourierNum;//补发快递单号
 	private String reissueExpressName;//补发快递名称
 	private String reissueGoodsName;//补发物品名称
+	private String reissueAddress;//补发地址
+*/	
 	
+	public void setEntryTime(long entryTime) {
+		this.entryTime = entryTime;
+	}
 	
+	public int getUnpackId() {
+		return unpackId;
+	}
+
+	public void setUnpackId(int unpackId) {
+		this.unpackId = unpackId;
+	}
+
 	public String getBounceType() {
 		return bounceType;
 	}
@@ -36,10 +51,6 @@ public class AfterSaleComeRecord {
 		this.bounceType = bounceType;
 	}
 
-	public void setEntryTime(long entryTime) {
-		this.entryTime = entryTime;
-	}
-	
 	public long getEntryTime() {
 		return entryTime;
 	}
@@ -123,29 +134,4 @@ public class AfterSaleComeRecord {
 		this.status = status;
 	}
 
-	public String getReissueCourierNum() {
-		return reissueCourierNum;
-	}
-
-	public void setReissueCourierNum(String reissueCourierNum) {
-		this.reissueCourierNum = reissueCourierNum;
-	}
-
-	public String getReissueExpressName() {
-		return reissueExpressName;
-	}
-
-	public void setReissueExpressName(String reissueExpressName) {
-		this.reissueExpressName = reissueExpressName;
-	}
-
-	public String getReissueGoodsName() {
-		return reissueGoodsName;
-	}
-
-	public void setReissueGoodsName(String reissueGoodsName) {
-		this.reissueGoodsName = reissueGoodsName;
-	}
-	
-	
 }

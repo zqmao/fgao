@@ -52,9 +52,11 @@ public class ExpressReissueServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String statuss = request.getParameter("status");
+			//statuss=="已处理"?"已处理":"待处理";
+			
 			if ("已处理".equals(statuss)) {
 				status = 1;
-			} else if("待处理".equals(statuss)) {
+			} else {
 				status = 0;
 			}
 			if ("全部".equals(expressName)) {

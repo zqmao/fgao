@@ -14,9 +14,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
+import base.api.ExpressReissue;
 import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
 import base.dao.AfterSaleComeRecordDAO;
+import base.dao.ExpressReissueDAO;
 import base.dao.UserDAO;
 import base.dao.core.BaseDAO;
 
@@ -33,6 +35,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 		this.doPost(req, resp);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -136,11 +139,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String reissueCourierNum = (String) request.getParameter("reissueCourierNum");
 			String reissueExpressName = (String) request.getParameter("reissueExpressName");
 			String reissueGoodsName = (String) request.getParameter("reissueGoodsName");
-			
-			/*String changeStatus = (String) request.getParameter("changeStatus");
-			if("他人处理".equals(changeStatus)){
-				
-			}*/
+			String reissueAddress = (String) request.getParameter("reissueAddress");
 			
 			if("请选择:".equals(expressName)){
 				expressName = "";
@@ -148,6 +147,10 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			if("请选择:".equals(reissueExpressName)){
 				reissueExpressName="";
 			}
+			String changeStatus = (String) request.getParameter("changeStatus");
+			System.out.println(changeStatus);
+			AfterSaleComeRecord afterSaleComeRecord = new AfterSaleComeRecord();
+			
 			
 			String id = (String) request.getParameter("ascrId");
 			if (id == null || id.length() == 0) {
@@ -155,27 +158,63 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					id = "" + couesult.getId();
 					long time = couesult.getCreateTime();
 					long eTime = couesult.getEntryTime();
+					afterSaleComeRecord.setUnpackId(currentUser.getId());
 					if ((System.currentTimeMillis() >= (time + 1000 * 60 * 60 * 24 * 21))
 							&& (System.currentTimeMillis() >= (eTime + 1000 * 60 * 60 * 24 * 21))) {
 						responseError("此账单创建时间过久，不许修改");
 					}
 				}
 			}
-			AfterSaleComeRecord afterSaleComeRecord = null;
+			
 			// 如果没有id是新建
 			if (id == null || id.length() == 0) {
 				afterSaleComeRecord = new AfterSaleComeRecord();
-				afterSaleComeRecord.setCreatorId(currentUser.getId());
+				afterSaleComeRecord.setCreatorId(currentUser.getId());//创建人
+				afterSaleComeRecord.setUnpackId(currentUser.getId());//拆包人
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 			} else {
 				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
+				afterSaleComeRecord.setUnpackId(currentUser.getId());
+				//afterSaleComeRecord.setUnpackId(currentUser.getId());
 			}
 			afterSaleComeRecord.setBounceType(bounceType);
 			if("换货".equals(bounceType)){
-				afterSaleComeRecord.setReissueCourierNum(reissueCourierNum);
+				ExpressReissue expressReissue = new ExpressReissue();
+				if("自己发货".equals(changeStatus)){
+					
+					expressReissue.setShopName(shopName);
+					expressReissue.setOrderNum(orderNum);
+					expressReissue.setWangwang(wangwang);
+					expressReissue.setExpressName(reissueExpressName);
+					expressReissue.setCourierNum(reissueCourierNum);
+					expressReissue.setGoodsName(reissueGoodsName);
+					expressReissue.setRemark(remark);
+					expressReissue.setCreatorId(currentUser.getId());
+					expressReissue.setIssueDocumentor(currentUser.getId());
+					expressReissue.setEntryTime(System.currentTimeMillis());
+					expressReissue.setIssuTime(System.currentTimeMillis());
+					ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
+				}else if("他人发货".equals(changeStatus)){
+					reissueGoodsName = (String) request.getParameter("reissueGood");
+					expressReissue.setShopName(shopName);
+					expressReissue.setOrderNum(orderNum);
+					expressReissue.setWangwang(wangwang);
+					expressReissue.setRemark(remark);
+					expressReissue.setCreatorId(currentUser.getId());
+					expressReissue.setGoodsName(reissueGoodsName);
+					expressReissue.setAddress(reissueAddress);
+					expressReissue.setEntryTime(System.currentTimeMillis());
+					ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
+				}else if("不处理".equals(changeStatus)){
+					
+					
+				}
+				
+				
+				/*afterSaleComeRecord.setReissueCourierNum(reissueCourierNum);
 				afterSaleComeRecord.setReissueExpressName(reissueExpressName);
-				afterSaleComeRecord.setReissueGoodsName(reissueGoodsName);
+				afterSaleComeRecord.setReissueGoodsName(reissueGoodsName);*/
 			}
 			afterSaleComeRecord.setCourierNum(courierNum);
 			afterSaleComeRecord.setExpressName(expressName);

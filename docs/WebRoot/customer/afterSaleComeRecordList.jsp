@@ -32,7 +32,9 @@
 			var option_express3 = "0";
 			var option_express4 = "0";
             $(function() {
-            	$("#displayId").hide(); 
+            	$("#displayId").hide();
+            	$("#handleSelf").hide();
+            	$("#handleOth").hide();
             	$("#addAscr").panel({
             		title: '添加拆包记录',
             		
@@ -135,10 +137,8 @@
                             {title: '订单号', field: 'orderNum', width: 100, align: 'center'},
                             {title: '创建人员', field: 'creator', width: 90, align: 'center'},
                             {title: '退件类型', field: 'bounceType', width: 90, align: 'center'},
-                            {title: '补发快递单号', field: 'reissueCourierNum', width: 100, align: 'center'},
-                            {title: '补发快递名称', field: 'reissueExpressName', width: 80, align: 'center'},
-                            {title: '补发物品名称', field: 'reissueGoodsName', width: 100, align: 'center'},
                             
+                            {title: '拆包人员', field: 'unpackor', width: 90, align: 'center'},
                             {title: '拆包时间', field: 'createTime', width: 130, align: 'center'},
                             {title: '收件时间', field: 'entryTime', width: 130, align: 'center'},
                             {title: '备注', field: 'remark', width: 100, align: 'center', formatter:formatCellTooltip},
@@ -198,9 +198,6 @@
                                     remark: row[0].remark,
                                     status: row[0].status,
                                     bounceType: row[0].bounceType,
-                                    reissueCourierNum:row[0].reissueCourierNum,
-                                    reissueExpressName:row[0].reissueExpressName,
-                                    reissueGoodsName:row[0].reissueGoodsName
                                 });
                             }
                         }
@@ -268,13 +265,34 @@
             function changeGoods(){
             	//var value  = $('input[name="bounceType"]:checked').val(); //获取被选中Radio的Value值
             	$("#displayId").show();
+            	$("#handleSelf").show();
+            	//$('input:radio').eq(6).attr('checked', 'true');
             	
             	//$('#courierNum3').attr("disabled",true); 
             	//var Num3 = $('#courierNum3').html();
             }
+            //自己发货
+            function handleSf(){
+            	$("#handleOth").hide();
+            	$("#handleSelf").show();
+            }
+            //他人发货
+            function handleOr(){
+            	$("#handleSelf").hide();
+            	$("#handleOth").show();
+            }
+            //不处理
+            function untreated(){
+            	$("#handleSelf").hide();
+            	$("#handleOth").hide();
+            }
             function changeDisplay(){
             	$("#displayId").hide();
             	$("#displayId").form("clear");
+            	$("#handleSelf").hide();
+            	$("#handleOth").hide();
+            	$("#handleSelf").form("clear");
+            	$("#handleOth").form("clear");
             }
             //查询
             function submitSearch(){
@@ -434,31 +452,45 @@
 				    </tr>
 			    </table>
 			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 340px; background-color: #eeeeee;">
-			    	 <!-- <tr >
+			    	  <tr >
 						<td>处理方式:</td>
 						<td>
-							<input type="radio" name="changeStatus" value="自己发货" checked="checked" id="handle" /><label for="handle">自己发货</label>
-							<input type="radio" name="changeStatus" value="他人发货" id="handleOther" onclick="handleOther()"/><label for="handleOther">他人发货</label>
-							<input type="radio" name="changeStatus" value="不处理"  id="handleNo" /><label for="handleNo">不处理</label>
+							<input type="radio" name="changeStatus" value="自己发货" checked="checked" id="handle" onclick="handleSf();" /><label for="handle">自己发货</label>
+							<input type="radio" name="changeStatus" value="他人发货" id="handleOther" onclick="handleOr()"/><label for="handleOther">他人发货</label>
+							<input type="radio" name="changeStatus" value="不处理"  id="handleNo" onclick="untreated()" /><label for="handleNo">不处理</label>
 						<td>
-				    </tr> -->
+				    </tr>
+				   </table>
+				   
+				   <table id="handleSelf" style="position:absolute;margin-top: -282px;margin-left: 340px; background-color: #eeeeee;"> 
 			    	<tr>
 						<td>补发快递单号:</td>
-						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 150px;" /><td>
+						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 223px;" /><td>
 				    </tr>
 				     <tr >
 						<td><label for="reissueExpressName" style="font-size: 16px;">补发快递名称:</label></td>
 						
-				        <td><input class="easyui-combobox" id="reissueExpressName" style="width:150px;margin-left:5px;" name="reissueExpressName" /></td>
+				        <td><input class="easyui-combobox" id="reissueExpressName" style="width:223px;margin-left:5px;" name="reissueExpressName" /></td>
 				    </tr>
 				    <tr >
 						<td>补发货物名称:</td>
-						<td><input class="easyui-validatebox" id="reissueGoodsName" name="reissueGoodsName" type="text" style="width: 150px;" /><td>
+						<td><input class="easyui-validatebox" id="reissueGoodsName" name="reissueGoodsName" type="text" style="width: 223px;" /><td>
 				    </tr>
+				    
 					<!-- <tr >
 						<td>快递名称:</td>
 						<td><input class="easyui-validatebox" name="expressName3" type="text" style="width: 250px;" data-options="required:true" /><td>
 				    </tr> -->
+			    </table>
+			    <table id="handleOth" style="position:absolute;margin-top: -282px;margin-left: 340px; background-color: #eeeeee;">
+			    	<tr >
+						<td>补发货物地址:</td>
+						<td><input class="easyui-validatebox" id="reissueAddress" name="reissueAddress" type="text" style="width: 223px;" /><td>
+				    </tr>
+				    <tr >
+						<td>补发货物名称:</td>
+						<td><input class="easyui-validatebox" id="reissueGood" name="reissueGood" type="text" style="width: 223px;" /><td>
+				    </tr>
 			    </table>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
@@ -595,7 +627,7 @@
 		
 	
 	<div title="售后收货记录" class="easyui-panel" style="width: 100%">
-			<table id="ascrGrid" style="height: 340px;"></table>
+			<table id="ascrGrid" style="height: 600px;"></table>
 		</div>	
 	</body>
 </html>

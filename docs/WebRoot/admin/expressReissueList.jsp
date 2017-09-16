@@ -228,8 +228,8 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
-            	/* var status = $('input[name="statuss"]:checked').val(); */
-            	status = $("#status").val();
+            	var status = $('input[name="statuss"]:checked').val();
+            	//status = $("#status").val();
             	expressName2 = $("#option_express2").val();
             	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
@@ -556,17 +556,17 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr>
-				    <!-- <tr >
+				     <tr >
 						<td>处理状态:</td>
 						<td>
 							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
 							<input type="radio" name="statuss" value="已处理" id="overManage"/><label for="overManage">已处理</label>
 						<td>
-				    </tr> -->
-				     <tr >
+				    </tr> 
+				     <!-- <tr >
 						<td>处理状态:</td>
 						<td><input class="easyui-validatebox" name="status2" id="status" type="text" style="width: 250px;"/></td>
-				    </tr> 
+				    </tr>  -->
 			    </table>
 			</form>
 			
@@ -588,16 +588,11 @@
 			
 		</div>
 		</div> 
-				
-				</td>
-				
+		      </td>
 			</tr>
 		</table>
-	
-			
-		
-		<div title="售后收货记录" class="easyui-panel" style="width: 100%">
-			<table id="erlistGrid" style="height: 340px;"></table>
+		<div title="补发快递记录" class="easyui-panel" style="width: 100%">
+			<table id="erlistGrid" style="height: 600px;"></table>
 		</div>
 	</body>
 </html>

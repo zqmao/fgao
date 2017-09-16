@@ -261,21 +261,14 @@
 
 	<body class="easyui-layout">
 		<div title="记录列表" class="easyui-panel" style="width: 100%">
-			<table id="eolistGrid" style="height: 340px;"></table>
+			<table id="eolistGrid" style="height: 600px;"></table>
 		</div>
-	<div style="width:40%; position:relative">
-		<div id="addOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
-			 <!-- <form id="addOrderlistForm" method="post">
-				<input type="hidden"  name="orderlistId" value="" />
-				<table>
-					<tr>
-						<td>
-							<a class="custom" onclick="submitAdd();">确定</a>
-						</td>
-					</tr>
-				</table>
-				<input type="file">
-			</form> -->
+		
+		<table>
+			<tr>
+				<td style="width:40%;">
+					<div id="addOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
+			 
 			<form id="addOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">
 		        <!-- <table border="0" align="center">
 		            <tr>
@@ -306,12 +299,12 @@
 		        
     </form>
 		</div> 
-		
-		</div>
-		
-		 <div style="width:40%;position:absolute;right:1px;top:368px;">
-		
-		<div id="searchOrderlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
+				
+				
+				</td>
+				
+				<td style="width:40%;">
+					<div id="searchOrderlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchOrderlistForm" method="post">
 				<table>
 				
@@ -371,6 +364,12 @@
 			</div>
 			
 		</div>
-		</div> 
+				
+				
+				</td>
+			</tr>
+		
+		</table>
+	
 	</body>
 </html>

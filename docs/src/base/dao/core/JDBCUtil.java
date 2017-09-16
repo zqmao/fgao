@@ -26,7 +26,7 @@ public class JDBCUtil {
 	 */
 	@SuppressWarnings("resource")
 	public static int updateOrSave(String sqlStr, List<Object> values) {
-		System.out.println("JDBCUtil SQL: " + sqlStr);
+		//System.out.println("JDBCUtil SQL: " + sqlStr);
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -137,7 +137,7 @@ public class JDBCUtil {
 	 * @return
 	 */
 	public static <T> T queryObject(String sqlStr, Class<T> clazz, Object... params) {
-		System.out.println("JDBCUtil SQL: " + sqlStr);
+		//System.out.println("JDBCUtil SQL: " + sqlStr);
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

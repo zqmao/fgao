@@ -28,12 +28,12 @@ public class ExpressReissueVO {
 		User user = UserDAO.getInstance().load(expressReissue.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
 		this.entryTime = expressReissue.getEntryTime()!=0 ? DateUtil.toString(expressReissue.getEntryTime()):"";
-		this.address = expressReissue.getAddress();
+		this.address = expressReissue.getAddress()!=null ? expressReissue.getAddress():"";
 		this.shopName = expressReissue.getShopName();
 		this.goodsName = expressReissue.getGoodsName();
 		this.orderNum = expressReissue.getOrderNum();
 		this.wangwang = expressReissue.getWangwang();
-		this.remark = expressReissue.getRemark();
+		this.remark = expressReissue.getRemark()!=null ? expressReissue.getRemark(): "";
 		
 		user = UserDAO.getInstance().load(expressReissue.getIssueDocumentor());
 		this.issueDocumentor = user != null ? user.getName() : "";
