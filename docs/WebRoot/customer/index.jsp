@@ -180,7 +180,15 @@
 								<span class="sub-title">排班情况</span>
 							</a>
 						</li>
-
+						<li>
+							<div class="showtitle" style="width: 100px;">
+								<img src="../img/leftimg.png" />修改个人信息
+							</div> 
+							<a href="/customer/userEdit.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-user"></span>
+								<span class="sub-title">修改个人信息</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
