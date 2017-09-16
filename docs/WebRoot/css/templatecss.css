@@ -158,7 +158,7 @@
 .manage-detail-con .recharge{width:80px;height:30px;background:#ea544a;text-align:center;line-height:30px;color:#fff;display:block;border-radius:3px;}
 .manage-detail-con .recharge:hover{background:#ef7f77;}
 .manage-detail-con .custom{width:120px;hegiht:30px;background:#0098ce;text-align:center;line-height:30px;color:#fff;display:block;border-radius:3px;}
-.manage-detail-con .custom:hover{background:#40b2da;}
+.manage-detail-con .custom:hover{background:#40b2da;cursor: pointer;}
 .manage-detail-con .title{margin-top: 0;line-height: 26px;}
 .manage-detail-con .title em{padding-top: 2px;}
 .charge-now{display: block;width: 260px;line-height: 40px;padding:0;font-size:14px;margin:0 auto;}
@@ -484,7 +484,7 @@ a.submit-order:hover{background:#40b2da;color:#fff}
 
 /*=================layout=====================*/
 /*自定义链接颜色(可自由更换)*/
-a{color:#333;text-decoration:none;} /*链接-颜色*/
+a{color:#333;text-decoration:none;cursor: pointer;} /*链接-颜色*/
 a:hover{color:#098cba;} /*链接-悬浮颜色*/
 .text-underline:hover {text-decoration:underline;}
 /*段落*/
