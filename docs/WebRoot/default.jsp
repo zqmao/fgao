@@ -8,6 +8,7 @@
 <html>
 <head>
 <title>默认页面</title>
+<script src="script/jquery-1.11.1.min.js" type="text/javascript"></script>
 </head>
 
 <body>
