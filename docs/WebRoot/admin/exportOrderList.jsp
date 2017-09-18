@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
 	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/commons.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
 	<script type="text/javascript">
@@ -227,9 +228,11 @@
             
          
             function submitAdd() {
+            	 MaskUtil.mask();
 				$("#addOrderlistForm").form("submit", {
 				    url:"../exportOrderListServlet.do?sign=add",
 				    success:function(result){
+				    	MaskUtil.unmask(); 
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);

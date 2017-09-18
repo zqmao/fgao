@@ -50,75 +50,101 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String creator = (String) request.getParameter("creator");
-			
-			if ("全部".equals(expressName)) {
-				expressName = "";
-			}
-			if ("全部".equals(shopName)) {
-				shopName = "";
-			}
-			int page = Integer.parseInt(request.getParameter("page"));
-			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = 0;
-			int index = (page - 1) * rows;
-			List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
-			if (allSearch == null || allSearch.length() == 0) {
-				User user = new User();
-				int creatorId = 0;
-				if(creator!=null && creator.length()>0){
-					//creatorId = (Integer) (UserDAO.getInstance().query(creator)!=null? UserDAO.getInstance().query(creator).getId():-1);
-					user = UserDAO.getInstance().query(creator);
-					System.out.println(user);
-					if(user!=null){
-						creatorId = user.getId();
-					}
-				}
+			/*String courierNumA = (String) request.getParameter("courierNumA");
+			System.out.println("+++++"+courierNumA);
+			if(courierNumA!=null&&courierNumA.length()>0){
 				
-				BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO
-						.getInstance().new QueryBuilder();
-				if ((courierNum != null && courierNum.length() != 0)) {
-					builder.eq("courierNum", courierNum);
+				List<AfterSaleComeRecord> ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
+				System.out.println(ascr);
+				if(ascr!=null){
+					int page = Integer.parseInt(request.getParameter("page"));
+					int rows = Integer.parseInt(request.getParameter("rows"));
+					long total = 0;
+					int index = (page - 1) * rows;
+					total = AfterSaleComeRecordDAO.getInstance().queryNum(courierNumA);
+					ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
+					List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
+					for (AfterSaleComeRecord record : ascr) {
+						AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
+						vos.add(vo);
+					}
+					JSONObject obj = new JSONObject();
+					obj.put("rows", JSON.toJSON(vos));
+					responseSuccess(JSON.toJSON(obj));
+					responseError("快递单号已存在,且信息如上所示");
 				}
-				if (expressName != null && expressName.length() != 0) {
-					builder.eq("expressName", expressName);
-				}
-				if (shopName != null && shopName.length() != 0) {
-					builder.eq("shopName", shopName);
-				}
-				if (goodsName != null && goodsName.length() != 0) {
-					builder.eq("goodsName", goodsName);
-				}
-				if (orderNum != null && orderNum.length() != 0) {
-					builder.eq("orderNum", orderNum);
-				}
-				if (phoneNum != null && phoneNum.length() != 0) {
-					builder.eq("phoneNum", phoneNum);
-				}
-				if (wangwang != null && wangwang.length() != 0){
-					builder.eq("wangwang", wangwang);
-				}
-				if (creator !=null && creator.length() != 0) {
-					builder.eq("creatorId", creatorId);
-				}
-				builder.orderBy("id", true);
-				builder.limit(index, rows);
-				total = builder.queryCount();
-				result = builder.queryList();
-			} else {
-				total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
-				result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
-			}
-			List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
-			for (AfterSaleComeRecord record : result) {
-				AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
-				vos.add(vo);
-			}
-			JSONObject obj = new JSONObject();
-			obj.put("total", total);
-			obj.put("rows", JSON.toJSON(vos));
-
-			responseSuccess(JSON.toJSON(obj));
-		} else if ("add".equals(sign)) {// 新增纪录
+			
+			}else{
+			*/
+					if ("全部".equals(expressName)) {
+						expressName = "";
+					}
+					if ("全部".equals(shopName)) {
+						shopName = "";
+					}
+					int page = Integer.parseInt(request.getParameter("page"));
+					int rows = Integer.parseInt(request.getParameter("rows"));
+					long total = 0;
+					int index = (page - 1) * rows;
+					List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
+					if (allSearch == null || allSearch.length() == 0) {
+						User user = new User();
+						int creatorId = 0;
+						if(creator!=null && creator.length()>0){
+							//creatorId = (Integer) (UserDAO.getInstance().query(creator)!=null? UserDAO.getInstance().query(creator).getId():-1);
+							user = UserDAO.getInstance().query(creator);
+							System.out.println(user);
+							if(user!=null){
+								creatorId = user.getId();
+							}
+						}
+						
+						BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO
+								.getInstance().new QueryBuilder();
+						if ((courierNum != null && courierNum.length() != 0)) {
+							builder.eq("courierNum", courierNum);
+						}
+						if (expressName != null && expressName.length() != 0) {
+							builder.eq("expressName", expressName);
+						}
+						if (shopName != null && shopName.length() != 0) {
+							builder.eq("shopName", shopName);
+						}
+						if (goodsName != null && goodsName.length() != 0) {
+							builder.eq("goodsName", goodsName);
+						}
+						if (orderNum != null && orderNum.length() != 0) {
+							builder.eq("orderNum", orderNum);
+						}
+						if (phoneNum != null && phoneNum.length() != 0) {
+							builder.eq("phoneNum", phoneNum);
+						}
+						if (wangwang != null && wangwang.length() != 0){
+							builder.eq("wangwang", wangwang);
+						}
+						if (creator !=null && creator.length() != 0) {
+							builder.eq("creatorId", creatorId);
+						}
+						builder.orderBy("id", true);
+						builder.limit(index, rows);
+						total = builder.queryCount();
+						result = builder.queryList();
+					} else {
+						total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
+						result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
+					}
+					List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
+					for (AfterSaleComeRecord record : result) {
+						AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
+						vos.add(vo);
+					}
+					JSONObject obj = new JSONObject();
+					obj.put("total", total);
+					obj.put("rows", JSON.toJSON(vos));
+		
+					responseSuccess(JSON.toJSON(obj));
+		//}
+			} else if ("add".equals(sign)) {// 新增纪录
 			if (currentUser == null) {
 				responseError("需要登录");
 				return;
@@ -148,7 +174,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				reissueExpressName="";
 			}
 			String changeStatus = (String) request.getParameter("changeStatus");
-			System.out.println(changeStatus);
+			//System.out.println(changeStatus);
 			AfterSaleComeRecord afterSaleComeRecord = new AfterSaleComeRecord();
 			
 			
@@ -190,6 +216,12 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setCourierNum(reissueCourierNum);
 					expressReissue.setGoodsName(reissueGoodsName);
 					expressReissue.setRemark(remark);
+					System.out.println(status);
+					if ("已处理".equals(status)) {
+						expressReissue.setStatus(1);
+					} else {
+						expressReissue.setStatus(0);
+					}
 					expressReissue.setCreatorId(currentUser.getId());
 					expressReissue.setIssueDocumentor(currentUser.getId());
 					expressReissue.setEntryTime(System.currentTimeMillis());
@@ -201,6 +233,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setOrderNum(orderNum);
 					expressReissue.setWangwang(wangwang);
 					expressReissue.setRemark(remark);
+					if ("已处理".equals(status)) {
+						expressReissue.setStatus(1);
+					} else {
+						expressReissue.setStatus(0);
+					}
 					expressReissue.setCreatorId(currentUser.getId());
 					expressReissue.setGoodsName(reissueGoodsName);
 					expressReissue.setAddress(reissueAddress);
@@ -262,12 +299,17 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				Pattern p = Pattern.compile("^[0-9a-zA-Z]{9,}$");
 				Matcher m = p.matcher(cns[i]);
 				if (m.find()) {
-					afterSaleComeRecord = new AfterSaleComeRecord();
-					afterSaleComeRecord.setCreatorId(currentUser.getId());
-					afterSaleComeRecord.setEntryTime(System.currentTimeMillis());
-					afterSaleComeRecord.setExpressName(expressName);
-					afterSaleComeRecord.setCourierNum(cns[i]);
-					AfterSaleComeRecordDAO.getInstance().saveOrUpdate(afterSaleComeRecord);
+					afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().query(cns[i]);
+					if(afterSaleComeRecord==null){
+						afterSaleComeRecord = new AfterSaleComeRecord();
+						afterSaleComeRecord.setCreatorId(currentUser.getId());
+						afterSaleComeRecord.setEntryTime(System.currentTimeMillis());
+						afterSaleComeRecord.setExpressName(expressName);
+						afterSaleComeRecord.setCourierNum(cns[i]);
+						AfterSaleComeRecordDAO.getInstance().saveOrUpdate(afterSaleComeRecord);
+					} else{
+						
+					}
 
 				} else {
 					responseError("快递单号有误");

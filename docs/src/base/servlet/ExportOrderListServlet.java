@@ -160,16 +160,12 @@ public class ExportOrderListServlet extends BaseServlet{
 					
 					//上传文件输入项
 					  String filename=item.getName();//上传文件的文件名
-					  //System.out.println(filename+"::"+"filename");
-                      //filename=filename.substring(filename.lastIndexOf("\\"));
                       InputStream is=item.getInputStream();
                       String localPath = path + "\\"+System.currentTimeMillis()+ filename;
                       System.out.println(localPath+"::"+"localPath");
-                     // System.out.println("File has " + is.available() + " bytes"); 
                       FileOutputStream fos=new FileOutputStream(localPath);
-                     // path = "c:\\updown\\"+filename;
                       
-                      File file = new File(path);
+                     // File file = new File(path);
                       
                       isCsv = localPath.substring(localPath.lastIndexOf("."));
                       if(!".csv".equals(isCsv)){
@@ -185,31 +181,16 @@ public class ExportOrderListServlet extends BaseServlet{
                     	  is.read(buff1);
                           fos.write(buff1);
                           fos.flush();  	
-                      //System.out.println("File has " + fos.available() + " bytes"); 
                       System.out.println("文件生成成功");
                       is.close();
                       fos.close();
                       }
-                      /* FileInputStream fis = null;    
-                      fis = new FileInputStream(path);
-                      System.out.println("File has " + fis.available() + " bytes"); 
-                      */
-                     
-                     /* byte[] buff=new byte[1024];
-                      @SuppressWarnings("unused")
-					  int len=0;
-                      while((len=is.read(buff))>0){
-                               fos.write(buff);
-                      }
-                      System.out.println("文件生成成功");
-                      is.close();
-                      fos.close();*/
                       if(localPath!=null&& ".csv".equals(isCsv)){
                     	  try {
 							readCsvAndInstallDB(localPath);
-							if(file.exists()){
+							/*if(file.exists()){
 								 file.delete();//删除原文件
-							}
+							}*/
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -226,9 +207,6 @@ public class ExportOrderListServlet extends BaseServlet{
 	}
 	@SuppressWarnings("null")
 	public void readCsvAndInstallDB(String localPath) throws Exception { 
-		//System.out.println("初始时间"+System.currentTimeMillis());
-		
-		//String filePath = "";  
        //BufferedReader bReader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));  
         ExportOrderList exportOrderList = new ExportOrderList();
         CsvReader reader = new CsvReader(localPath, ',', Charset.forName("GBK"));

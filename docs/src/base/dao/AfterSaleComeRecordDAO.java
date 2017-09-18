@@ -80,4 +80,18 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		String sql = "select * from t_after_sale_come_record where courierNum=? ";
 		return JDBCUtil.queryObject(sql, AfterSaleComeRecord.class, courierNum);
 	}
+	public List<AfterSaleComeRecord> queryList(String courierNum) {
+		String sql = "select * from t_after_sale_come_record where courierNum=? ";
+		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class, courierNum);
+		return objs;
+	}
+	public List<AfterSaleComeRecord> queryList2(String courierNum,int index, int pagesize) {
+		String sql = "select * from t_after_sale_come_record where courierNum=? ";
+		List<AfterSaleComeRecord> objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class, courierNum, index, pagesize);
+		return objs;
+	}
+	public long queryNum(String courierNum){
+		String sql = "select count(id) from t_after_sale_come_record where courierNum=? ";
+		return JDBCUtil.queryCount(sql, courierNum);
+	}
 }

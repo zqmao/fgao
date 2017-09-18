@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
 	<script type="text/javascript">
-	
+			var courierNumA = "";
 			var courierNum = "";
 			var shopName ="";
 			var goodsName ="";
@@ -122,7 +122,7 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum, 
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum, courierNumA : courierNumA,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
@@ -171,7 +171,8 @@
                             $("#addAscrForm").form("clear");
                             $("#addAscr").panel("open");
                         }
-                    }, {
+                    },
+                     {
                     	id:'toolbar-remove-after-edit',
                         iconCls: 'icon-edit',
                         text: '修改',
@@ -227,6 +228,16 @@
                                     }
                                 });
                             }
+                        }
+                    },{
+                    	id:'toolbar-remove-after-search',
+                        iconCls: 'icon-search',
+                        text: '搜索',
+                        handler: function() {
+                        	
+                        	
+                            /* $("#addAscrForm").form("clear");
+                            $("#addAscr").panel("open"); */
                         }
                     }]
                 });
@@ -296,7 +307,9 @@
             }
             //查询
             function submitSearch(){
+            	$("#courierNumA").val("");
             	courierNum = $("#courierNum").val();
+            	
             	goodsName = $("#goodsName").val();
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
@@ -348,6 +361,35 @@
             } */
               
             function submitAdd() {
+            	
+            	courierNumA = $("#courierNumA").val();
+            	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
+            	queryParams.courierNumA = courierNumA;
+            	var bounceVal = $('input[name="bounceType"]:checked').val();
+            	var orderNOM = $("#orderNO").val(); 
+            	if("退货"==bounceVal || "换货"==bounceVal ||"拦截件"==bounceVal){
+            		if(orderNOM==null||orderNOM==""){
+            			$.messager.alert('提示', '请填写订单号', 'Warning');
+            			//$("#ascrGrid").datagrid("reload");
+            		}else {
+            			$("#addAscrForm").form("submit", {
+        				    url:"../afterSaleComeRecordServlet.do?sign=add",
+        				    success:function(result){
+        				    	var data = eval('(' + result + ')');
+        				    	if(data.result == 0){
+        				    		alert(data.reason);
+        				    	}else{
+        				    		$("#displayId").hide();
+        							$("#addAscrForm").form("clear");
+        							//$("#courierNumA").val("");
+                					$("#ascrGrid").datagrid("reload");
+        				    	}
+        				    }
+        				});
+            		}
+            		
+            	}else{
+            	
 				$("#addAscrForm").form("submit", {
 				    url:"../afterSaleComeRecordServlet.do?sign=add",
 				    success:function(result){
@@ -356,11 +398,13 @@
 				    		alert(data.reason);
 				    	}else{
 				    		$("#displayId").hide();
+				    		//$("#courierNumA").val("");
 							$("#addAscrForm").form("clear");
         					$("#ascrGrid").datagrid("reload");
 				    	}
 				    }
 				});
+            	}
 			}
             function submitCourierNum() {
 				$("#courierNumAscrForm").form("submit", {
@@ -392,11 +436,22 @@
 				<table>
 					<tr >
 						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum" type="text" style="width: 250px;" data-options="required:true"/></td>
+						<td><input class="easyui-validatebox" id="courierNumA" name="courierNum" type="text" style="width: 250px;" data-options="required:true"/></td>
 				    </tr>
 				    <tr >
 						<td>快递名称:</td>
 				        <td><input class="easyui-combobox" id="option_express" style="width:250px;margin-left:5px;" name="expressName" /></td>
+				    </tr>
+				    <tr >
+						<td>退件类型:</td>
+						<td>
+							<input type="radio" name="bounceType" value="退货" id="returnGood" onclick="changeDisplay()" /><label for="returnGood">退货</label>
+							<input type="radio" name="bounceType" value="换货" id="changeGood" onclick="changeGoods()" /><label for="changeGood">换货</label>
+							<input type="radio" name="bounceType" value="拦截件" id="intercept" onclick="changeDisplay()" /><label for="intercept">拦截件</label>
+							<input type="radio" name="bounceType" value="无信息" id="noMessage" onclick="changeDisplay()" checked="checked"/><label for="noMessage">无信息</label> 
+							<!-- <input type="radio" name="status" value="已处理" />已处理
+							<input type="radio" name="status" value="待处理" checked="checked" />待处理 -->
+						<td>
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>
@@ -431,17 +486,6 @@
 				    <tr >
 						<td>备注:</td>
 						<td><textarea name="remark" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
-				    </tr>
-				     <tr >
-						<td>退件类型:</td>
-						<td>
-							<input type="radio" name="bounceType" value="退货" id="returnGood" onclick="changeDisplay()" /><label for="returnGood">退货</label>
-							<input type="radio" name="bounceType" value="换货" id="changeGood" onclick="changeGoods()" /><label for="changeGood">换货</label>
-							<input type="radio" name="bounceType" value="拦截件" id="intercept" onclick="changeDisplay()" /><label for="intercept">拦截件</label>
-							<input type="radio" name="bounceType" value="无信息" id="noMessage" onclick="changeDisplay()" checked="checked"/><label for="noMessage">无信息</label> 
-							<!-- <input type="radio" name="status" value="已处理" />已处理
-							<input type="radio" name="status" value="待处理" checked="checked" />待处理 -->
-						<td>
 				    </tr>
 				    <tr >
 						<td>处理状态:</td>
@@ -619,14 +663,18 @@
 		</table>	
 	
 		
+		<!-- <div title="搜索" id="searchId" class=""  style="width: 80%;margin-left:10%;z-index: 99;height:200px;background-color:#e0ecff;position:absolute;top:400px;">
+			
+		</div>	 -->
 		
-		
-		
-		
+		<!-- <div title="搜索" id="searchId" class=""  style="width: 20%;margin-left:40%;z-index: 99;height:80px;background-color:#e0ecff;position:absolute;top:400px;">
+			
+		</div>
+		 -->
 	
 		
 	
-	<div title="售后收货记录" class="easyui-panel" style="width: 100%">
+	<div title="售后收货记录" class="easyui-panel" style="width: 100%;position:relative">
 			<table id="ascrGrid" style="height: 600px;"></table>
 		</div>	
 	</body>

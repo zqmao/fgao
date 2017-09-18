@@ -184,7 +184,15 @@
                     }]
                 });
             });
-
+            
+            
+           /*  function copyit()
+            {
+            var v=$("#t").val()
+            alert(v);
+            window.clipboardData.setData("text",v);
+            }
+ */
             function formatCellTooltip(value){  
 	            return "<span title='" + value + "'>" + value + "</span>";  
 	        } 
@@ -273,13 +281,24 @@
                 } else if (len > 1) {
                     $.messager.alert('提示', '只能选择一个', 'Warning');
                 } else {
-                	$("#reissueInf1").html("你正在补发的是编号为"+ids+"的数据");
+                	$("#reissueInf1").html("你正在补发的是编号为"+ids);
+                	
                 	$("#reissueInf2").html("商铺名称是:"+shopName);
                 	$("#reissueInf3").html("物品名称是:"+goodsName);
                 	$("#reissueInf4").html("地址是:"+address);
+                	//$("#reissueInf1").html("<a>你正在补发的是编号为"+ids+ "</a>")你正在补发的是编号为"+ids
                 }      
                   
             }
+            
+            function format(ids) {
+        		var opt = 
+        			"<a name='opt' data-clipboard-text='"+ids+"' href='javascript:;' class='l-btn l-btn-small l-btn-plain' >"
+            			+"<span class='l-btn-left l-btn-icon-left'><span class='l-btn-text'>复制</span><span class='l-btn-icon icon-cut'>&nbsp;</span></span>"
+            		+"</a>";
+            	return opt;
+        	}
+            
             
             function getFormDate(id,valName) {
             	var ids = [];
