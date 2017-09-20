@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
+	
 	<script type="text/javascript">
 			var courierNum = "";
 			var shopName ="";
@@ -20,12 +21,15 @@
 			var orderNum = "";
 			var phoneNum = "";
 			var status = "";
+			var creator = "";
 			var expressName2 = "";
 			var option_express = "0";
 			var option_express2 = "0";
 			var option_express3 = "0";
 			var ids = "";
             $(function() {
+            	$("#reissueId").hide();
+            	$("#copySuccess").hide();
             	/* $("#displayId").hide();  */
             	$("#addErlist").panel({
             		title: '添加需要补发记录',
@@ -92,18 +96,21 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../expressReissueServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum, 
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum, creator:creator,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum, status :status},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
                             {title: '创建人员', field: 'creator', width: 90, align: 'center'},
-                            {title: '登记时间', field: 'entryTime', width: 130, align: 'center'},
-                            {title: '补发地址', field: 'address', width: 120, align: 'center',formatter:formatCellTooltip},
+                           
+                           
                             {title: '店铺名称', field: 'shopName', width: 120, align: 'center'},
-                            {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
-                            {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
+                            {title: '订单号', field: 'orderNum', width: 120, align: 'center'},
+                            {title: '物品名称', field: 'goodsName', width: 120, align: 'center'},
+                           
+                            {title: '快递单号', field: 'courierNum', width: 100,align: 'center'},
+                            {title: '补发地址', field: 'address', width: 120, align: 'center',formatter:formatCellTooltip},
                             {title: '备注', field: 'remark', width: 120, align: 'center', formatter:formatCellTooltip},
                             
                             {title: '状态', field: 'status', width: 100, align: 'center'},
@@ -111,7 +118,7 @@
                             
                             {title: '打单人员', field: 'issueDocumentor', width: 90,align: 'center'},
                             {title: '快递名称', field: 'expressName', width: 80, align: 'center'},
-                            {title: '快递单号', field: 'courierNum', width: 100,align: 'center'},
+                            {title: '登记时间', field: 'entryTime', width: 130, align: 'center'},
                             {title: '打单时间', field: 'issuTime', width: 130, align: 'center'},
                             {title: '打单备注', field: 'issuRemark', width: 120, align: 'center', formatter:formatCellTooltip},
                         ]],
@@ -239,6 +246,7 @@
             	var status = $('input[name="statuss"]:checked').val();
             	//status = $("#status").val();
             	expressName2 = $("#option_express2").val();
+            	creator = $("#creator").val();
             	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
             	queryParams.goodsName = goodsName;
@@ -247,6 +255,7 @@
             	queryParams.status = status;
             	queryParams.shopName = shopName;
             	queryParams.expressName2 = expressName2;
+            	queryParams.creator =  creator;
             	$("#searchErlistForm").form("submit",{
             		url:"../expressReissueServlet.do?sign=search",
             		success:function(result){
@@ -281,24 +290,16 @@
                 } else if (len > 1) {
                     $.messager.alert('提示', '只能选择一个', 'Warning');
                 } else {
-                	$("#reissueInf1").html("你正在补发的是编号为"+ids);
+                	$("#reissueId").show();
+                	$("#reissueInf1").html(ids);
                 	
-                	$("#reissueInf2").html("商铺名称是:"+shopName);
-                	$("#reissueInf3").html("物品名称是:"+goodsName);
-                	$("#reissueInf4").html("地址是:"+address);
+                	$("#reissueInf2").html(shopName);
+                	$("#reissueInf3").val(goodsName);
+                	$("#reissueInf4").val(address);
                 	//$("#reissueInf1").html("<a>你正在补发的是编号为"+ids+ "</a>")你正在补发的是编号为"+ids
                 }      
                   
             }
-            
-            function format(ids) {
-        		var opt = 
-        			"<a name='opt' data-clipboard-text='"+ids+"' href='javascript:;' class='l-btn l-btn-small l-btn-plain' >"
-            			+"<span class='l-btn-left l-btn-icon-left'><span class='l-btn-text'>复制</span><span class='l-btn-icon icon-cut'>&nbsp;</span></span>"
-            		+"</a>";
-            	return opt;
-        	}
-            
             
             function getFormDate(id,valName) {
             	var ids = [];
@@ -375,6 +376,7 @@
             							$("#addEreissuelistForm").form("clear");
                     					$("#erlistGrid").datagrid("reload");
                     					//成功时将显示数据清除
+                    					$("#reissueId").hide();
                     					$("#reissueInf1").html("");
                                     	$("#reissueInf2").html("");
                                     	$("#reissueInf3").html("");
@@ -415,6 +417,49 @@
 				    }
 				});
 			}
+           /*  //alert自动消失
+            function alert_autoClose(title,msg,icon){ 
+            	 var interval; 
+            	 var time=1000; 
+            	 var x=1;  //设置时间1s
+            	$.messager.alert(title,msg,icon,function(){}); 
+            	 interval=setInterval(fun,time); 
+            	    function fun(){ 
+            	   --x; 
+            	   if(x==0){ 
+            	     clearInterval(interval); 
+            	 $(".messager-body").window('close');  
+            	    } 
+            	}; 
+            	} */
+            
+            function copyToClipboard(elementId) {
+            	// 创建元素用于复制
+            	var aux = document.createElement("input");
+            	//var aux = document.createElement("span");
+            	// 获取复制内容
+            	var content = document.getElementById(elementId).value;
+            	//var content = $("#elementId").html();
+            	// 设置元素内容
+            	aux.setAttribute("value",content); 
+            	// 将元素插入页面进行调用
+            	document.body.appendChild(aux);
+            	// 复制内容
+            	aux.select(); 
+            	//复制选中的文字到剪贴板; 
+//            		document.execCommand('copy');
+
+            	try{
+            	document.execCommand('copy');
+            	// // 删除创建元素
+            	document.body.removeChild(aux);
+            	$("#copySuccess").show();
+            	$("#copySuccess").hide(2000);
+            	}catch(exception){
+            	alert("复制失败")
+            	}
+            	}
+  
         </script>
 	</head>
 
@@ -525,11 +570,14 @@
 				</table>
 			</div>
 			
-			<div>
-				<div ><span id="reissueInf1" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf2" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf3" style="color: red;font-size: 19px;"></span></div>
-				<div ><span id="reissueInf4" style="color: red;font-size: 19px;"></span></div>
+			<div id="reissueId" style="color: red;font-size: 19px;">
+				<div ><span>你正在补发的是编号为:</span><span id="reissueInf1" style="color: red;font-size: 19px;width: 160px"></span></div>
+				
+				<div ><span>商铺名称是:</span><span id="reissueInf2" style="color: red;font-size: 19px;width: 255px"></span></div>
+				<div ><span>物品名称是:</span><input id="reissueInf3" value="" style="color: red;font-size: 19px;width: 255px">
+				<span onclick="copyToClipboard('reissueInf3')"style="background-color: #9FBEF1;width: 35px;cursor: pointer;" >复制</span></div>
+				<div ><span>地址是:</span><input id="reissueInf4" value="" style="color: red;font-size: 19px;width: 293px">
+				<span onclick="copyToClipboard('reissueInf4')"style="background-color: #9FBEF1;width: 35px;cursor: pointer;" >复制</span></div>
 			</div>
 		</div>
 		</div>
@@ -576,6 +624,10 @@
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr>
 				     <tr >
+						<td>创建人:</td>
+						<td><input class="easyui-validatebox" name="creator" id="creator" type="text" style="width: 250px;"/></td>
+				    </tr>
+				     <tr >
 						<td>处理状态:</td>
 						<td>
 							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
@@ -613,5 +665,16 @@
 		<div title="补发快递记录" class="easyui-panel" style="width: 100%">
 			<table id="erlistGrid" style="height: 600px;"></table>
 		</div>
+		
+<!-- 		
+		<div>我的邀请码<input id="invite_code" value="567w899"/></div>
+<div onclick="copyToClipboard('invite_code')"style="background-color: #9FBEF1;width: 35px;cursor: pointer;" >复制</div> -->
+		<div id="copySuccess" style="z-index: 99999;
+    margin-top: -47%;
+    width: 200px;
+    height: 200px;
+    margin-left: 30%;
+    background-color: #e0ecff;position:absolute;text-align:center;border-radius: 42px;"><p>复制成功</p></div>
+		
 	</body>
 </html>

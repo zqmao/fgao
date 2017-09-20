@@ -1,9 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
-<%-- <%
-	//管理员展示有增删改的按钮
-	PermissionUtil.checkAdmin(request, response);
-%> --%>
+<%
+	int userId = PermissionUtil.check(request, response);
+	boolean export = false;
+	if(userId != 0){
+		export = PermissionUtil.checkExport(request, response);
+	}
+%>
 <html>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>售后管理</title>
@@ -28,10 +31,10 @@
 			var ids = "";
             $(function() {
             	/* $("#displayId").hide();  */
-            	$("#addOrderlist").panel({
+            	 $("#addOrderlist").panel({
             		title: '添加记录',
             		
-            		});
+            		}); 
             	$("#searchOrderlist").panel({
             		title: '搜索',
             		
@@ -40,6 +43,15 @@
             		title: '补发快递记录',
             		
             	});
+            	if(<%=export%>){
+                 	$("#addOrderlist").panel("open");
+             	}else{
+             		$("#addOrderlist").panel("close");
+             		/* $("#addOrderlist").hide(); */
+             		$("#disapper").hide();
+             		 
+             		//$("#moveLeft").css("right","35%");
+             	}
             	
             	 /* 查询时获取快递名称 */
             	 $("#option_express2").combobox({
@@ -269,7 +281,7 @@
 		
 		<table>
 			<tr>
-				<td style="width:40%;">
+				<td id="disapper" style="width:40%;">
 					<div id="addOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
 			 
 			<form id="addOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">

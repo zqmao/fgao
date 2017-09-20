@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="base.util.*"%>
+<%@page import="java.sql.*"%>
 <%
 	int userId = PermissionUtil.check(request, response);
 	boolean after = false;
@@ -15,6 +16,19 @@
 	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+				.mask{ 
+				background: #000;
+				opacity: .6;
+				filter:alpha(opacity=60);
+				position:absolute;
+				left:0;
+				top:0;
+				width:100%;
+				height:100%;/*动态获取，这里设置高度是为了测试*/
+				z-index:1000;
+				}
+</style>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
 	<script type="text/javascript">
 			var courierNumA = "";
@@ -31,7 +45,17 @@
 			var option_express2 = "0";
 			var option_express3 = "0";
 			var option_express4 = "0";
+			
+			var totalE = "";
+			var addressE = "";
+			var goodsHeadlineE = "";
+			var wangwangE = "";
+			
             $(function() {
+            	$("p").css("line-height", "15px");
+            	$("#mask").hide();//隐藏遮蔽层
+            	$("#searchId").hide();
+            	
             	$("#displayId").hide();
             	$("#handleSelf").hide();
             	$("#handleOth").hide();
@@ -122,7 +146,7 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum, courierNumA : courierNumA,
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
@@ -234,10 +258,11 @@
                         iconCls: 'icon-search',
                         text: '搜索',
                         handler: function() {
-                        	
-                        	
-                            /* $("#addAscrForm").form("clear");
-                            $("#addAscr").panel("open"); */
+                        	$("#searchId").show();
+                        	$("#mask").show();
+                        	/* 
+                            $("#addAscrForm").form("clear");
+                            $("#addAscr").panel("open");  */
                         }
                     }]
                 });
@@ -381,7 +406,7 @@
         				    	}else{
         				    		$("#displayId").hide();
         							$("#addAscrForm").form("clear");
-        							//$("#courierNumA").val("");
+        							$("#courierNumA").val("");
                 					$("#ascrGrid").datagrid("reload");
         				    	}
         				    }
@@ -393,12 +418,13 @@
 				$("#addAscrForm").form("submit", {
 				    url:"../afterSaleComeRecordServlet.do?sign=add",
 				    success:function(result){
+				    	courierNumA = "";
 				    	var data = eval('(' + result + ')');
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
 				    		$("#displayId").hide();
-				    		//$("#courierNumA").val("");
+				    		$("#courierNumA").val("");
 							$("#addAscrForm").form("clear");
         					$("#ascrGrid").datagrid("reload");
 				    	}
@@ -421,11 +447,68 @@
 				    }
 				});
 			}
+            function clearX(){
+            	$("#mask").hide();//隐藏遮蔽层
+            	$("#searchId").hide();
+            }
+            
+            function searchList(){
+            	
+            	 //xmlhttp=new XMLHttpRequest();
+            	  if(window.ActiveXOject)  
+    {  
+     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  
+    }  
+    else if(window.XMLHttpRequest)  
+    {  
+      xmlhttp = new XMLHttpRequest();  
+    }  
+            	 var orderNumE = $("#orderNumE").val();
+            	 orderNumE = encodeURI(orderNumE);  //需要通过两次编码
+            	xmlhttp.onreadystatechange=function()
+            	{
+            		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            		{
+            			var result = xmlhttp.responseText;
+            			//alert(xmlhttp.responseText+"--");
+            			var data=eval('('+result+')');   
+            			
+            			var row = data.rows;
+            			totalE = data.total;
+			    		
+			    		addressE = row[0].address;
+			    		exportorE = row[0].exportor;
+			    		shopNameE = row[0].shopName;
+			    		orderNumE = row[0].orderNum;
+			    		goodsHeadlineE = row[0].goodsHeadline;
+			    		wangwangE = row[0].wangwang;
+			    		phoneNumE = row[0].phoneNum;
+			    		consigneeNameE = row[0].consigneeName;
+			    		$("#total").html("共搜到"+totalE+"条数据");
+            			//document.getElementById("total").innerHTML="共搜到"+totalE+"条数据";
+            			$("#addressE").html("地址为:"+addressE);
+            			$("#goodsHeadlineE").html("宝贝标题为:"+goodsHeadlineE);
+            			$("#wangwangE").html("旺旺号为:"+wangwangE);
+            			$("#exportorE").html("数据导入者为:"+exportorE);
+            			$("#shopNameE").html("商店名称为:"+shopNameE);
+            			$("#orderNumE").html("订单编号为:"+orderNumE);
+            			$("#phoneNumE").html("手机号码为:"+phoneNumE);
+            			$("#consigneeNameE").html("收货人姓名:"+consigneeNameE);
+            			//var cow = xmlhttp.responseText.cows;exportorshopNameEorderNumEphoneNumE
+            			
+            			//alert(xmlhttp.responseText+"写入成功");
+            		}
+            	}
+            	xmlhttp.open("GET","../afterSaleComeRecordServlet.do?sign=SearchExportList&orderNumE="+encodeURI(orderNumE),false);
+            	xmlhttp.send(); 
+            	 
+            }
             
         </script>
 	</head>
 
 	<body class="easyui-layout">
+		<div id="mask" class="mask"></div>
 		<table style="width:100%">
 			<tr>
 				<td style="width:46%;">
@@ -536,6 +619,29 @@
 						<td><input class="easyui-validatebox" id="reissueGood" name="reissueGood" type="text" style="width: 223px;" /><td>
 				    </tr>
 			    </table>
+			<%--     <%
+			request.setCharacterEncoding("UTF-8");
+			
+			String courierNumA=request.getParameter("courierNumA");
+			if(courierNumA!=null){
+			String url="jdbc:mysql://localhost:8080";
+			String user="root";
+			String password="123456";
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn=DriverManager.getConnection(url,user,password);
+			Statement stmt=conn.createStatement();
+			String sql = "select * from t_after_sale_come_record where courierNum = '"+courierNumA+"'";
+			ResultSet rs=stmt.executeQuery(sql);
+			if(rs.next()) {
+				out.print("sign=search");
+			}else{
+			out.print("sign=list");
+			}
+			
+     		stmt.close();
+     		conn.close();
+			}
+%> --%>
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
 				<table>
@@ -662,20 +768,33 @@
 			</tr>
 		</table>	
 	
-		
-		<!-- <div title="搜索" id="searchId" class=""  style="width: 80%;margin-left:10%;z-index: 99;height:200px;background-color:#e0ecff;position:absolute;top:400px;">
-			
-		</div>	 -->
-		
-		<!-- <div title="搜索" id="searchId" class=""  style="width: 20%;margin-left:40%;z-index: 99;height:80px;background-color:#e0ecff;position:absolute;top:400px;">
-			
-		</div>
-		 -->
-	
-		
-	
+		 <div title="搜索" id="searchId" class=""  style="width: 40%;margin-left:30%;z-index: 1001;height:400px;background-color:#e0ecff;position:absolute;top:400px;">
+				
+				<div style="margin-left:96%;"><p style="font-size:30px;margin-top: 10px;color: #68dfe0;" onclick="clearX()">X</p></div>
+				<form action="#" style="margin-top: -55px;">  
+					  请输入搜索内容:  
+					  <input type="text" id="orderNumE" style="margin-left: 10px; margin-top:10px;"/>  
+					  <br>  
+					   
+					  <input type="button" id="submission" value="确定" onclick="searchList();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: #253B8A;background-color: #E4E1E1;border-radius: 5px;"/>  
+					  </form>  
+					 
+					  <h3>查询结果:</h3>  
+					  <div style="color:red;" id="serverResponse">
+					  	<p id="total"> </p>
+					  	<p id="exportorE" ></p>
+					  	<p id="shopNameE" ></p>
+					  	<p id="orderNumE"></p>
+					  	<p id="wangwangE"></p>
+					  	<p id="addressE"></p>
+					  	<p id="phoneNumE"></p>
+					  	<p id="goodsHeadlineE"></p>
+					  	<p id="consigneeNameE"></p>
+					  </div> 
+			</div>
 	<div title="售后收货记录" class="easyui-panel" style="width: 100%;position:relative">
 			<table id="ascrGrid" style="height: 600px;"></table>
 		</div>	
+		
 	</body>
 </html>

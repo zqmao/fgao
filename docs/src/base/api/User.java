@@ -19,8 +19,15 @@ public class User {
 	private int outGoods;
 	private int coupon;//是否有设置优惠券的权限
 	private int after;//是否有操作售后记录的权限
+	private int export;//是否有导入csv文件的权限
 	
 	
+	public int getExport() {
+		return export;
+	}
+	public void setExport(int export) {
+		this.export = export;
+	}
 	public int getId() {
 		return id;
 	}

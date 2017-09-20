@@ -1,6 +1,8 @@
 package base.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,10 +16,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import base.api.AfterSaleComeRecord;
+import base.api.ExportOrderList;
 import base.api.ExpressReissue;
 import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
+import base.api.vo.ExportOrderListVO;
 import base.dao.AfterSaleComeRecordDAO;
+import base.dao.ExportOrderListDAO;
 import base.dao.ExpressReissueDAO;
 import base.dao.UserDAO;
 import base.dao.core.BaseDAO;
@@ -50,29 +55,35 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String creator = (String) request.getParameter("creator");
+			
 			/*String courierNumA = (String) request.getParameter("courierNumA");
-			System.out.println("+++++"+courierNumA);
-			if(courierNumA!=null&&courierNumA.length()>0){
+			System.out.println("courierNumA"+courierNumA);
+			if(courierNumA!=null&&courierNumA.length()!=0){
+			List<AfterSaleComeRecord> ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
+			System.out.println("ascr"+ascr);
+			int page = Integer.parseInt(request.getParameter("page"));
+			int rows = Integer.parseInt(request.getParameter("rows"));
+			long total = 0;
+			int index = (page - 1) * rows;
+			if(ascr!=null){
+			
+			}else{
 				
-				List<AfterSaleComeRecord> ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
-				System.out.println(ascr);
-				if(ascr!=null){
-					int page = Integer.parseInt(request.getParameter("page"));
-					int rows = Integer.parseInt(request.getParameter("rows"));
-					long total = 0;
-					int index = (page - 1) * rows;
-					total = AfterSaleComeRecordDAO.getInstance().queryNum(courierNumA);
-					ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
-					List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
-					for (AfterSaleComeRecord record : ascr) {
-						AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
-						vos.add(vo);
-					}
-					JSONObject obj = new JSONObject();
-					obj.put("rows", JSON.toJSON(vos));
-					responseSuccess(JSON.toJSON(obj));
-					responseError("快递单号已存在,且信息如上所示");
+				List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
+				total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
+				result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
+				
+				List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
+				for (AfterSaleComeRecord record : result) {
+					AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
+					vos.add(vo);
 				}
+				JSONObject obj = new JSONObject();
+				obj.put("total", total);
+				obj.put("rows", JSON.toJSON(vos));
+	
+				responseSuccess(JSON.toJSON(obj));
+			}
 			
 			}else{
 			*/
@@ -166,6 +177,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String reissueExpressName = (String) request.getParameter("reissueExpressName");
 			String reissueGoodsName = (String) request.getParameter("reissueGoodsName");
 			String reissueAddress = (String) request.getParameter("reissueAddress");
+			
+			
+		
 			
 			if("请选择:".equals(expressName)){
 				expressName = "";
@@ -273,6 +287,8 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			} else {
 				responseSuccess("修改售后记录成功");
 			}
+			
+			
 
 		} else if ("delete".equals(sign)) {// 删除
 			String ascrIds = (String) request.getParameter("ascrIds");
@@ -316,6 +332,36 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				}
 			}
 			responseSuccess2("新建售后记录成功");
+		}else if("SearchExportList".equals(sign)){
+			
+			response.setContentType("text/xml;charset=utf-8");
+			//response.setCharacterEncoding("GB2312");
+			
+			String allSearch = request.getParameter("orderNumE");
+			
+			allSearch = URLDecoder.decode(allSearch , "utf-8");
+			System.out.println(allSearch+"++++orderNumE");
+			long total = ExportOrderListDAO.getInstance().count(allSearch);
+			System.out.println(total+"++++total");
+			List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
+			System.out.println(result+"++++result");
+			List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
+			for (ExportOrderList reissue : result) {
+				ExportOrderListVO vo = new ExportOrderListVO(reissue);
+				vos.add(vo);
+			}
+			JSONObject obj = new JSONObject();
+			obj.put("total", JSON.toJSON(total));
+			obj.put("rows", JSON.toJSON(vos));
+			//responseSuccess(JSON.toJSON(obj));
+			//responseSuccess("-------------");
+			response.setContentType("text/html");  
+	        PrintWriter out = response.getWriter();  
+	
+	        out.println(JSON.toJSON(obj));  
+	        out.close();  
+			
+			
 		}
 
 	}
