@@ -188,6 +188,47 @@
                                 });
                             }
                         }
+                    },{
+                        iconCls: 'icon-add',
+                        text: '导出',
+                        handler: function() {
+                            ids = getChecked("erlistGrid");
+                            var len = ids.length;
+                            if (len == 0) {
+                                $.messager.alert('提示', '至少选择一个', 'Warning');
+                            }else {
+                                //var rows = $("#erlistGrid").datagrid("getChecked");
+                                //request.setAttribute("cows",cows);
+                               /*  $("#addErlist").panel("open");
+                                $("#addErlist").form("load", {
+                                    erlistId: row[0].id,
+                                    address:row[0].address,
+                                    shopName:row[0].shopName,
+                                    goodsName: row[0].goodsName,
+                                    wangwang: row[0].wangwang,
+                                    orderNum: row[0].orderNum,
+                                    courierNum: row[0].courierNum,
+                                    expressName:row[0].expressName,
+                                    remark:row[0].remark, 
+                                });*/
+                                $.messager.confirm('Confirm', '确定要导出选中的数据吗？', function(r) {
+                                    if (r) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "../expressReissueServlet.do?sign=export",
+                                            data: "erlistIds=" + ids,
+                                            success: function(data) {
+                                            	alert("导出数据成功");
+                                                $("#erlistGrid").datagrid("reload");
+                                            },
+                                            error: function(data) {
+                                                alert(data.toString());
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
                     }]
                 });
             });

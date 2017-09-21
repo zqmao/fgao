@@ -170,7 +170,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String orderNum = (String) request.getParameter("orderNum");
 			String remark = (String) request.getParameter("remark");
-			String status = (String) request.getParameter("status");
+			//String status = (String) request.getParameter("status");
 			
 			String bounceType = (String) request.getParameter("bounceType");
 			String reissueCourierNum = (String) request.getParameter("reissueCourierNum");
@@ -230,12 +230,12 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setCourierNum(reissueCourierNum);
 					expressReissue.setGoodsName(reissueGoodsName);
 					expressReissue.setRemark(remark);
-					System.out.println(status);
+					/*System.out.println(status);
 					if ("已处理".equals(status)) {
 						expressReissue.setStatus(1);
 					} else {
 						expressReissue.setStatus(0);
-					}
+					}*/
 					expressReissue.setCreatorId(currentUser.getId());
 					expressReissue.setIssueDocumentor(currentUser.getId());
 					expressReissue.setEntryTime(System.currentTimeMillis());
@@ -247,11 +247,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setOrderNum(orderNum);
 					expressReissue.setWangwang(wangwang);
 					expressReissue.setRemark(remark);
-					if ("已处理".equals(status)) {
+					/*if ("已处理".equals(status)) {
 						expressReissue.setStatus(1);
 					} else {
 						expressReissue.setStatus(0);
-					}
+					}*/
 					expressReissue.setCreatorId(currentUser.getId());
 					expressReissue.setGoodsName(reissueGoodsName);
 					expressReissue.setAddress(reissueAddress);
@@ -276,11 +276,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			afterSaleComeRecord.setPhoneNum(phoneNum);
 			afterSaleComeRecord.setOrderNum(orderNum);
 			afterSaleComeRecord.setRemark(remark);
-			if ("已处理".equals(status)) {
+			/*if ("已处理".equals(status)) {
 				afterSaleComeRecord.setStatus(1);
 			} else {
 				afterSaleComeRecord.setStatus(0);
-			}
+			}*/
 			AfterSaleComeRecordDAO.getInstance().saveOrUpdate(afterSaleComeRecord);
 			if (id == null || id.length() == 0) {
 				responseSuccess("新建售后记录成功");
@@ -343,27 +343,26 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			System.out.println(allSearch+"++++orderNumE");
 			long total = ExportOrderListDAO.getInstance().count(allSearch);
 			System.out.println(total+"++++total");
-			List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
-			System.out.println(result+"++++result");
-			List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
-			for (ExportOrderList reissue : result) {
-				ExportOrderListVO vo = new ExportOrderListVO(reissue);
-				vos.add(vo);
+			
+				List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
+				System.out.println(result+"++++result");
+				List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
+				for (ExportOrderList reissue : result) {
+					ExportOrderListVO vo = new ExportOrderListVO(reissue);
+					vos.add(vo);
+				}
+				JSONObject obj = new JSONObject();
+				obj.put("total", JSON.toJSON(total));
+				obj.put("rows", JSON.toJSON(vos));
+				//responseSuccess(JSON.toJSON(obj));
+				//responseSuccess("-------------");
+				response.setContentType("text/html");  
+		        PrintWriter out = response.getWriter();  
+		
+		        out.println(JSON.toJSON(obj));  
+		        out.close();  
+				
 			}
-			JSONObject obj = new JSONObject();
-			obj.put("total", JSON.toJSON(total));
-			obj.put("rows", JSON.toJSON(vos));
-			//responseSuccess(JSON.toJSON(obj));
-			//responseSuccess("-------------");
-			response.setContentType("text/html");  
-	        PrintWriter out = response.getWriter();  
-	
-	        out.println(JSON.toJSON(obj));  
-	        out.close();  
-			
-			
-		}
-
 	}
 
 }

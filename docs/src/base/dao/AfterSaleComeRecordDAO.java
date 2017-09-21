@@ -94,4 +94,5 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 		String sql = "select count(id) from t_after_sale_come_record where courierNum=? ";
 		return JDBCUtil.queryCount(sql, courierNum);
 	}
+	
 }

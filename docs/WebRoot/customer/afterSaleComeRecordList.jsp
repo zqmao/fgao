@@ -166,7 +166,7 @@
                             {title: '拆包时间', field: 'createTime', width: 130, align: 'center'},
                             {title: '收件时间', field: 'entryTime', width: 130, align: 'center'},
                             {title: '备注', field: 'remark', width: 100, align: 'center', formatter:formatCellTooltip},
-                            {title: '状态', field: 'status', width: 80, align: 'center'}
+                            //{title: '状态', field: 'status', width: 80, align: 'center'}
                         ]],
                     loadFilter: function(data){
                    		if (data.data){
@@ -221,7 +221,7 @@
                                     phoneNum: row[0].phoneNum,
                                     orderNum: row[0].orderNum,
                                     remark: row[0].remark,
-                                    status: row[0].status,
+                                   // status: row[0].status,
                                     bounceType: row[0].bounceType,
                                 });
                             }
@@ -391,26 +391,86 @@
             	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
             	queryParams.courierNumA = courierNumA;
             	var bounceVal = $('input[name="bounceType"]:checked').val();
+            	var changeStatus = $('input[name="changeStatus"]:checked').val();
             	var orderNOM = $("#orderNO").val(); 
             	if("退货"==bounceVal || "换货"==bounceVal ||"拦截件"==bounceVal){
             		if(orderNOM==null||orderNOM==""){
             			$.messager.alert('提示', '请填写订单号', 'Warning');
             			//$("#ascrGrid").datagrid("reload");
             		}else {
-            			$("#addAscrForm").form("submit", {
+            			if("自己发货"==changeStatus){
+            				var reissueCourierNum = $("#reissueCourierNum").val();
+            				var reissueExpressName = $("#reissueExpressName").val();
+            				if("请选择:"==reissueExpressName){
+            					reissueExpressName=="";
+            				}
+            				var reissueGoodsName = $("#reissueGoodsName").val();
+            				if((reissueCourierNum==null||reissueCourierNum.length==0) || (reissueExpressName==null||reissueExpressName.length==0) 
+            						||(reissueGoodsName==null||reissueGoodsName.length==0)){
+            					$.messager.alert('提示', '选择自己发货时，补发快递单号,补发快递名称,补发货物名称均不能为空', 'Warning');
+            					//alert("选择自己发货时，补发快递单号,补发快递名称,补发货物名称均不能为空")
+            				}else {
+            					$("#addAscrForm").form("submit", {
+                				    url:"../afterSaleComeRecordServlet.do?sign=add",
+                				    success:function(result){
+                				    	var data = eval('(' + result + ')');
+                				    	if(data.result == 0){
+                				    		alert(data.reason);
+                				    	}else{
+                				    		$("#handleSelf").hide();
+                			            	$("#handleOth").hide();
+                				    		$("#displayId").hide();
+                							$("#addAscrForm").form("clear");
+                							$("#courierNumA").val("");
+                        					$("#ascrGrid").datagrid("reload");
+                				    	}
+                				    }
+                				});
+            					
+            				}
+            				
+            			}else if("他人发货"==changeStatus){
+            				var reissueAddress = $("#reissueAddress").val();
+            				var reissueGood = $("#reissueGood").val();
+            				if((reissueAddress==null || reissueAddress.length==0) || (reissueGood==null || reissueGood.length==0)){
+            					//alert("当选择他人发货时，不发货物及补发货物名称不能为空");
+            					$.messager.alert('提示', '当选择他人发货时，补发货物地址及补发货物名称不能为空', 'Warning');
+            				}else{
+            					$("#addAscrForm").form("submit", {
+                				    url:"../afterSaleComeRecordServlet.do?sign=add",
+                				    success:function(result){
+                				    	var data = eval('(' + result + ')');
+                				    	if(data.result == 0){
+                				    		alert(data.reason);
+                				    	}else{
+                				    		$("#handleSelf").hide();
+                			            	$("#handleOth").hide();
+                				    		$("#displayId").hide();
+                							$("#addAscrForm").form("clear");
+                							$("#courierNumA").val("");
+                        					$("#ascrGrid").datagrid("reload");
+                				    	}
+                				    }
+                				});
+            				}
+            				
+            			}
+            			/* $("#addAscrForm").form("submit", {
         				    url:"../afterSaleComeRecordServlet.do?sign=add",
         				    success:function(result){
         				    	var data = eval('(' + result + ')');
         				    	if(data.result == 0){
         				    		alert(data.reason);
         				    	}else{
+        				    		$("#handleSelf").hide();
+        			            	$("#handleOth").hide();
         				    		$("#displayId").hide();
         							$("#addAscrForm").form("clear");
         							$("#courierNumA").val("");
                 					$("#ascrGrid").datagrid("reload");
         				    	}
         				    }
-        				});
+        				}); */
             		}
             		
             	}else{
@@ -423,6 +483,8 @@
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
+				    		$("#handleSelf").hide();
+			            	$("#handleOth").hide();
 				    		$("#displayId").hide();
 				    		$("#courierNumA").val("");
 							$("#addAscrForm").form("clear");
@@ -453,7 +515,7 @@
             }
             
             function searchList(){
-            	
+            	$("#serverResponse").form("clear");
             	 //xmlhttp=new XMLHttpRequest();
             	  if(window.ActiveXOject)  
     {  
@@ -466,9 +528,11 @@
             	 var orderNumE = $("#orderNumE").val();
             	 orderNumE = encodeURI(orderNumE);  //需要通过两次编码
             	xmlhttp.onreadystatechange=function()
-            	{
+            	{	
+            		//alert("111"+xmlhttp.readyState);
             		if (xmlhttp.readyState==4 && xmlhttp.status==200)
             		{
+            			//alert("222"+xmlhttp.readyState);
             			var result = xmlhttp.responseText;
             			//alert(xmlhttp.responseText+"--");
             			var data=eval('('+result+')');   
@@ -476,6 +540,12 @@
             			var row = data.rows;
             			totalE = data.total;
 			    		
+			    		if(totalE==0){
+			    			$("#serverResponse").hide();
+			    			alert("没有查到数据");	
+			    		}else{
+			    			$("#serverResponse").show();
+			    		}
 			    		addressE = row[0].address;
 			    		exportorE = row[0].exportor;
 			    		shopNameE = row[0].shopName;
@@ -484,6 +554,7 @@
 			    		wangwangE = row[0].wangwang;
 			    		phoneNumE = row[0].phoneNum;
 			    		consigneeNameE = row[0].consigneeName;
+			    		
 			    		$("#total").html("共搜到"+totalE+"条数据");
             			//document.getElementById("total").innerHTML="共搜到"+totalE+"条数据";
             			$("#addressE").html("地址为:"+addressE);
@@ -497,6 +568,8 @@
             			//var cow = xmlhttp.responseText.cows;exportorshopNameEorderNumEphoneNumE
             			
             			//alert(xmlhttp.responseText+"写入成功");
+            		} else{
+            			//alert("333"+xmlhttp.readyState);
             		}
             	}
             	xmlhttp.open("GET","../afterSaleComeRecordServlet.do?sign=SearchExportList&orderNumE="+encodeURI(orderNumE),false);
@@ -570,13 +643,13 @@
 						<td>备注:</td>
 						<td><textarea name="remark" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
 				    </tr>
-				    <tr >
+				    <!-- <tr >
 						<td>处理状态:</td>
 						<td>
 							<input type="radio" name="status" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
 							<input type="radio" name="status" value="已处理" id="overManage"/><label for="overManage">已处理</label>
 						<td>
-				    </tr>
+				    </tr> -->
 			    </table>
 			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 340px; background-color: #eeeeee;">
 			    	  <tr >

@@ -1,5 +1,6 @@
 package base.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import base.api.Express;
 import base.api.ExpressReissue;
 import base.api.User;
 import base.api.vo.ExpressReissueVO;
+import base.dao.AfterSaleComeRecordDAO;
 import base.dao.ExpressDAO;
 import base.dao.ExpressReissueDAO;
 import base.dao.UserDAO;
@@ -55,7 +57,6 @@ public class ExpressReissueServlet extends BaseServlet {
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String statuss = request.getParameter("status");
 			String creator = request.getParameter("creator");
-			//statuss=="已处理"?"已处理":"待处理";
 			User user = new User();
 			int creatorId = 0;
 			if(creator!=null && creator.length()>0){
@@ -243,6 +244,25 @@ public class ExpressReissueServlet extends BaseServlet {
 			responseSuccess(JSON.toJSON(array));
 		} else if ("search".equals(sign)) {
 			responseSuccess("查询成功");
+		}else if("export".equals(sign)){
+			List<String> dataList=new ArrayList<String>();
+			String ascrIds = (String) request.getParameter("erlistIds");
+			System.out.println(ascrIds);		
+			for (String ascrId : ascrIds.split(",")) {
+				ExpressReissue result =	ExpressReissueDAO.getInstance().export(Integer.parseInt(ascrId));//(Integer.parseInt(ascrId));
+				//StringBuffer buff = new StringBuffer();
+				String wangwang = result.getWangwang();
+				String address = result.getAddress();
+				String goodsName = result.getGoodsName();
+				//buff.append(wangwang).append(",").append(address).append(",").append(goodsName).toString();
+				dataList.add(""+wangwang+","+address+","+goodsName+"");
+				//System.out.println(ascrId);		
+			}
+			String path = "D:/test";
+			path = path+"\\"+System.currentTimeMillis()+".csv";
+			boolean isSuccess=ExportText.exportCsv(new File(path), dataList);
+			System.out.println(isSuccess);
+			responseSuccess2("导出记录成功");
 		}
 
 	}

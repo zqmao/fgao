@@ -26,7 +26,7 @@ public class AfterSaleComeRecordVO {
 	private String createTime;//创建时间
 	private String entryTime;//录入时间
 	private String remark;//备注
-	private String status;//处理状态
+	//private String status;//处理状态
 	
 	private String bounceType;//退件类型
 	/*private String reissueCourierNum;//补发快递单号
@@ -50,7 +50,7 @@ public class AfterSaleComeRecordVO {
 		this.createTime = afterSaleComeRecord.getCreateTime()!= 0 ? DateUtil.toString(afterSaleComeRecord.getCreateTime()):"";
 		this.entryTime = afterSaleComeRecord.getEntryTime()!=0 ? DateUtil.toString(afterSaleComeRecord.getEntryTime()):"";
 		this.remark = afterSaleComeRecord.getRemark()!=null ? afterSaleComeRecord.getRemark():" ";
-		this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
+		//this.status = afterSaleComeRecord.getStatus() == 1 ? "已处理" : "待处理";
 		user = UserDAO.getInstance().load(afterSaleComeRecord.getUnpackId());
 		this.unpackor = user != null ? user.getName() : "";
 		this.bounceType = afterSaleComeRecord.getBounceType();
@@ -175,14 +175,5 @@ public class AfterSaleComeRecordVO {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 
 }

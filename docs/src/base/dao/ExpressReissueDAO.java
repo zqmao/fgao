@@ -33,5 +33,10 @@ public class ExpressReissueDAO extends BaseDAO<ExpressReissue>{
 		List<ExpressReissue> objs = JDBCUtil.queryObjectList(sql, ExpressReissue.class, index, pagesize);
 		return objs;
 	}
+	public ExpressReissue export(int id) {
+		String sql = "select * from t_express_reissue where id=? ";
+		ExpressReissue objs = JDBCUtil.queryObject(sql, ExpressReissue.class, id);
+		return objs;
+	}
 	
 }

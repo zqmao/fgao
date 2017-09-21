@@ -20,7 +20,7 @@ public class AfterSaleComeRecord {
 	private int unpackId;//拆包人员
 	private long createTime;//创建时间
 	private String remark;//备注
-	private int status;//处理状态:1已处理；0未处理
+	//private int status;//处理状态:1已处理；0未处理
 	private long entryTime;//打单时间
 	
 	private String bounceType;//退件类型
@@ -127,11 +127,4 @@ public class AfterSaleComeRecord {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 }

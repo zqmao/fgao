@@ -3,6 +3,7 @@ package base.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -100,6 +101,20 @@ public class SignRecordServlet extends BaseServlet {
 			responseSuccess("签到成功");
 		} else if ("signOut".equals(sign)) {// 签退
 			SignRecord record = getTodayRecord();
+			
+			long time = System.currentTimeMillis()-24 * 60 * 60 * 1000;
+			//判断昨天是否签到
+			SignRecord recordYstday = getYesterdayRecord(time);
+			Date date = new Date();
+			int hours = date.getHours();
+			//判断时间是否在0-5点之间
+			if((recordYstday!=null && recordYstday.getSignOutTime()==0) && (0<hours && hours<5) ){
+					long currentTime = System.currentTimeMillis();
+					recordYstday.setSignOutTime(currentTime);
+					SignRecordDAO.getInstance().saveOrUpdate(recordYstday);
+				
+			}else{
+			
 			if(record == null || record.getSignInTime() == 0){
 				responseError("今天还没有签到");
 				return;
@@ -107,6 +122,7 @@ public class SignRecordServlet extends BaseServlet {
 			long currentTime = System.currentTimeMillis();
 			record.setSignOutTime(currentTime);
 			SignRecordDAO.getInstance().saveOrUpdate(record);
+			}
 			responseSuccess("签退成功");
 		} else if ("handle".equals(sign)) {// 管理员维护
 			String signDays = (String) request.getParameter("signDays");
@@ -143,6 +159,13 @@ public class SignRecordServlet extends BaseServlet {
 		long currentTime = System.currentTimeMillis();
 		String dayTime = DateUtil.toDayString(currentTime);
 		return SignRecordDAO.getInstance().query(dayTime, currentUser.getId());
+	}
+	private SignRecord getYesterdayRecord(long time){
+		if(currentUser == null){
+			return null;
+		}
+		String yesterdayTime = DateUtil.toDayString(time);
+		return SignRecordDAO.getInstance().query(yesterdayTime, currentUser.getId());
 	}
 
 }
