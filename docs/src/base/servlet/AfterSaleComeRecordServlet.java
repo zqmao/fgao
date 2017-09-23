@@ -230,6 +230,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setCourierNum(reissueCourierNum);
 					expressReissue.setGoodsName(reissueGoodsName);
 					expressReissue.setRemark(remark);
+					expressReissue.setStatus(1);
 					/*System.out.println(status);
 					if ("已处理".equals(status)) {
 						expressReissue.setStatus(1);
@@ -323,8 +324,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 						afterSaleComeRecord.setExpressName(expressName);
 						afterSaleComeRecord.setCourierNum(cns[i]);
 						AfterSaleComeRecordDAO.getInstance().saveOrUpdate(afterSaleComeRecord);
-					} else{
-						
 					}
 
 				} else {

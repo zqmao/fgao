@@ -56,6 +56,14 @@
                                 	}
                                 }
                             },
+                            {title: '在职或离职', field: 'incumbency', width: 240, align: 'center',
+                            	formatter: function(value, rec) {
+                                	if(value == 1){
+	                                    return "在职";
+                                	}else{
+                                		return "离职";
+                                	}
+                                }},
                             {title: '详情', field: 'opt', width: 100, align: 'center',
                             	formatter: function(value, rowData, rowIndex) {
                                 	return "<a href='#' style='color:red' onclick='openGrant("+rowData.id+")'>权限查看</a>";
@@ -94,7 +102,8 @@
                                     name: row[0].name,
                                     loginName: row[0].loginName,
                                     phone: row[0].phone,
-                                    info: row[0].info
+                                    info: row[0].info,
+                                    incumbency: row[0].incumbency
                                 });
                             }
                         }
@@ -199,6 +208,13 @@
 				    <tr >
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phone" type="text"  data-options="required:true"/><td>
+				    </tr>
+				    <tr >
+						<td>在职或离职:</td>
+						<td>
+							<input type="radio" name="incumbency" value="1" checked="checked" id="waitManage" /><label for="waitManage">在职</label>
+							<input type="radio" name="incumbency" value="0" id="overManage"/><label for="overManage">离职</label>
+						<td>
 				    </tr>
 				    <tr >
 						<td>备注:</td>

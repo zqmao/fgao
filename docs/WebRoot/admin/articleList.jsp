@@ -21,7 +21,9 @@
 		var categoryId = "";
 		var key = "";
 		var first = 1;
+		
 		$(function() {
+			
 			$('#addArticle').dialog({
 			    width:800,
 			    height:600,
@@ -40,6 +42,7 @@
 				    }
 			    }]
 			});
+			
 			$('#addArticle').dialog("close");
 			$('#tt').tree({
 				url: '../userCategoryServlet.do?sign=listByUser&userId=<%=userId%>',
@@ -237,5 +240,6 @@
 		    </table>
 		</form>
 	</div>
+	
   </body>
 </html>

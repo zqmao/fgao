@@ -58,6 +58,7 @@ public class UserServlet extends BaseServlet {
 			long total = UserDAO.getInstance().queryCount();
 			int index = (page - 1) * rows;
 			List<User> result = UserDAO.getInstance().list(index, rows);
+			
 			JSONObject obj = new JSONObject();
 			obj.put("total", total);
 			obj.put("rows", JSON.toJSON(result));
@@ -68,6 +69,7 @@ public class UserServlet extends BaseServlet {
 			String phone = (String) request.getParameter("phone");
 			String info = (String) request.getParameter("info");
 			String userId = (String) request.getParameter("userId");
+			int incumbency = Integer.parseInt(request.getParameter("incumbency"));
 			User user = null;
 			if(userId == null || userId.length() == 0){
 				user = new User();
@@ -80,6 +82,7 @@ public class UserServlet extends BaseServlet {
 			user.setLoginName(loginName);
 			user.setPhone(phone);
 			user.setInfo(info);
+			user.setIncumbency(incumbency);
 			if (user.getId() == 0) {
 				User dbUser = UserDAO.getInstance().query(loginName);
 				if (dbUser != null) {

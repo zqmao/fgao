@@ -398,6 +398,9 @@
             			$.messager.alert('提示', '请填写订单号', 'Warning');
             			//$("#ascrGrid").datagrid("reload");
             		}else {
+            			if("换货"==bounceVal){
+            				
+            			
             			if("自己发货"==changeStatus){
             				var reissueCourierNum = $("#reissueCourierNum").val();
             				var reissueExpressName = $("#reissueExpressName").val();
@@ -428,7 +431,7 @@
                 				});
             					
             				}
-            				
+            			
             			}else if("他人发货"==changeStatus){
             				var reissueAddress = $("#reissueAddress").val();
             				var reissueGood = $("#reissueGood").val();
@@ -454,7 +457,42 @@
                 				});
             				}
             				
+            			}else{
+            				$("#addAscrForm").form("submit", {
+            				    url:"../afterSaleComeRecordServlet.do?sign=add",
+            				    success:function(result){
+            				    	var data = eval('(' + result + ')');
+            				    	if(data.result == 0){
+            				    		alert(data.reason);
+            				    	}else{
+            				    		$("#handleSelf").hide();
+            			            	$("#handleOth").hide();
+            				    		$("#displayId").hide();
+            							$("#addAscrForm").form("clear");
+            							$("#courierNumA").val("");
+                    					$("#ascrGrid").datagrid("reload");
+            				    	}
+            				    }
+            				});
             			}
+            		}else{
+            			$("#addAscrForm").form("submit", {
+        				    url:"../afterSaleComeRecordServlet.do?sign=add",
+        				    success:function(result){
+        				    	var data = eval('(' + result + ')');
+        				    	if(data.result == 0){
+        				    		alert(data.reason);
+        				    	}else{
+        				    		$("#handleSelf").hide();
+        			            	$("#handleOth").hide();
+        				    		$("#displayId").hide();
+        							$("#addAscrForm").form("clear");
+        							$("#courierNumA").val("");
+                					$("#ascrGrid").datagrid("reload");
+        				    	}
+        				    }
+        				});
+            		}
             			/* $("#addAscrForm").form("submit", {
         				    url:"../afterSaleComeRecordServlet.do?sign=add",
         				    success:function(result){

@@ -13,6 +13,7 @@ public class User {
 	private String password;
 	private String phone;
 	private String info;
+	private int incumbency;//1是在职，0是离职
 	
 	private int admin;//默认0，非管理员
 	private int inGoods;
@@ -69,6 +70,13 @@ public class User {
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	
+	public int getIncumbency() {
+		return incumbency;
+	}
+	public void setIncumbency(int incumbency) {
+		this.incumbency = incumbency;
 	}
 	public int getAdmin() {
 		return admin;
