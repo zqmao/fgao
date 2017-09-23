@@ -413,23 +413,8 @@
             					$.messager.alert('提示', '选择自己发货时，补发快递单号,补发快递名称,补发货物名称均不能为空', 'Warning');
             					//alert("选择自己发货时，补发快递单号,补发快递名称,补发货物名称均不能为空")
             				}else {
-            					$("#addAscrForm").form("submit", {
-                				    url:"../afterSaleComeRecordServlet.do?sign=add",
-                				    success:function(result){
-                				    	var data = eval('(' + result + ')');
-                				    	if(data.result == 0){
-                				    		alert(data.reason);
-                				    	}else{
-                				    		$("#handleSelf").hide();
-                			            	$("#handleOth").hide();
-                				    		$("#displayId").hide();
-                							$("#addAscrForm").form("clear");
-                							$("#courierNumA").val("");
-                        					$("#ascrGrid").datagrid("reload");
-                				    	}
-                				    }
-                				});
             					
+            					submitAddMethod();
             				}
             			
             			}else if("他人发货"==changeStatus){
@@ -439,81 +424,24 @@
             					//alert("当选择他人发货时，不发货物及补发货物名称不能为空");
             					$.messager.alert('提示', '当选择他人发货时，补发货物地址及补发货物名称不能为空', 'Warning');
             				}else{
-            					$("#addAscrForm").form("submit", {
-                				    url:"../afterSaleComeRecordServlet.do?sign=add",
-                				    success:function(result){
-                				    	var data = eval('(' + result + ')');
-                				    	if(data.result == 0){
-                				    		alert(data.reason);
-                				    	}else{
-                				    		$("#handleSelf").hide();
-                			            	$("#handleOth").hide();
-                				    		$("#displayId").hide();
-                							$("#addAscrForm").form("clear");
-                							$("#courierNumA").val("");
-                        					$("#ascrGrid").datagrid("reload");
-                				    	}
-                				    }
-                				});
+            					
+            					submitAddMethod();
             				}
             				
             			}else{
-            				$("#addAscrForm").form("submit", {
-            				    url:"../afterSaleComeRecordServlet.do?sign=add",
-            				    success:function(result){
-            				    	var data = eval('(' + result + ')');
-            				    	if(data.result == 0){
-            				    		alert(data.reason);
-            				    	}else{
-            				    		$("#handleSelf").hide();
-            			            	$("#handleOth").hide();
-            				    		$("#displayId").hide();
-            							$("#addAscrForm").form("clear");
-            							$("#courierNumA").val("");
-                    					$("#ascrGrid").datagrid("reload");
-            				    	}
-            				    }
-            				});
+            				
+            				submitAddMethod();
             			}
             		}else{
-            			$("#addAscrForm").form("submit", {
-        				    url:"../afterSaleComeRecordServlet.do?sign=add",
-        				    success:function(result){
-        				    	var data = eval('(' + result + ')');
-        				    	if(data.result == 0){
-        				    		alert(data.reason);
-        				    	}else{
-        				    		$("#handleSelf").hide();
-        			            	$("#handleOth").hide();
-        				    		$("#displayId").hide();
-        							$("#addAscrForm").form("clear");
-        							$("#courierNumA").val("");
-                					$("#ascrGrid").datagrid("reload");
-        				    	}
-        				    }
-        				});
+            			
+            			submitAddMethod();
             		}
-            			/* $("#addAscrForm").form("submit", {
-        				    url:"../afterSaleComeRecordServlet.do?sign=add",
-        				    success:function(result){
-        				    	var data = eval('(' + result + ')');
-        				    	if(data.result == 0){
-        				    		alert(data.reason);
-        				    	}else{
-        				    		$("#handleSelf").hide();
-        			            	$("#handleOth").hide();
-        				    		$("#displayId").hide();
-        							$("#addAscrForm").form("clear");
-        							$("#courierNumA").val("");
-                					$("#ascrGrid").datagrid("reload");
-        				    	}
-        				    }
-        				}); */
+            			
             		}
             		
             	}else{
             	
-				$("#addAscrForm").form("submit", {
+				/* $("#addAscrForm").form("submit", {
 				    url:"../afterSaleComeRecordServlet.do?sign=add",
 				    success:function(result){
 				    	courierNumA = "";
@@ -529,7 +457,8 @@
         					$("#ascrGrid").datagrid("reload");
 				    	}
 				    }
-				});
+				}); */
+            		submitAddMethod();
             	}
 			}
             function submitCourierNum() {
@@ -550,6 +479,25 @@
             function clearX(){
             	$("#mask").hide();//隐藏遮蔽层
             	$("#searchId").hide();
+            }
+            //提交方法
+            function submitAddMethod(){
+            	$("#addAscrForm").form("submit", {
+				    url:"../afterSaleComeRecordServlet.do?sign=add",
+				    success:function(result){
+				    	var data = eval('(' + result + ')');
+				    	if(data.result == 0){
+				    		alert(data.reason);
+				    	}else{
+				    		$("#handleSelf").hide();
+			            	$("#handleOth").hide();
+				    		$("#displayId").hide();
+							$("#addAscrForm").form("clear");
+							$("#courierNumA").val("");
+        					$("#ascrGrid").datagrid("reload");
+				    	}
+				    }
+				});
             }
             
             function searchList(){

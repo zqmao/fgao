@@ -339,12 +339,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String allSearch = request.getParameter("orderNumE");
 			
 			allSearch = URLDecoder.decode(allSearch , "utf-8");
-			System.out.println(allSearch+"++++orderNumE");
 			long total = ExportOrderListDAO.getInstance().count(allSearch);
-			System.out.println(total+"++++total");
 			
 				List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
-				System.out.println(result+"++++result");
 				List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
 				for (ExportOrderList reissue : result) {
 					ExportOrderListVO vo = new ExportOrderListVO(reissue);
