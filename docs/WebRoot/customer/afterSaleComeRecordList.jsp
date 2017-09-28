@@ -38,6 +38,7 @@
 			var orderNum = "";
 			var phoneNum = "";
 			var wangwang = "";
+			var bounceType = "";
 			var creator = "";
 			var allSearch="";
 			var expressName2 = "";
@@ -59,6 +60,22 @@
             	$("#displayId").hide();
             	$("#handleSelf").hide();
             	$("#handleOth").hide();
+            	
+            	//回车事件
+            	 $('#courierNumA').bind('keypress',function(event){  
+            		  
+                     if(event.keyCode == "13")      
+           
+                     {  
+                    	 var courierNum = $('#courierNumA').val();
+           				$("#courierNum").val(courierNum);
+                         /* alert('你输入的内容为：' + $('#courierNumA').val());   */
+           				submitSearch();
+                     }  
+           
+                 });
+            	
+            	
             	$("#addAscr").panel({
             		title: '添加拆包记录',
             		
@@ -146,7 +163,7 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA,
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA, bounceType:bounceType,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
@@ -201,6 +218,7 @@
                         iconCls: 'icon-edit',
                         text: '修改',
                         handler: function() {
+                        	
                             var ids = getChecked("ascrGrid");
                             var len = ids.length;
                             if (len == 0) {
@@ -224,6 +242,8 @@
                                    // status: row[0].status,
                                     bounceType: row[0].bounceType,
                                 });
+                               /*  $('#courierNumA').attr("disabled",true); 
+                            	$('#orderNO').attr("disabled",true);  */
                             }
                         }
                     }, {
@@ -267,7 +287,12 @@
                     }]
                 });
             });
-
+            /* $("#courierNumA").keydown(function() {
+                if (event.keyCode == "13") {//keyCode=13是回车键
+                    var vale = $('#courierNumA').val();
+                alert(vale);
+                }
+            }); */
             function formatCellTooltip(value){  
 	            return "<span title='" + value + "'>" + value + "</span>";  
 	        } 
@@ -332,13 +357,14 @@
             }
             //查询
             function submitSearch(){
-            	$("#courierNumA").val("");
+            	//$("#courierNumA").val("");
             	courierNum = $("#courierNum").val();
             	
             	goodsName = $("#goodsName").val();
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	wangwang = $("#wangwang").val();
+            	bounceType = $("#bounceType").val();
             	creator = $("#creator").val();
             	shopName = $("#shopName").val();
             	allSearch = $("#allSearch").val();
@@ -349,6 +375,7 @@
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.wangwang = wangwang;
+            	queryParams.bounceType = bounceType;
             	queryParams.creator = creator;
             	queryParams.shopName = shopName;
             	queryParams.allSearch = allSearch;
@@ -678,29 +705,7 @@
 						<td><input class="easyui-validatebox" id="reissueGood" name="reissueGood" type="text" style="width: 223px;" /><td>
 				    </tr>
 			    </table>
-			<%--     <%
-			request.setCharacterEncoding("UTF-8");
-			
-			String courierNumA=request.getParameter("courierNumA");
-			if(courierNumA!=null){
-			String url="jdbc:mysql://localhost:8080";
-			String user="root";
-			String password="123456";
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn=DriverManager.getConnection(url,user,password);
-			Statement stmt=conn.createStatement();
-			String sql = "select * from t_after_sale_come_record where courierNum = '"+courierNumA+"'";
-			ResultSet rs=stmt.executeQuery(sql);
-			if(rs.next()) {
-				out.print("sign=search");
-			}else{
-			out.print("sign=list");
-			}
-			
-     		stmt.close();
-     		conn.close();
-			}
-%> --%>
+		
 			</form>
 			<div class="margin-tb manage-detail-con clearfix" >
 				<table>
@@ -765,6 +770,10 @@
 				    <tr >
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang2" id="wangwang" type="text" style="width: 250px;"/><td>
+				    </tr>
+				     <tr >
+						<td>退件类型:</td>
+						<td><input class="easyui-validatebox" name="bounceType2" id="bounceType" type="text" style="width: 250px;"/><td>
 				    </tr>
 				    <tr >
 						<td>创建人:</td>

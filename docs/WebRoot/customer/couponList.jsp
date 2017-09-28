@@ -255,7 +255,6 @@
 						<td style="width:100px;"><label>有效期:</label></td>
 						<td>
 							<input type="datetime" name="deadLine" class="easyui-datetimebox" style="width:200px;height:30px;"/>
-							
 						</td>
 				    </tr>
 				    <tr >

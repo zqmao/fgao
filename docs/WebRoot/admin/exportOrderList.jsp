@@ -69,6 +69,18 @@
                  }
                  );
             	
+            	 //回车事件
+            	 $('#allSearch').bind('keypress',function(event){  
+            		  
+                     if(event.keyCode == "13")      
+           
+                     {  
+                    	 submitSearch();
+                     }  
+           
+                 });
+            	 
+            	 
                 $("#addOrderlist").panel("open");
                 $("#grant").dialog("close");
                 $("#eolistGrid").datagrid({
@@ -187,7 +199,8 @@
             	$("#searchOrderlist").panel("close");
             }
             function searchClear(){
-            	$("#searchOrderlistForm").form("clear");
+            	/* $("#searchOrderlistForm").form("clear"); */
+            	$("#allSearch").val("");
             }
             //
             function getChecked(id) {
@@ -225,7 +238,8 @@
             	$("#searchOrderlistForm").form("submit",{
             		url:"../exportOrderListServlet.do?sign=search",
             		success:function(result){
-				    	var data = eval('(' + result + ')');
+            			var data = eval('(' + result + ')');
+            			
 				    	if(data.result == 0){
 				    		alert(data.reason);
 				    	}else{
@@ -321,12 +335,13 @@
 				<td style="width:40%;">
 					<div id="searchOrderlist" class="easyui-panel" title="搜索" style="width: 98%; height: 500px;padding: 10px;">
 			<form id="searchOrderlistForm" method="post">
-				<table>
+				<!-- <table>
 				
 					<tr >
 						<td>全文搜索:</td>
 						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
 				    </tr>
+  				</table> -->
 					<!-- <tr >
 				        <td>快递名称:</td>
 				        <td><input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" /></td>
@@ -359,9 +374,14 @@
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum2" id="phoneNum" type="text" style="width: 250px;"/></td>
 				    </tr> -->
-			    </table>
 			</form>
-			
+			<table>
+				
+					<tr >
+						<td>全文搜索:</td>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
+				    </tr>
+  				</table>
 			<div class="margin-tb manage-detail-con clearfix" >
 				<table>
 					<tr>

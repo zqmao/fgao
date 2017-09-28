@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import base.api.AfterSaleComeRecord;
 import base.api.Express;
 import base.api.ExpressReissue;
 import base.api.User;
@@ -56,7 +57,9 @@ public class ExpressReissueServlet extends BaseServlet {
 			String orderNum = (String) request.getParameter("orderNum");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String statuss = request.getParameter("status");
-			String creator = request.getParameter("creator");
+			String creator = (String) request.getParameter("creator");
+			String wangwang = (String) request.getParameter("wangwang");
+			System.out.println(wangwang);
 			User user = new User();
 			int creatorId = 0;
 			if(creator!=null && creator.length()>0){
@@ -106,6 +109,9 @@ public class ExpressReissueServlet extends BaseServlet {
 			if (creator !=null && creator.length() != 0) {
 				builder.eq("creatorId", creatorId);
 			}
+			if(wangwang !=null && wangwang.length() != 0){
+				builder.eq("wangwang", wangwang);
+			}
 			if(status==2){
 				
 			}else if(status ==1||status==0) {
@@ -137,7 +143,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			String wangwang = (String) request.getParameter("wangwang");
 			String remark = (String) request.getParameter("remark");
 			String id = (String) request.getParameter("erlistId");
-			Pattern p = Pattern.compile("^[0-9]{17}$");
+			Pattern p = Pattern.compile("^[0-9]{16,17}$");
 			Matcher m = p.matcher(orderNum);
 			/*if (m.find()){
 				String id = (String) request.getParameter("erlistId");
@@ -263,6 +269,35 @@ public class ExpressReissueServlet extends BaseServlet {
 			boolean isSuccess=ExportText.exportCsv(new File(path), dataList);
 			System.out.println(isSuccess);
 			responseSuccess2("导出记录成功");
+		}else if("keep".equals(sign)){
+			String shopNameK = (String) request.getParameter("shopNameK");
+			String wangwangK = (String) request.getParameter("wangwangK");
+			String idK = (String) request.getParameter("idK");
+			String orderNumK = (String) request.getParameter("orderNumK");
+			String goodsNameK = (String) request.getParameter("goodsNameK");
+			String addressK = (String) request.getParameter("addressK");
+			String remarkK = (String) request.getParameter("remarkK");
+			Pattern p = Pattern.compile("^[0-9]{16,17}$");
+			Matcher m = p.matcher(orderNumK);
+			if(!m.find()){
+				responseError("订单号格式不正确");
+				return;
+			}
+			/*long num = ExpressReissueDAO.getInstance().checkNum(orderNumK);
+			System.out.println("num++"+num);
+			if(num>1){
+				responseError("不能输入重复订单号");
+				return;
+			}*/
+			ExpressReissue expressReissue = ExpressReissueDAO.getInstance().load(Integer.parseInt(idK));
+			expressReissue.setShopName(shopNameK);
+			expressReissue.setWangwang(wangwangK);
+			expressReissue.setOrderNum(orderNumK);
+			expressReissue.setGoodsName(goodsNameK);
+			expressReissue.setAddress(addressK);
+			expressReissue.setRemark(remarkK);
+			ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
+			responseSuccess2("修改记录成功");
 		}
 
 	}

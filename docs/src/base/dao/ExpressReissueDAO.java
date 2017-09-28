@@ -38,5 +38,9 @@ public class ExpressReissueDAO extends BaseDAO<ExpressReissue>{
 		ExpressReissue objs = JDBCUtil.queryObject(sql, ExpressReissue.class, id);
 		return objs;
 	}
+	public long checkNum(String orderNum){
+		String sql = "select count(*) from t_express_reissue where orderNum=? ";
+		return JDBCUtil.queryCount(sql, orderNum); 
+	}
 	
 }

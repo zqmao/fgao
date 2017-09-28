@@ -12,6 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="../easyUi/themes/icon.css" />
 	<script type="text/javascript" src="../easyUi/jquery.min.js"></script>
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
+	
 	<script type="text/javascript">
 			var first = 1;
 			var option = "";
@@ -43,21 +44,26 @@
                 $("#addComment").panel("open");
                 $("#option_goods").combobox({
                     url:'../commentServlet.do?sign=selectAll',
-                    valueField:'id',
+                    //valueField:'id',
+                    valueField:'text',
                     textField:'text',
                     loadFilter: function(data){
                    		if (data.data){
-                   			$("#option_goods").combobox('select', data.data[0].id);
+                   			$("#option_goods").combobox('select', data.data[0].text);//data.data[0].text
                    			return data.data;
                    		} else {
                    			return data;
                    		}
                    	},
                 	onSelect: function(record){
-                		option = record.id + "";
+                		/* option = record.id + ""; */
+                		
+                		option = record.text;
+                		//alert(option);
 						if(first == 0){
 							var queryParams =$("#commentGrid").datagrid("options").queryParams;
-							queryParams.goodsId = option;
+							//queryParams.goodsId = option;
+							queryParams.goodsName = option;
 							$("#addCommentForm").form('clear');
 							$("#timeDes").combobox('select', "不限时间");
 							$("#commentGrid").datagrid("load");
@@ -65,20 +71,24 @@
 							loadTableData();
 						}
 						$("#addComment").form('load', {
-                        	goodsId: "-2"
+                        	//goodsId: "-2"
+							goodsName: "请选择商品"
                         });
 						first = 0;
 					}
                 });
-                
-                $("#goodsId").combobox({
+                $("#searchId").hide();
+                /* $("#goodsId").combobox({ */
+                	$("#goodsName").combobox({
                     url:'../commentServlet.do?sign=select',
-                    valueField:'id',
+                    /* valueField:'id', */
+                    valueField:'text',
                     textField:'text',
                     editable:false,
                     loadFilter: function(data){
                    		if (data.data){
-                   			$("#goodsId").combobox('select', -3);
+                   			/* $("#goodsId").combobox('select', -3); */
+                   			$("#goodsName").combobox('select', "请选择商品");
                    			return data.data;
                    		} else {
                    			return data;
@@ -97,11 +107,14 @@
                     nowrap: false,
                     fit: false,
                     url: '../commentServlet.do?sign=list',
-                    queryParams:{goodsId : option},
+                    /* queryParams:{goodsId : option}, */
+                    queryParams:{goodsName : option},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '序号', field: 'id', width: 60, hidden:true},
                             {title: '录入者', field: 'creator', width: 100, align: 'center'},
+                            /* {title: '商品', field: 'goodsId', width: 100, align: 'center'}, */
+                            {title: '商品', field: 'goodsName', width: 100, align: 'center'},
                             {title: '首评', field: 'firstComment', width: 300, align: 'center',formatter:formatCellTooltip},
                             {title: '', field: 'firstCommentPic', width: 400, align: 'center',hidden:'true'},
                             {title: '首评图片', field: 'left', width: 300, align: 'center', formatter:leftFormatter },
@@ -137,7 +150,8 @@
                             $("#timeDes").combobox('select', "不限时间");
                             $("#addComment").panel('open');
                             $("#addComment").form('load', {
-                            	goodsId: "-2"
+                            	/* goodsId: "-2" */
+                            	goodsName: "请选择商品"
                             });
                         }
                     }, {
@@ -159,7 +173,8 @@
                                 	secondComment: row[0].secondComment,
                                 	commentId: row[0].id,
                                 	remark: row[0].remark,
-                                	goodsId: row[0].goodsId
+                                	/* goodsId: row[0].goodsId */
+                                	goodsName: row[0].goodsName
                                 });
                             }
                         }
@@ -235,15 +250,15 @@
             	var array = rowData.firstCommentPic.split(",");
             	for(var i = 0; i < array.length; i++){
             		if(array[i] != ""){
-            			var pic = "<img src='"+array[i]+"' onclick='changeSize()' style='width:60px; height:60px;' border='1'/>";
-                		pics += pic;
+            			var pic = "<img src='"+array[i]+"' onclick='changeSize(this)' style='width:60px; height:60px;' border='1'/>";
+            			pics += pic;
             		}
             	}
             	return pics;
         	}
             
-            function changeSize(){
-            	 $("img").bind("click", function(){ 
+            function changeSize(obj){
+            	/*  $("img").bind("click", function(){ 
             		newImg = this; 
             		var width = $(this).width();
             		
@@ -260,7 +275,18 @@
             		$(this).height($(this).height() - h); 
             		} 
             		});  
-            		
+            		 */
+            		 var src = "";
+            		 $("img").click(function(){
+            			  
+            			 src = $(obj).attr("src");
+                 		 $("#searchId").show();
+                 		 var html = "<img style='height:100%;width:100%;' onclick='changeHide(this)' onclick='changehide()' src='"+src+"'>";
+                 		 $("#searchId").html(html);
+            		 }); 
+            }
+            function changeHide(){
+            	$("#searchId").hide();
             }
           
            /*  function moveImg(left,top) 
@@ -285,13 +311,25 @@
             	var array = rowData.secondCommentPic.split(",");
             	for(var i = 0; i < array.length; i++){
             		if(array[i] != ""){
-            			var pic = "<img src='"+array[i]+"' style='width:60px; height:60px;' border='1'/>";
+            			var pic = "<img src='"+array[i]+"' onclick='changeSizeS(this)' style='width:60px;height:60px;' border='1'/>";
                 		pics += pic;
             		}
             	}
             	return pics;
         	}
-            
+            function changeSizeS(obj){
+            		 var src = "";
+            		 $("img").click(function(){
+            			  
+            			 src = $(obj).attr("src");
+                 		 $("#searchId").show();
+                 		 var html = "<img style='height:100%;width:100%;' onclick='changeHideS(this)' src='"+src+"'>";
+                 		 $("#searchId").html(html);
+            		 }); 
+            }
+            function changeHideS(obj){
+            	$("#searchId").hide();
+            }
             function verifyFormatter(value, rowData, rowIndex){
             	if(value == 1){
             		return "审核通过";
@@ -321,11 +359,16 @@
 			};
             
             function submitAdd() {
-            	var goodsId = $("#goodsId").val();
-            	if(goodsId == -3){
+            	/* var goodsId = $("#goodsId").val(); */
+            	var goodsName = $("#goodsName").val();
+            	/* if(goodsId == -3){
             		alert("请选择商品");
             		return;
-            	}
+            	} */
+            	if(goodsName == "请选择商品"){
+            		alert("请选择商品");
+            		return;
+            	} 
 				$("#addCommentForm").form('submit', {
 				    url:"../commentServlet.do?sign=add",
 				    success:function(result){
@@ -337,7 +380,8 @@
 							$("#timeDes").combobox('select', "不限时间");
         					$("#commentGrid").datagrid("reload");
         					$("#addComment").form('load', {
-                            	goodsId: "-2"
+                            	//goodsId: "-2"
+                            	goodsName: "请选择商品"
                             });
 				    	}
 				    }
@@ -360,8 +404,10 @@
 				<!-- input type="hidden" name="goodsId" value="" /> -->
 				<input type="hidden" name="commentId" value="" />
 				<div>
-					<label for="goodsId">选择商品:</label>
-					<input id="goodsId" name="goodsId"/>
+					<!-- <label for="goodsId">选择商品:</label>
+					<input id="goodsId" name="goodsId"/> -->
+					<label for="goodsName">选择商品:</label>
+					<input id="goodsName" name="goodsName"/>
 			    </div>
 			    <div >
 					<label for="firstComment">首评内容:</label>
@@ -401,5 +447,12 @@
 			</form>
 			<br/>
 		</div>
+		<!-- <div href="" class="avatar"><img style="height:100px;width:100px;" onclick="changBig()" src="../image/login_bg.jpg" /></div>  -->
+		 <div title="搜索" id="searchId" class=""  style="width: 600px;margin-left:30%;z-index: 1001;height:450px;background-color:#e0ecff;position:absolute;top:127px;">
+				
+				<!-- <img style="height:400px;width:400px;" src="../image/login_bg.jpg" onclick="changBig()"> -->
+				
+					 
+			</div>
 	</body>
 </html>

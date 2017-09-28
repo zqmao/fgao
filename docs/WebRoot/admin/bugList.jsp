@@ -430,9 +430,10 @@
 					<select class="easyui-combobox" id="category" name="category" style="width:100px;">
 					    <option value="售后">售后</option>
 					    <option value="返现">返现</option>
+					    <option value="礼物采购">礼物采购</option> 
 					</select>
 					<label for="wangwang">旺旺:</label>
-					<input class="easyui-validatebox" type="text" name="wangwang" style="width:200px;" data-options="required:true" />
+					<input class="easyui-validatebox" type="text" name="wangwang" style="width:200px;"/>
 					<label for="goods">产品型号:</label>
 					<input class="easyui-validatebox" type="text" name="goods" style="width:200px;" data-options="required:true" />
 			    </div>

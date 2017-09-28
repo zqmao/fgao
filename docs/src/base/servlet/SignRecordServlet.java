@@ -108,7 +108,7 @@ public class SignRecordServlet extends BaseServlet {
 			Date date = new Date();
 			int hours = date.getHours();
 			//判断时间是否在0-5点之间
-			if((recordYstday!=null && recordYstday.getSignOutTime()==0) && (0<hours && hours<5) ){
+			if((recordYstday!=null && recordYstday.getSignOutTime()==0) && (0<=hours && hours<5) ){
 					long currentTime = System.currentTimeMillis();
 					recordYstday.setSignOutTime(currentTime);
 					SignRecordDAO.getInstance().saveOrUpdate(recordYstday);

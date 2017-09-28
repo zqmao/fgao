@@ -48,6 +48,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 		if ("list".equals(sign)) {// 查询列表
 			String allSearch = (String) request.getParameter("allSearch");
 			String wangwang = (String) request.getParameter("wangwang");
+			String bounceType = (String) request.getParameter("bounceType");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName2");
 			String shopName = (String) request.getParameter("shopName");
@@ -133,6 +134,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 						if (wangwang != null && wangwang.length() != 0){
 							builder.eq("wangwang", wangwang);
 						}
+						if (bounceType != null && bounceType.length() != 0){
+							builder.eq("bounceType", bounceType);
+						}
 						if (creator !=null && creator.length() != 0) {
 							builder.eq("creatorId", creatorId);
 						}
@@ -161,7 +165,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				return;
 			}
 			String courierNum = (String) request.getParameter("courierNum");
-			AfterSaleComeRecord couesult = AfterSaleComeRecordDAO.getInstance().query(courierNum);
+			AfterSaleComeRecord couesult = null;
+			//System.out.println(couesult);
+			if(courierNum!=null && courierNum.length()>0){
+				couesult = AfterSaleComeRecordDAO.getInstance().query(courierNum);
+			}
 			String expressName = (String) request.getParameter("expressName");
 			String shopName = (String) request.getParameter("shopName");
 			String goodsName = (String) request.getParameter("goodsName");
@@ -169,6 +177,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String wangwang = (String) request.getParameter("wangwang");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String orderNum = (String) request.getParameter("orderNum");
+			AfterSaleComeRecord ordersult = null;
+			/*if(orderNum!=null && orderNum.length()>0){
+				ordersult = AfterSaleComeRecordDAO.getInstance().orderNO(orderNum);
+			}*/
+			
 			String remark = (String) request.getParameter("remark");
 			//String status = (String) request.getParameter("status");
 			
@@ -177,9 +190,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String reissueExpressName = (String) request.getParameter("reissueExpressName");
 			String reissueGoodsName = (String) request.getParameter("reissueGoodsName");
 			String reissueAddress = (String) request.getParameter("reissueAddress");
-			
-			
-		
 			
 			if("请选择:".equals(expressName)){
 				expressName = "";
@@ -191,10 +201,11 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			//System.out.println(changeStatus);
 			AfterSaleComeRecord afterSaleComeRecord = new AfterSaleComeRecord();
 			
-			
 			String id = (String) request.getParameter("ascrId");
-			if (id == null || id.length() == 0) {
+			/*if (id == null || id.length() == 0) {
 				if (couesult != null) {
+					responseError("该快递单号已存在");
+					return;
 					id = "" + couesult.getId();
 					long time = couesult.getCreateTime();
 					long eTime = couesult.getEntryTime();
@@ -202,27 +213,38 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					if ((System.currentTimeMillis() >= (time + 1000 * 60 * 60 * 24 * 21))
 							&& (System.currentTimeMillis() >= (eTime + 1000 * 60 * 60 * 24 * 21))) {
 						responseError("此账单创建时间过久，不许修改");
+						return;
 					}
 				}
+				if(ordersult!=null){
+					responseError("该订单号已存在");
+					return;
+				}
 			}
-			
+			*/
 			// 如果没有id是新建
 			if (id == null || id.length() == 0) {
+				if (couesult != null) {
+					responseError("该快递单号已存在");
+					return;
+				}
+			
 				afterSaleComeRecord = new AfterSaleComeRecord();
+				afterSaleComeRecord.setCourierNum(courierNum);
 				afterSaleComeRecord.setCreatorId(currentUser.getId());//创建人
 				afterSaleComeRecord.setUnpackId(currentUser.getId());//拆包人
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 			} else {
 				afterSaleComeRecord = AfterSaleComeRecordDAO.getInstance().load(Integer.parseInt(id));
+				afterSaleComeRecord.setCourierNum(afterSaleComeRecord.getCourierNum());
 				afterSaleComeRecord.setCreateTime(System.currentTimeMillis());
 				afterSaleComeRecord.setUnpackId(currentUser.getId());
-				//afterSaleComeRecord.setUnpackId(currentUser.getId());
 			}
 			afterSaleComeRecord.setBounceType(bounceType);
 			if("换货".equals(bounceType)){
 				ExpressReissue expressReissue = new ExpressReissue();
+				
 				if("自己发货".equals(changeStatus)){
-					
 					expressReissue.setShopName(shopName);
 					expressReissue.setOrderNum(orderNum);
 					expressReissue.setWangwang(wangwang);
@@ -243,6 +265,13 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setIssuTime(System.currentTimeMillis());
 					ExpressReissueDAO.getInstance().saveOrUpdate(expressReissue);
 				}else if("他人发货".equals(changeStatus)){
+					/*//如果补发快递已经生成了数据，就不能再次添加他人发货了。
+					ExpressReissue orderExpress =  ExpressReissueDAO.getInstance().list(orderNum);
+					if(orderExpress!=null){
+						responseError("该订单号已经在补发快递中生成过记录,请不要再次添加他人发货的记录");
+						return;
+					}*/
+					
 					reissueGoodsName = (String) request.getParameter("reissueGood");
 					expressReissue.setShopName(shopName);
 					expressReissue.setOrderNum(orderNum);
@@ -268,7 +297,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				afterSaleComeRecord.setReissueExpressName(reissueExpressName);
 				afterSaleComeRecord.setReissueGoodsName(reissueGoodsName);*/
 			}
-			afterSaleComeRecord.setCourierNum(courierNum);
+			//afterSaleComeRecord.setCourierNum(courierNum);
 			afterSaleComeRecord.setExpressName(expressName);
 			afterSaleComeRecord.setShopName(shopName);
 			afterSaleComeRecord.setGoodsName(goodsName);
@@ -288,7 +317,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			} else {
 				responseSuccess("修改售后记录成功");
 			}
-			
 			
 
 		} else if ("delete".equals(sign)) {// 删除

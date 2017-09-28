@@ -126,9 +126,14 @@ public class ExportOrderListServlet extends BaseServlet{
 				ExportOrderListVO vo = new ExportOrderListVO(reissue);
 				vos.add(vo);
 			}
-			JSONObject obj = new JSONObject();
+			/*JSONObject obj = new JSONObject();
 			obj.put("total", JSON.toJSON(total));
 			obj.put("rows", JSON.toJSON(vos));
+			responseSuccess(JSON.toJSON(obj));*/
+			JSONObject obj = new JSONObject();
+			obj.put("total", total);
+			obj.put("rows", JSON.toJSON(vos));
+
 			responseSuccess(JSON.toJSON(obj));
 		} else if("add".equals(sign)){
 			String path = "";
@@ -171,8 +176,11 @@ public class ExportOrderListServlet extends BaseServlet{
                       if(!".csv".equals(isCsv)){
                     	  responseError("请导入csv文件");
                       }else{
-                     byte[] buff=new byte[1024];
-					  
+                    	  byte[] buff=new byte[1024];
+                    	/*  int length=0;
+                    	  if((length = is.read(buff))!=-1){
+                    		  fos.write(buff, 0, length);
+                    	  }*/
                       while(is.available()>=1024){
                     		  is.read(buff);
                               fos.write(buff);

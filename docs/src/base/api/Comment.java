@@ -10,7 +10,8 @@ public class Comment {
 	private int id;
 	private long time;//评论时间
 	private String creator;//评论录入者
-	private int goodsId;//评论商品
+	//private int goodsId;//评论商品
+	private String goodsName;//评论商品
 	private String firstComment;//评论首评
 	private String firstCommentPic;//首评图片 
 	private String secondComment;//追评内容
@@ -38,11 +39,12 @@ public class Comment {
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
-	public int getGoodsId() {
-		return goodsId;
+	
+	public String getGoodsName() {
+		return goodsName;
 	}
-	public void setGoodsId(int goodsId) {
-		this.goodsId = goodsId;
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
 	}
 	public String getFirstComment() {
 		return firstComment;
