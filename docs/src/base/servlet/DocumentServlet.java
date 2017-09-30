@@ -35,11 +35,12 @@ public class DocumentServlet extends BaseServlet {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
 			String categoryId = (String) request.getParameter("categoryId");
+			String key = (String) request.getParameter("key");
 			if(currentUser == null){
 				responseError("需要登录");
 				return;
 			}
-			if(currentUser.getAdmin() != 1 && !UserCategoryDAO.getInstance().checkPermission(Integer.parseInt(categoryId), currentUser.getId())){
+			/*if(currentUser.getAdmin() != 1 && !UserCategoryDAO.getInstance().checkPermission(Integer.parseInt(categoryId), currentUser.getId())){
 				List<DocumentVO> temp = new ArrayList<DocumentVO>();
 				JSONObject obj = new JSONObject();
 				obj.put("total", 0);
@@ -61,6 +62,38 @@ public class DocumentServlet extends BaseServlet {
 				obj.put("total", total);
 				obj.put("rows", JSON.toJSON(temp));
 				responseSuccess(JSON.toJSON(obj));
+			}*/
+			
+			
+			if(key!=null&&key.length()>0){
+				JSONObject obj = new JSONObject();
+				List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId),currentUser.getId(),key);
+				List<DocumentVO> temp = new ArrayList<DocumentVO>();
+				
+				for(Document document : result){
+					DocumentVO vo = new DocumentVO(document);
+					temp.add(vo);
+				}
+				
+				
+				obj.put("rows", JSON.toJSON(temp));
+				responseSuccess(JSON.toJSON(obj));
+				System.out.println(JSON.toJSON(obj));
+				
+			}else{
+			System.out.println(categoryId+"----");
+			JSONObject obj = new JSONObject();
+			List<Document> result = DocumentDAO.getInstance().list(Integer.parseInt(categoryId),currentUser.getId());
+			List<DocumentVO> temp = new ArrayList<DocumentVO>();
+			for(Document document : result){
+				DocumentVO vo = new DocumentVO(document);
+				temp.add(vo);
+			}
+			
+			
+			obj.put("rows", JSON.toJSON(temp));
+			responseSuccess(JSON.toJSON(obj));
+			System.out.println(JSON.toJSON(obj));
 			}
 		} else if ("add".equals(sign)) {// 添加
 			String articleId = (String) request.getParameter("articleId");
@@ -95,6 +128,9 @@ public class DocumentServlet extends BaseServlet {
 		} else if ("query".equals(sign)) {// 查询
 			String id = (String) request.getParameter("id");
 			Document result = DocumentDAO.getInstance().load(Integer.parseInt(id));
+			//System.out.println(result.getUserId()+"===UserId");
+			//result.setUserId(result.getUserId());
+			//result.setUserId(currentUser.getId());
 			DocumentVO vo = new DocumentVO(result);
 			responseSuccess(JSON.toJSON(vo));
 		}

@@ -131,6 +131,22 @@ public class PermissionUtil {
 		}
 	}
 	/*
+	 * 是否具有编辑知识库的权限
+	 */
+	public static boolean checkEditor(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getEditor()!= 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	/*
 	 * 是否是管理员
 	 */
 	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response){

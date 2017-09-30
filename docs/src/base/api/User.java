@@ -21,7 +21,7 @@ public class User {
 	private int coupon;//是否有设置优惠券的权限
 	private int after;//是否有操作售后记录的权限
 	private int export;//是否有导入csv文件的权限
-	
+	private int editor;//是否有编辑知识库的权限
 	
 	public int getExport() {
 		return export;
@@ -108,4 +108,11 @@ public class User {
 	public void setAfter(int after) {
 		this.after = after;
 	}
+	public int getEditor() {
+		return editor;
+	}
+	public void setEditor(int editor) {
+		this.editor = editor;
+	}
+	
 }

@@ -122,7 +122,7 @@
 							<div class="showtitle" style="width: 100px;">
 								<img src="../img/leftimg.png" />知识库
 							</div> 
-							<a href="/customer/articleList.jsp" target="content">
+							<a href="/admin/articleList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
 								<span class="sub-title">知识库</span>
 							</a>

@@ -34,7 +34,37 @@ public class DocumentDAO extends BaseDAO<Document> {
 		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class, "%"+key+"%", "%"+key+"%", index, pagesize);
 		return objs;
 	}
+	public List<Document> list(int categoryId, int userId) {
+		String sub = "";
+		if(categoryId == -1){
+		}else if(categoryId == -2){
+			sub = " and userId="+userId;
+		}else{
+			sub = " and categoryId="+categoryId;
+		}
+		String sql = "select * from t_document where id != 0 "+sub+" order by categoryId, id ";
+		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class);
+		return objs;
+	}
+	public List<Document> list(int categoryId, int userId,String key) {
+		String sub = "";
+		if(categoryId == -1){
+		}else if(categoryId == -2){
+			sub = " and userId="+userId;
+		}else{
+			sub = " and categoryId="+categoryId;
+		}
+		String sql = "select * from t_document where id != 0 "+sub+" and (title like ? or content like ?) order by id ";
+		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class,"%"+key+"%", "%"+key+"%");
+		return objs;
+	}
 	
+	public List<Document> list(int categoryId) {
+		
+		String sql = "select * from t_document where categoryId=?  order by id ";
+		List<Document> objs = JDBCUtil.queryObjectList(sql, Document.class,categoryId);
+		return objs;
+	}
 	public long listCount(int categoryId, int userId, String key) {
 		String sub = "";
 		if(categoryId == -1){
