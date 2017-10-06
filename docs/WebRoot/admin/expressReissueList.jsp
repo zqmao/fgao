@@ -447,7 +447,7 @@
             	var erlistId; 
             	var ids = getChecked("erlistGrid");
             	
-            	var shopName=getFormDate("erlistGrid","shopName");
+            	var shopName = getFormDate("erlistGrid","shopName");
             	
             	var goodsName = getFormDate("erlistGrid","goodsName");
             	

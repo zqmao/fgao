@@ -73,8 +73,9 @@
 				padding-top: 10px;
 				}
 				.titlediv{
-					height:35px;
+					height:30px;
 					margin-top: 8px;
+				    line-height: 30px;
 				}
 				.rotate{
 				-webkit-transform: rotate(180deg);
@@ -156,9 +157,9 @@
                          		/*  alert(obj.title);
                          		 alert(obj.content); */
                          		 articleHtml = articleHtml+"</br><div class='alldiv' id	='"+"ahref"+i+"'>"+"<div class='titlediv'><span style='background:#ffffff'>&nbsp;&nbsp;"+i+"."+obj.title+"&nbsp;</span>"
-                         		 +"<img class='apear' style='height: 16px;right: 0px;position: absolute;top: 3px; display:none;' onclick='apear(this)' src='../img/jiantou.jpg'>"
-                         		 +"<img class='disapear' style='height: 16px;right: 0px;position: absolute;top: 3px;' onclick='disapear(this)' src='../img/jiantou2.jpg'>"
-                         		 +"<span style='height: 15px;right: 40px; position: absolute;top: 0px;font-size: 16px;cursor: pointer;' onclick='contenteditor(this)' >&nbsp;编辑&nbsp;</span>"
+                         		 +"<img class='apear' style='height: 16px;right: 0px;position: absolute;top: 3px;cursor: pointer; display:none;' onclick='apear(this)' src='../img/jiantou.jpg'>"
+                         		 +"<img class='disapear' style='height: 16px;right: 0px;position: absolute;top: 3px;cursor: pointer;' onclick='disapear(this)' src='../img/jiantou2.jpg'>"
+                         		 +"<span style='height: 15px;right: 40px; position: absolute;top: -3px;font-size: 16px;cursor: pointer;' onclick='contenteditor(this)' >&nbsp;编辑&nbsp;</span>"
                          		 +"<input type='hidden' name='articleId' value='"+obj.id+"' />"
                          		 +"</div>"
                          		 +"</br><div class='cotentdiv'>"+obj.content+"</div>"+"</div>";   
@@ -170,9 +171,9 @@
                         		 indexHtml = indexHtml+"<a class='indexHref' href='#"+'ahref'+j+"'>"+j+'.'+obj.title+"</a>"
                         		 j++;
                         		});
-                        	 indexHtml="<div class='hrefdiv'><p style='height:40px;' id='titleSty'>标题目录：</p>"+indexHtml+'</div>';
+                        	 indexHtml="<div class='hrefdiv'><p style='height:40px;' id='titleSty'>标题目录:</p>"+indexHtml+'</div>';
                         	 
-                        	 var methodHtml = '<input type="button" id="submission" value="隐藏" onclick="contenthide();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
+                        	 var methodHtml = '<input type="button" id="submission" value="隐藏" onclick="contenthide();" style="padding: 5px; width: 50px;margin-left: 18px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
                         	 				+'<input type="button" id="submission" value="显示" onclick="contentshow();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
                         	 				+'<input type="button" id="submission" value="新增" onclick="addeditor('+categoryId+');" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
                         	 				+'<input class="easyui-validatebox" style="width: 100px;padding: 5px;margin-left: 30px;" id="key" type="text"/>'
@@ -214,6 +215,7 @@
 		function contenteditor(obj){
 			if(<%=edit%>){
 				var articleId = $(obj).next().val();
+				$("#addArticle").parent().css("position","fixed");
 				 initArticle(articleId);
 	             $("#addArticleForm").form('clear');
 	             $("#addArticleForm").form('load', {
@@ -409,7 +411,7 @@
 			    	}else{
 			    		$("#addArticle").dialog("close");
 			    		$("#articleGrid").datagrid("reload");
-			    		aticleReload(categoryId);
+			    		aticleReload(categoryId,"");
 			    	}
 			    }
 			});

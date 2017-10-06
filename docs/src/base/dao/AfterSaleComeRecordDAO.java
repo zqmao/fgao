@@ -38,8 +38,8 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 				String sql = "select count(id) from t_after_sale_come_record where creatorId=? order by id ";
 				return JDBCUtil.queryCount(sql,creatorId);
 			}else{
-				String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? or bounceType=? or creatorId=? order by id";
-				return JDBCUtil.queryCount(sql,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch);
+				String sql = "select count(id) from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName like ? or orderNum=? or phoneNum=? or wangwang=? or bounceType=? or creatorId=? order by id";
+				return JDBCUtil.queryCount(sql,allSearch,allSearch,allSearch,"%"+allSearch+"%",allSearch,allSearch,allSearch,allSearch,allSearch);
 			}
 		
 		
@@ -63,8 +63,8 @@ public class AfterSaleComeRecordDAO extends BaseDAO<AfterSaleComeRecord> {
 				String sql = "select * from t_after_sale_come_record where creatorId=? order by id desc limit ?, ?";
 				objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,creatorId,index,pagesize);
 			}else{
-				String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName=? or orderNum=? or phoneNum=? or wangwang=? or bounceType=? or creatorId=? order by id desc limit ?, ?";
-				objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,allSearch,index,pagesize);
+				String sql = "select * from t_after_sale_come_record where courierNum=? or expressName=? or shopName=? or goodsName like ? or orderNum=? or phoneNum=? or wangwang=? or bounceType=? or creatorId=? order by id desc limit ?, ?";
+				objs = JDBCUtil.queryObjectList(sql, AfterSaleComeRecord.class,allSearch,allSearch,allSearch,"%"+allSearch+"%",allSearch,allSearch,allSearch,allSearch,allSearch,index,pagesize);
 			}
 		
 		
