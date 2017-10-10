@@ -124,15 +124,21 @@
 						//var queryParams =$("#articleGrid").datagrid("options").queryParams;
 						//queryParams.categoryId = categoryId;
 						//$("#articleGrid").datagrid("reload");
-					
 						aticleReload(categoryId,key);
-						
 						
 					}else{
 						//loadTableData();
 					}
 					first = 0;
-				}
+				},
+				/* onBeforeLoad: function(data){
+                	//如果是在全部或者我的分类下面，不能创建文章，因为category是虚拟的
+                	if(categoryId == '-1' || categoryId == '-2'){
+                		$("#submission3").hide();
+                	}else{
+                		$("#submission3").show();
+                	}
+                }  */
 			});
 			
 			
@@ -146,7 +152,7 @@
                         
                          
                          success: function(msg) {
-                        	 var jsonmsg=$.parseJSON( msg );
+                        	 var jsonmsg=$.parseJSON( msg );/* JSON字符串转化为JSON对象 */
                         	 datajson=jsonmsg.data.rows;
                         	 var articleHtml='';
                         	 var indexHtml="";
@@ -173,11 +179,11 @@
                         		});
                         	 indexHtml="<div class='hrefdiv'><p style='height:40px;' id='titleSty'>标题目录:</p>"+indexHtml+'</div>';
                         	 
-                        	 var methodHtml = '<input type="button" id="submission" value="隐藏" onclick="contenthide();" style="padding: 5px; width: 50px;margin-left: 18px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
-                        	 				+'<input type="button" id="submission" value="显示" onclick="contentshow();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
-                        	 				+'<input type="button" id="submission" value="新增" onclick="addeditor('+categoryId+');" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
+                        	 var methodHtml = '<input type="button" id="submission1" value="隐藏" onclick="contenthide();" style="padding: 5px; width: 50px;margin-left: 18px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
+                        	 				+'<input type="button" id="submission2" value="显示" onclick="contentshow();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
+                        	 				+'<input type="button" id="submission3" value="新增" onclick="addeditor('+categoryId+');" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">'
                         	 				+'<input class="easyui-validatebox" style="width: 100px;padding: 5px;margin-left: 30px;" id="key" type="text"/>'
-                        	 				+'<input type="button" id="submission" value="搜索" onclick="searchditor();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">';
+                        	 				+'<input type="button" id="submission4" value="搜索" onclick="searchditor();" style="padding: 5px; width: 50px;margin-left: 10px; margin-top: 10px;color: rgba(245, 245, 245, 0.98); background-color: #4F9CEE;border-radius: 5px;">';
                         	 articleHtml=indexHtml+methodHtml+articleHtml;
                         	 $("#zz").html(articleHtml);
                   /*       	 var data = eval(msg);
@@ -250,9 +256,9 @@
 			});
 		}
 		function disapear(obj){
-			 $(obj).hide();
-			 $(obj).prev().show();
-			 $(obj).parent().next().next().hide();
+			 $(obj).hide(300);
+			 $(obj).prev().show(300);
+			 $(obj).parent().next().next().hide(300);
 			
     		/*  $("img").click(function(){
     			  $("img").addClass("rodata");
@@ -263,20 +269,20 @@
     		 });  */
 		}
 		function apear(obj){
-			$(obj).next().show();
-			 $(obj).hide();
+			$(obj).next().show(300);
+			 $(obj).hide(300);
 			 
-			 $(obj).parent().next().next().show();
+			 $(obj).parent().next().next().show(300);
 		}
 		function contenthide(){
-			$(".cotentdiv").hide();
-			$(".apear").show();
-			$(".disapear").hide();
+			$(".cotentdiv").hide(300);
+			$(".apear").show(300);
+			$(".disapear").hide(300);
 		}
 		function contentshow(){
-			$(".cotentdiv").show();
-			$(".apear").hide();
-			$(".disapear").show();
+			$(".cotentdiv").show(300);
+			$(".apear").hide(300);
+			$(".disapear").show(300);
 		}
 		/* function loadTableData(){
 			
@@ -423,7 +429,7 @@
   	<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
 	  	<div title="分类" style="width: 20%;height: 100%;" data-options="region:'west',collapsible:true">
 		    <ul id="tt" class="easyui-tree">
-			</ul>
+			</ul> 
 		</div>
 		<div  id="zz" style="width:80%;height:100%;margin-left: 20%; background-color: #ffffff;margin-top: -17px;" >
 			

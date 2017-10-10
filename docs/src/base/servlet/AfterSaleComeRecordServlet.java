@@ -177,8 +177,8 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String wangwang = (String) request.getParameter("wangwang");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String orderNum = (String) request.getParameter("orderNum");
-			AfterSaleComeRecord ordersult = null;
-			/*if(orderNum!=null && orderNum.length()>0){
+			/*AfterSaleComeRecord ordersult = null;
+			if(orderNum!=null && orderNum.length()>0){
 				ordersult = AfterSaleComeRecordDAO.getInstance().orderNO(orderNum);
 			}*/
 			

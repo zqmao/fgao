@@ -125,7 +125,7 @@
                  }
                  );
             	
-            	 /* 查询时获取快递名称 */
+            	 /* 查询时获取快递名称*/
             	 $("#option_express2").combobox({
                      url:'../expressReissueServlet.do?sign=select',
                      valueField:'text',
@@ -529,8 +529,46 @@
             
             function searchList(){
             	$("#serverResponse").form("clear");
+            	var orderNumE = $("#orderNumE").val();
+            	$.ajax({
+            		type:"POST",
+            		url:"../afterSaleComeRecordServlet.do?sign=SearchExportList",
+            		data:"orderNumE="+orderNumE,
+            		success:function(result){
+						var data=eval('('+result+')');   
+            			var row = data.rows;
+            			totalE = data.total;
+            			if(totalE==0){
+			    			$("#serverResponse").hide();
+			    			alert("没有查到数据");	
+			    		}else{
+			    			$("#serverResponse").show();
+			    		}
+			    		addressE = row[0].address;
+			    		exportorE = row[0].exportor;
+			    		shopNameE = row[0].shopName;
+			    		orderNumE = row[0].orderNum;
+			    		goodsHeadlineE = row[0].goodsHeadline;
+			    		wangwangE = row[0].wangwang;
+			    		phoneNumE = row[0].phoneNum;
+			    		consigneeNameE = row[0].consigneeName;
+			    		
+			    		$("#total").html("共搜到"+totalE+"条数据");
+            			//document.getElementById("total").innerHTML="共搜到"+totalE+"条数据";
+            			$("#addressE").html("地址为:"+addressE);
+            			$("#goodsHeadlineE").html("宝贝标题为:"+goodsHeadlineE);
+            			$("#wangwangE").html("旺旺号为:"+wangwangE);
+            			$("#exportorE").html("数据导入者为:"+exportorE);
+            			$("#shopNameE").html("商店名称为:"+shopNameE);
+            			$("#orderNumE").html("订单编号为:"+orderNumE);
+            			$("#phoneNumE").html("手机号码为:"+phoneNumE);
+            			$("#consigneeNameE").html("收货人姓名:"+consigneeNameE);
+            		}
+            	});
+            	
+            	
             	 //xmlhttp=new XMLHttpRequest();
-            	  if(window.ActiveXOject)  
+    /*         	  if(window.ActiveXOject)  
     {  
      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  
     }  
@@ -586,7 +624,7 @@
             		}
             	}
             	xmlhttp.open("GET","../afterSaleComeRecordServlet.do?sign=SearchExportList&orderNumE="+encodeURI(orderNumE),false);
-            	xmlhttp.send(); 
+            	xmlhttp.send();  */
             	 
             }
             

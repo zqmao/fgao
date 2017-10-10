@@ -460,7 +460,7 @@
                 } else if (len > 1) {
                     $.messager.alert('提示', '只能选择一个', 'Warning');
                 } else {
-                	$("#reissueId").show();
+                	$("#reissueId").show(300);
                 	$("#reissueInf1").html(ids);
                 	
                 	$("#reissueInf2").html(shopName);

@@ -281,11 +281,11 @@
             			  
             			 src = $(obj).attr("src");
                  		 $("#searchId").show();
-                 		 var html = "<img style='height:100%;width:100%;' onclick='changeHide(this)' onclick='changehide()' src='"+src+"'>";
+                 		 var html = "<img style='height:100%;width:100%;' onclick='changeHide(this)' src='"+src+"'>";
                  		 $("#searchId").html(html);
             		 }); 
             }
-            function changeHide(){
+            function changeHide(obj){
             	$("#searchId").hide();
             }
           

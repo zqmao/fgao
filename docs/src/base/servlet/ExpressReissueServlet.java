@@ -15,12 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import base.api.AfterSaleComeRecord;
 import base.api.Express;
 import base.api.ExpressReissue;
 import base.api.User;
 import base.api.vo.ExpressReissueVO;
-import base.dao.AfterSaleComeRecordDAO;
+
 import base.dao.ExpressDAO;
 import base.dao.ExpressReissueDAO;
 import base.dao.UserDAO;
@@ -112,11 +111,14 @@ public class ExpressReissueServlet extends BaseServlet {
 			if(wangwang !=null && wangwang.length() != 0){
 				builder.eq("wangwang", wangwang);
 			}
-			if(status==2){
+			if(status ==1||status==0){
+				builder.eq("status", status);
+			}
+			/*if(status==2){
 				
 			}else if(status ==1||status==0) {
 				builder.eq("status", status);
-			}
+			}*/
 			builder.orderBy("id", true);
 			builder.limit(index, rows);
 			total = builder.queryCount();
@@ -170,8 +172,6 @@ public class ExpressReissueServlet extends BaseServlet {
 								expressReissue.setWangwang(wangwang);
 								expressReissue.setRemark(remark);
 								}
-							
-							
 						}else{
 							responseError("订单号格式不正确");
 						}
