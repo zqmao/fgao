@@ -21,6 +21,7 @@ public class AfterSaleComeRecordVO {
 	private String wangwang;//用户旺旺
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
+	private String afterSaTor;//售后人员
 	private String creator;//创建者
 	private String unpackor;//拆包人员
 	private String createTime;//创建时间
@@ -45,6 +46,7 @@ public class AfterSaleComeRecordVO {
 		this.wangwang = afterSaleComeRecord.getWangwang();
 		this.phoneNum = afterSaleComeRecord.getPhoneNum();
 		this.orderNum = afterSaleComeRecord.getOrderNum();
+		this.afterSaTor = afterSaleComeRecord.getAfterSaTor();
 		User user = UserDAO.getInstance().load(afterSaleComeRecord.getCreatorId());
 		this.creator = user != null ? user.getName() : "";
 		this.createTime = afterSaleComeRecord.getCreateTime()!= 0 ? DateUtil.toString(afterSaleComeRecord.getCreateTime()):"";
@@ -57,6 +59,14 @@ public class AfterSaleComeRecordVO {
 		
 	}
 	
+	public String getAfterSaTor() {
+		return afterSaTor;
+	}
+
+	public void setAfterSaTor(String afterSaTor) {
+		this.afterSaTor = afterSaTor;
+	}
+
 	public String getUnpackor() {
 		return unpackor;
 	}

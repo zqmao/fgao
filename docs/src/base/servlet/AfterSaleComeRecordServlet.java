@@ -51,6 +51,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String bounceType = (String) request.getParameter("bounceType");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName2");
+			String afterSaTor = (String) request.getParameter("afterSaTor");
 			String shopName = (String) request.getParameter("shopName");
 			String goodsName = (String) request.getParameter("goodsName");
 			String orderNum = (String) request.getParameter("orderNum");
@@ -134,6 +135,9 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 						if (wangwang != null && wangwang.length() != 0){
 							builder.eq("wangwang", wangwang);
 						}
+						if (afterSaTor != null && afterSaTor.length() != 0){
+							builder.eq("afterSaTor", afterSaTor);
+						}
 						if (bounceType != null && bounceType.length() != 0){
 							builder.eq("bounceType", bounceType);
 						}
@@ -177,6 +181,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String wangwang = (String) request.getParameter("wangwang");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String orderNum = (String) request.getParameter("orderNum");
+			String afterSaTor = (String) request.getParameter("afterSaTor");
 			/*AfterSaleComeRecord ordersult = null;
 			if(orderNum!=null && orderNum.length()>0){
 				ordersult = AfterSaleComeRecordDAO.getInstance().orderNO(orderNum);
@@ -251,6 +256,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setExpressName(reissueExpressName);
 					expressReissue.setCourierNum(reissueCourierNum);
 					expressReissue.setGoodsName(reissueGoodsName);
+					expressReissue.setAfterSaTor(afterSaTor);
 					expressReissue.setRemark(remark);
 					expressReissue.setStatus(1);
 					/*System.out.println(status);
@@ -276,6 +282,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					expressReissue.setShopName(shopName);
 					expressReissue.setOrderNum(orderNum);
 					expressReissue.setWangwang(wangwang);
+					expressReissue.setAfterSaTor(afterSaTor);
 					expressReissue.setRemark(remark);
 					/*if ("已处理".equals(status)) {
 						expressReissue.setStatus(1);
@@ -305,6 +312,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			afterSaleComeRecord.setWangwang(wangwang);
 			afterSaleComeRecord.setPhoneNum(phoneNum);
 			afterSaleComeRecord.setOrderNum(orderNum);
+			afterSaleComeRecord.setAfterSaTor(afterSaTor);
 			afterSaleComeRecord.setRemark(remark);
 			/*if ("已处理".equals(status)) {
 				afterSaleComeRecord.setStatus(1);

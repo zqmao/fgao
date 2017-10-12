@@ -38,6 +38,7 @@
 			var orderNum = "";
 			var phoneNum = "";
 			var wangwang = "";
+			var afterSaTor = "";
 			var bounceType = "";
 			var creator = "";
 			var allSearch="";
@@ -163,7 +164,7 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA, bounceType:bounceType,
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA, bounceType:bounceType,afterSaTor:afterSaTor,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
@@ -174,6 +175,7 @@
                             {title: '快递名称', field: 'expressName', width: 50, align: 'center'},
                             {title: '检查结果', field: 'checkResult', width: 100, align: 'center'},
                             {title: '旺旺', field: 'wangwang', width: 100, align: 'center'},
+                            {title: '售后人员', field: 'afterSaTor', width: 100, align: 'center'},
                             {title: '手机号', field: 'phoneNum', width: 90, align: 'center'},
                             {title: '订单号', field: 'orderNum', width: 100, align: 'center'},
                             {title: '创建人员', field: 'creator', width: 90, align: 'center'},
@@ -236,6 +238,7 @@
                                     goodsName: row[0].goodsName,
                                     checkResult: row[0].checkResult,
                                     wangwang: row[0].wangwang,
+                                    afterSaTor: row[0].afterSaTor,
                                     phoneNum: row[0].phoneNum,
                                     orderNum: row[0].orderNum,
                                     remark: row[0].remark,
@@ -364,6 +367,7 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	wangwang = $("#wangwang").val();
+            	afterSaTor = $("#afterSaTor").val();
             	bounceType = $("#bounceType").val();
             	creator = $("#creator").val();
             	shopName = $("#shopName").val();
@@ -375,6 +379,7 @@
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
             	queryParams.wangwang = wangwang;
+            	queryParams.afterSaTor = afterSaTor;
             	queryParams.bounceType = bounceType;
             	queryParams.creator = creator;
             	queryParams.shopName = shopName;
@@ -691,6 +696,10 @@
 						<td><input class="easyui-validatebox" name="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
 				    <tr >
+						<td>售后人员:</td>
+						<td><input class="easyui-validatebox" name="afterSaTor" type="text" style="width: 250px;"/><td>
+				    </tr>
+				    <tr >
 						<td>备注:</td>
 						<td><textarea name="remark" style="width:250px;height:100px" style="width: 400px;" ></textarea><td>
 				    </tr>
@@ -808,6 +817,10 @@
 				    <tr >
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang2" id="wangwang" type="text" style="width: 250px;"/><td>
+				    </tr>
+				    <tr >
+						<td>售后人员:</td>
+						<td><input class="easyui-validatebox" name="afterSaTor" id="afterSaTor" type="text" style="width: 250px;"/><td>
 				    </tr>
 				     <tr >
 						<td>退件类型:</td>

@@ -21,7 +21,14 @@ public class ExpressReissue {
 	private long issuTime;//打单时间
 	private String issuRemark;//打单备注
 	private int status;//处理状态:1已处理；0未处理
+	private String afterSaTor;//售后人员
 	
+	public String getAfterSaTor() {
+		return afterSaTor;
+	}
+	public void setAfterSaTor(String afterSaTor) {
+		this.afterSaTor = afterSaTor;
+	}
 	public String getShopName() {
 		return shopName;
 	}

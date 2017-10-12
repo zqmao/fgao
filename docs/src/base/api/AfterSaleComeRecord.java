@@ -16,6 +16,7 @@ public class AfterSaleComeRecord {
 	private String wangwang;//用户旺旺
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
+	private String afterSaTor;//售后人员
 	private int creatorId;//创建者
 	private int unpackId;//拆包人员
 	private long createTime;//创建时间
@@ -35,6 +36,14 @@ public class AfterSaleComeRecord {
 		this.entryTime = entryTime;
 	}
 	
+	public String getAfterSaTor() {
+		return afterSaTor;
+	}
+
+	public void setAfterSaTor(String afterSaTor) {
+		this.afterSaTor = afterSaTor;
+	}
+
 	public int getUnpackId() {
 		return unpackId;
 	}

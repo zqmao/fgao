@@ -58,7 +58,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			String statuss = request.getParameter("status");
 			String creator = (String) request.getParameter("creator");
 			String wangwang = (String) request.getParameter("wangwang");
-			System.out.println(wangwang);
+			String afterSaTor = (String) request.getParameter("afterSaTor");
 			User user = new User();
 			int creatorId = 0;
 			if(creator!=null && creator.length()>0){
@@ -114,11 +114,9 @@ public class ExpressReissueServlet extends BaseServlet {
 			if(status ==1||status==0){
 				builder.eq("status", status);
 			}
-			/*if(status==2){
-				
-			}else if(status ==1||status==0) {
-				builder.eq("status", status);
-			}*/
+			if(afterSaTor !=null && afterSaTor.length() != 0){
+				builder.eq("afterSaTor", afterSaTor);
+			}
 			builder.orderBy("id", true);
 			builder.limit(index, rows);
 			total = builder.queryCount();
@@ -143,6 +141,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			String goodsName = (String) request.getParameter("goodsName");
 			String orderNum = (String) request.getParameter("orderNum");
 			String wangwang = (String) request.getParameter("wangwang");
+			String afterSaTor = (String) request.getParameter("afterSaTor");
 			String remark = (String) request.getParameter("remark");
 			String id = (String) request.getParameter("erlistId");
 			Pattern p = Pattern.compile("^[0-9]{16,17}$");
@@ -170,6 +169,7 @@ public class ExpressReissueServlet extends BaseServlet {
 								expressReissue.setGoodsName(goodsName);
 								expressReissue.setOrderNum(orderNum);
 								expressReissue.setWangwang(wangwang);
+								expressReissue.setAfterSaTor(afterSaTor);
 								expressReissue.setRemark(remark);
 								}
 						}else{
@@ -184,6 +184,7 @@ public class ExpressReissueServlet extends BaseServlet {
 								expressReissue.setGoodsName(goodsName);
 								expressReissue.setOrderNum(orderNum);
 								expressReissue.setWangwang(wangwang);
+								expressReissue.setAfterSaTor(afterSaTor);
 								expressReissue.setRemark(remark);
 						}else{
 							responseError("订单号格式不正确");
@@ -225,7 +226,6 @@ public class ExpressReissueServlet extends BaseServlet {
 				expressReissue.setCourierNum(courierNum);
 				expressReissue.setExpressName(expressName);
 				expressReissue.setIssuRemark(issuRemark);
-				System.out.println("id:" + currentUser.getId());
 				expressReissue.setIssueDocumentor(currentUser.getId());
 				expressReissue.setIssuTime(System.currentTimeMillis());
 				if ("已处理".equals(status)) {
@@ -250,7 +250,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			responseSuccess(JSON.toJSON(array));
 		} else if ("search".equals(sign)) {
 			responseSuccess("查询成功");
-		}else if("export".equals(sign)){
+		}else if("export".equals(sign)){//导出
 			List<String> dataList=new ArrayList<String>();
 			String ascrIds = (String) request.getParameter("erlistIds");
 			System.out.println(ascrIds);		

@@ -178,7 +178,7 @@ public class ExportOrderListServlet extends BaseServlet{
                       }else{
                     	  byte[] buff=new byte[1024];
                     	/*  int length=0;
-                    	  if((length = is.read(buff))!=-1){
+                    	  while((length = is.read(buff))!=-1){
                     		  fos.write(buff, 0, length);
                     	  }*/
                       while(is.available()>=1024){

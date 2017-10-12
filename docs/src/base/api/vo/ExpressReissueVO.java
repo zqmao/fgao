@@ -22,6 +22,7 @@ public class ExpressReissueVO {
 	private String issuTime;//打单时间
 	private String issuRemark;//打单备注
 	private String status;//处理状态:1已处理；0未处理
+	private String afterSaTor;//售后人员
 	
 	public ExpressReissueVO(ExpressReissue expressReissue){
 		this.id = expressReissue.getId();
@@ -42,7 +43,19 @@ public class ExpressReissueVO {
 		this.issuTime = expressReissue.getIssuTime()!=0 ? DateUtil.toString(expressReissue.getIssuTime()):"";
 		this.issuRemark = expressReissue.getIssuRemark()!=null ? expressReissue.getIssuRemark():"";
 		this.status = expressReissue.getStatus()==1?"已处理":"待处理";
+		this.afterSaTor = expressReissue.getAfterSaTor();
 	}
+	
+	
+	public String getAfterSaTor() {
+		return afterSaTor;
+	}
+
+
+	public void setAfterSaTor(String afterSaTor) {
+		this.afterSaTor = afterSaTor;
+	}
+
 
 	public String getIssueDocumentor() {
 		return issueDocumentor;

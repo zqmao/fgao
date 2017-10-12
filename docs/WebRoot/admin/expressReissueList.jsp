@@ -22,6 +22,7 @@
 			var phoneNum = "";
 			var status = "";
 			var creator = "";
+			var afterSaTor = "";
 			var wangwang = "";
 			var expressName2 = "";
 			var option_express = "0";
@@ -232,7 +233,7 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../expressReissueServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum, creator:creator, wangwang : wangwang,
+                    queryParams:{selectExpress : expressName2, courierNum : courierNum, creator:creator,afterSaTor:afterSaTor, wangwang : wangwang,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum, status :status},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
@@ -253,6 +254,7 @@
                             
                             
                             {title: '打单人员', field: 'issueDocumentor', width: 90,align: 'center'},
+                            {title: '售后人员', field: 'afterSaTor', width: 90,align: 'center'},
                             {title: '快递名称', field: 'expressName', width: 80, align: 'center'},
                             {title: '登记时间', field: 'entryTime', width: 130, align: 'center'},
                             {title: '打单时间', field: 'issuTime', width: 130, align: 'center'},
@@ -291,6 +293,7 @@
                                     shopName:row[0].shopName,
                                     goodsName: row[0].goodsName,
                                     wangwang: row[0].wangwang,
+                                    afterSaTor:row[0].afterSaTor,
                                     orderNum: row[0].orderNum,
                                     courierNum: row[0].courierNum,
                                     expressName:row[0].expressName,
@@ -415,6 +418,7 @@
             	//status = $("#status").val();
             	expressName2 = $("#option_express2").val();
             	creator = $("#creator").val();
+            	afterSaTor = $("#afterSaTor").val();
             	wangwang = $("#wangwang").val();
             	var queryParams =$("#erlistGrid").datagrid("options").queryParams;
             	queryParams.courierNum = courierNum;
@@ -425,6 +429,7 @@
             	queryParams.shopName = shopName;
             	queryParams.expressName2 = expressName2;
             	queryParams.creator =  creator;
+            	queryParams.afterSaTor = afterSaTor;
             	queryParams.wangwang = wangwang;
             	$("#searchErlistForm").form("submit",{
             		url:"../expressReissueServlet.do?sign=search",
@@ -672,6 +677,10 @@
 						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 250px;"/><td>
 				    </tr>
 				    <tr >
+						<td>售后人员:</td>
+						<td><input class="easyui-validatebox" name="afterSaTor" type="text" style="width: 250px;"/><td>
+				    </tr>
+				    <tr >
 						<td>备注:</td>
 						<td><textarea name="remark" style="width:250px;height:100px" ></textarea><td>
 				    </tr>
@@ -797,7 +806,10 @@
 						<td>创建人:</td>
 						<td><input class="easyui-validatebox" name="creator" id="creator" type="text" style="width: 250px;"/></td>
 				    </tr>
-				     <tr >
+				    <tr >
+						<td>售后人员:</td>
+						<td><input class="easyui-validatebox" name="afterSaTor" id="afterSaTor" type="text" style="width: 250px;"/><td>
+				    </tr>
 				     <tr >
 						<td>旺旺:</td>
 						<td><input class="easyui-validatebox" name="wangwang2" id="wangwang" type="text" style="width: 250px;"/></td>
