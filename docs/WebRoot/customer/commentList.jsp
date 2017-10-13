@@ -258,24 +258,6 @@
         	}
             
             function changeSize(obj){
-            	/*  $("img").bind("click", function(){ 
-            		newImg = this; 
-            		var width = $(this).width();
-            		
-            		if (width<400) 
-            		{ 
-            		//isopen = true; 
-            		$(this).width($(this).width() + w); 
-            		$(this).height($(this).height() + h); 
-            		} 
-            		else 
-            		{ 
-            		//isopen = false; 
-            		$(this).width($(this).width() - w); 
-            		$(this).height($(this).height() - h); 
-            		} 
-            		});  
-            		 */
             		 var src = "";
             		 $("img").click(function(){
             			  

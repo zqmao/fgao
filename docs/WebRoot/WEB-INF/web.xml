@@ -201,6 +201,21 @@
 		<url-pattern>/exportOrderListServlet.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<description>DrawBillServlet</description>
+		<display-name>DrawBillServlet</display-name>
+		<servlet-name>DrawBillServlet</servlet-name>
+		<servlet-class>base.servlet.DrawBillServlet</servlet-class>
+		<!--设置初始化参数 --> 
+        <init-param>  
+            <param-name>savePath</param-name>  
+            <param-value>upload</param-value>  
+        </init-param>  
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DrawBillServlet</servlet-name>
+		<url-pattern>/drawBillServlet.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<description>SignRecordServlet</description>
 		<display-name>SignRecordServlet</display-name>
 		<servlet-name>SignRecordServlet</servlet-name>
