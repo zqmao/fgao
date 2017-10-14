@@ -374,7 +374,7 @@
 					</tr>
 					<tr>
 						<td>
-							<a style="margin-left:50px;margin-top:20px;" class="custom" onclick="contrast();">比对</a>
+							<a style="margin-left:50px;margin-top:20px;margin-bottom: 20px;" class="custom" onclick="contrast();">比对</a>
 						</td>
 					</tr>
 					<tr>

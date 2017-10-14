@@ -331,13 +331,17 @@
 						<td>发票抬头:</td>
 						<td><input class="easyui-validatebox" name="billHead" type="text" style="width: 250px;" data-options="required:true" /></td>
 				    </tr>
+				    <tr >
+						<td>税号:</td>
+						<td><input class="easyui-validatebox" name="tfn" type="text" style="width: 250px;" data-options="required:true" /></td>
+				    </tr>
+				    <tr >
+						<td>开票明细:</td>
+						<td><input class="easyui-validatebox" name="goodsName" type="text" style="width: 250px;" data-options="required:true" /></td>
+				    </tr>
 				     <tr >
 						<td>总金额:</td>
 						<td><input class="easyui-validatebox" name="money" type="text" style="width: 250px;" data-options="required:true" /></td>
-				    </tr>
-					<tr >
-						<td>开票明细:</td>
-						<td><input class="easyui-validatebox" name="goodsName" type="text" style="width: 250px;" data-options="required:true" /></td>
 				    </tr>
 				    <tr >
 						<td>数量:</td>
@@ -346,10 +350,6 @@
 				    <tr >
 						<td>客户邮箱或手机号:</td>
 						<td><input class="easyui-validatebox" name="emailOrPhone" type="text" style="width: 250px;" data-options="required:true"/></td>
-				    </tr>
-				    <tr >
-						<td>税号:</td>
-						<td><input class="easyui-validatebox" name="tfn" type="text" style="width: 250px;" data-options="required:true" /></td>
 				    </tr>
 				    <tr >
 						<td>备注:</td>
