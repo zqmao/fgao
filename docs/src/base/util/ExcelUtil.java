@@ -27,9 +27,11 @@ import base.dao.ExportOrderListDAO;
 public class ExcelUtil {
 	
 	public static String writeTxt(HttpServletRequest request, HttpServletResponse response, String path){
+		String fileName = System.currentTimeMillis() + ".txt";
 		String txtPath = "http://" + request.getLocalAddr() + ":"
 				+ request.getLocalPort() + "/"
-				+ request.getContextPath() + "/upload/analysis/" + System.currentTimeMillis() + ".txt";
+				+ request.getContextPath() + "/upload/analysis/" + fileName;
+		String localPath = request.getRealPath("/upload") + "/analysis/" + fileName;
 		Map<String, String> map = readExcel(path);
 		//比对的时候，需要判断月份是否符合
 		Set<String> keySet = map.keySet();
@@ -37,10 +39,9 @@ public class ExcelUtil {
 			ExportOrderList result = ExportOrderListDAO.getInstance().query(key, map.get(key));
 			if(result == null){
 				//数据库中没有对应记录，把快递单号记录到txt文件中
-				appendText(txtPath, key + "\r\n");
+				appendText(localPath, key + "\r\n");
 			}
 		}
-		System.out.println(txtPath);
 		return txtPath;
 	}
 	
