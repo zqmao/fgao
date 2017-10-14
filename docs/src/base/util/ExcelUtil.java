@@ -35,13 +35,19 @@ public class ExcelUtil {
 		Map<String, String> map = readExcel(path);
 		//比对的时候，需要判断月份是否符合
 		Set<String> keySet = map.keySet();
+		int index = 0;
 		for(String key : keySet){
 			ExportOrderList result = ExportOrderListDAO.getInstance().query(key, map.get(key));
 			if(result == null){
 				//数据库中没有对应记录，把快递单号记录到txt文件中
 				appendText(localPath, key + "\r\n");
 			}
+			if(index % 1000 == 0){
+				System.out.println("处理了1000条了");
+			}
+			index++;
 		}
+		System.out.println("处理完了");
 		return txtPath;
 	}
 	
