@@ -27,7 +27,9 @@ import base.dao.ExportOrderListDAO;
 public class ExcelUtil {
 	
 	public static String writeTxt(HttpServletRequest request, HttpServletResponse response, String path){
-		String txtPath = request.getRealPath("/upload") + "/analysis/" + System.currentTimeMillis() + ".txt";
+		String txtPath = "http://" + request.getLocalAddr() + ":"
+				+ request.getLocalPort() + "/"
+				+ request.getContextPath() + "/upload/analysis/" + System.currentTimeMillis() + ".txt";
 		Map<String, String> map = readExcel(path);
 		//比对的时候，需要判断月份是否符合
 		Set<String> keySet = map.keySet();
