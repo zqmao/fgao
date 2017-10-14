@@ -67,6 +67,8 @@
                             
                             {title: '订单编号', field: 'orderNum', width: 120, align: 'center'},
                             {title: '客户邮箱或手机号', field: 'emailOrPhone', width: 120, align: 'center'},
+                            {title: '发票抬头', field: 'billHead', width: 120, align: 'center'},
+                            {title: '税号', field: 'tfn', width: 120, align: 'center'},
                             {title: '开票明细', field: 'goodsName', width: 120, align: 'center'},
                             {title: '总金额', field: 'money', width: 100, align: 'center'},
                             {title: '数量', field: 'sum', width: 100, align: 'center'},

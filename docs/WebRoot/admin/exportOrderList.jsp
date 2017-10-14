@@ -251,7 +251,25 @@
             	});
             	
             }
-            
+            //对比
+            function contrast(){
+            	 MaskUtil.mask();
+ 				$("#contrastOrderlistForm").form("submit", {
+ 				    url:"../exportOrderListServlet.do?sign=contrast",
+ 				    success:function(result){
+ 				    	MaskUtil.unmask(); 
+ 				    	var data = eval('(' + result + ')');
+ 				    	if(data.result == 0){
+ 				    		alert(data.reason);
+ 				    	}else{
+ 				    		var path = data.data;
+ 				    		$("#textPath").attr("href",path);
+ 				    	}
+ 				    }
+ 				});
+            	
+            	
+            }
          
             function submitAdd() {
             	 MaskUtil.mask();
@@ -293,9 +311,9 @@
 			<table id="eolistGrid" style="height: 600px;"></table>
 		</div>
 		
-		<table>
-			<tr>
-				<td id="disapper" style="width:40%;">
+		<table style="width:100%">
+			<tr >
+				<td id="disapper" style="width:35%;">
 					<div id="addOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
 			 
 			<form id="addOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">
@@ -321,6 +339,46 @@
 						<td>
 							<a style="margin-left:50px;margin-top:20px;" class="custom" onclick="submitAdd();">确定</a>
 						</td>
+					</tr>
+				</table>
+			</div>
+		        
+		        
+    </form>
+		</div> 
+				
+				</td>
+				
+				
+				<td id="contrast" style="width:35%;">
+					<div id="contrastOrderlist" class="easyui-panel" title="记录列表" style="width: 98%; height: 500px;padding: 10px;z-index:3">
+			 
+			<form id="contrastOrderlistForm" name="orderlistId" enctype="multipart/form-data" method="post">
+		        <!-- <table border="0" align="center">
+		            <tr>
+		                <td>上传文件：</td>
+		                <td><input name="file" type="file" size="20"></td>
+		            </tr>
+		            <tr>
+		                <td></td>
+		                <a class="custom" onclick="submitAdd();">确定</a>
+		                <td><input type="submit" onclick="submitAdd();" name="submit" value="确定"></td>
+		            </tr>
+		        </table> -->
+		        <div class="margin-tb manage-detail-con clearfix" >
+				<table>
+					<tr>
+						<td >
+							<input name="file" style="margin-left:50px;margin-top:20px;" type="file" size="20">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a style="margin-left:50px;margin-top:20px;" class="custom" onclick="contrast();">比对</a>
+						</td>
+					</tr>
+					<tr>
+						<td><a target="_blank" id="textPath" href="">点击下载，查看比对结果</a>  </td>
 					</tr>
 				</table>
 			</div>

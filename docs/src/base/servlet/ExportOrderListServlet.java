@@ -29,6 +29,7 @@ import base.dao.ExportOrderListDAO;
 import base.dao.ExpressReissueDAO;
 import base.dao.core.BaseDAO;
 import base.dao.core.BaseDAO.QueryBuilder;
+import base.util.ExcelUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -211,6 +212,67 @@ public class ExportOrderListServlet extends BaseServlet{
 			responseSuccess2("导入记录成功");
 		}else if("search".equals(sign)){
 			responseSuccess("查询成功");
+		}else if("contrast".equals(sign)){
+			request.setCharacterEncoding("GBK");
+			if (currentUser == null) {
+				responseError("需要登录");
+				return;
+			}
+			String path = "";
+			try{
+				//创建一个解析器工厂
+				DiskFileItemFactory factory = new DiskFileItemFactory();
+				 //得到解析器
+				ServletFileUpload upload = new ServletFileUpload(factory);
+				//upload.setHeaderEncoding("utf-8");
+				//对相应的请求进行解析，有几个输入项，就有几个FileItem对象
+				List<FileItem> items = upload.parseRequest(request);
+				 //要迭代list集合，获取list集合中每一个输入项
+				for(FileItem item :items){
+					//判断输入的类型
+					if(item.isFormField()){
+						 //普通输入项
+	                    String inputName=item.getFieldName();
+	                    String inputValue=item.getString();
+	                    System.out.println(inputName+"::"+inputValue);
+					}else{
+						// 获取文件需要上传到的路径
+						path = request.getRealPath("/upload");
+						
+						//上传文件输入项
+						  String filename=item.getName();//上传文件的文件名
+	                      InputStream is=item.getInputStream();
+	                      String localPath = path + "\\"+System.currentTimeMillis()+ filename;
+	                      System.out.println(localPath+"::"+"localPath");
+	                      FileOutputStream fos=new FileOutputStream(localPath);
+	                      
+	                     // File file = new File(path);
+	                      
+	                     
+	                    	  byte[] buff=new byte[1024];
+	                    	/*  int length=0;
+	                    	  while((length = is.read(buff))!=-1){
+	                    		  fos.write(buff, 0, length);
+	                    	  }*/
+	                      while(is.available()>=1024){
+	                    		  is.read(buff);
+	                              fos.write(buff);
+	                    	  }
+	                      	byte[] buff1=new byte[is.available()];
+	                    	  is.read(buff1);
+	                          fos.write(buff1);
+	                          fos.flush();  	
+	                      System.out.println("文件生成成功");
+	                      is.close();
+	                      fos.close();
+	                      String textPath = ExcelUtil.writeTxt(request, response, localPath);
+	                      responseSuccess(textPath);
+					}
+				}
+	            } catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 		}
 	}
 	@SuppressWarnings("null")
