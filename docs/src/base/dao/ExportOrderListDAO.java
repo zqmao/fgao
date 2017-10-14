@@ -71,7 +71,8 @@ public class ExportOrderListDAO extends BaseDAO<ExportOrderList>{
 		String temp = month.substring(5);
 		int monthInt = Integer.parseInt(temp);
 		String otherMonth = month.substring(0, 4) + "/" + monthInt;
-		String sql = "select * from t_export_order_list where courierNum=? and (orderCreateTime like '"+month+"%' or orderCreateTime like '"+otherMonth+"%')";
+		String thirdMonth = month.substring(0, 4) + "-" + monthInt;
+		String sql = "select * from t_export_order_list where courierNum=? and (orderCreateTime like '"+month+"%' or orderCreateTime like '"+otherMonth+"%' or orderCreateTime like '"+thirdMonth+"%')";
 		return JDBCUtil.queryObject(sql, ExportOrderList.class, courierNum);
 	}
 
