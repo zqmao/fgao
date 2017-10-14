@@ -414,7 +414,7 @@
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
             	shopName = $("#shopName").val();
-            	var status = $('input[name="statuss"]:checked').val();
+            	status = $('input[name="statuss"]:checked').val();
             	//status = $("#status").val();
             	expressName2 = $("#option_express2").val();
             	creator = $("#creator").val();
@@ -817,8 +817,8 @@
 				     <tr >
 						<td>处理状态:</td>
 						<td>
-							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage" /><label for="waitManage">待处理</label>
-							<input type="radio" name="statuss" value="已处理" id="overManage"/><label for="overManage">已处理</label>
+							<input type="radio" name="statuss" value="待处理" checked="checked" id="waitManage2" /><label for="waitManage2">待处理</label>
+							<input type="radio" name="statuss" value="已处理" id="overManage2"/><label for="overManage2">已处理</label>
 						<td>
 				    </tr> 
 				     <!-- <tr >

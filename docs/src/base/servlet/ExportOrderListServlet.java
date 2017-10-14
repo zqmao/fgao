@@ -226,10 +226,15 @@ public class ExportOrderListServlet extends BaseServlet{
         		  
         		String orderNo = reader.get(0);
         		//System.out.println("----"+orderNo+"----");
-        		if(orderNo!=null&&orderNo.length()>3){
-        			String OrderNum = reader.get(0).substring(2,(orderNo.length()-1));
+        		if(orderNo!=null && orderNo.length()>3){
+        			String OrderNum = orderNo.substring(2,(orderNo.length()-1));
         			ExportOrderList exportOrder = ExportOrderListDAO.getInstance().query(OrderNum);
         			if(exportOrder==null){
+        				String courierNum = reader.get(21);
+        				if(courierNum!=null && courierNum.length()>4){
+        					courierNum = courierNum.substring(3,courierNum.length());
+        					exportOrderList.setCourierNum(courierNum);
+        				}
         				exportOrderList.setOrderNum(OrderNum);//订单编号
         				//exportOrderList.setOrderNum(reader.get(0).substring(2,19));//订单编号
                 		exportOrderList.setWangwang(reader.get(1));//买家会员名

@@ -22,7 +22,15 @@ public class User {
 	private int after;//是否有操作售后记录的权限
 	private int export;//是否有导入csv文件的权限
 	private int editor;//是否有编辑知识库的权限
+	private int drawBill;//是否有开发票的权限
 	
+	
+	public int getDrawBill() {
+		return drawBill;
+	}
+	public void setDrawBill(int drawBill) {
+		this.drawBill = drawBill;
+	}
 	public int getExport() {
 		return export;
 	}

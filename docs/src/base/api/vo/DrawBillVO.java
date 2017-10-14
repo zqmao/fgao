@@ -26,6 +26,8 @@ public class DrawBillVO {
 	private String remark;//备注
 	private String Drawingor;//开票人员
 	private String billTime;//开票时间
+	
+	private String billRemark;//开票备注;
 	private String status;//处理状态:1已处理；0未处理
 	
 	public DrawBillVO(DrawBill drawBill){
@@ -42,12 +44,21 @@ public class DrawBillVO {
 		this.tfn = drawBill.getTfn();
 		this.emailOrPhone = drawBill.getEmailOrPhone();
 		this.remark = drawBill.getRemark();
+		this.billRemark = drawBill.getBillRemark();
 		user = UserDAO.getInstance().load(drawBill.getDrawingor());
 		this.Drawingor = user != null ? user.getName() : "";
 		this.billTime = drawBill.getBillTime() != 0 ? DateUtil.toString(drawBill.getBillTime()) : "";
-		this.status = drawBill.getStatus() == 1 ? "已处理" : "未处理";
+		this.status = drawBill.getStatus() == 1 ? "已处理" : "待处理";
 	}
 	
+	public String getBillRemark() {
+		return billRemark;
+	}
+
+	public void setBillRemark(String billRemark) {
+		this.billRemark = billRemark;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -30,6 +30,7 @@ public class ExportOrderListVO {
 */	private String shopName;//店铺名称
 	private String exportTime;//数据导入时间
 	private String exportor;//数据导入者
+	private String courierNum;//快递单号
 	
 	public ExportOrderListVO(ExportOrderList exportOrderList){
 		this.id = exportOrderList.getId();
@@ -44,11 +45,20 @@ public class ExportOrderListVO {
 		this.orderTime = exportOrderList.getOrderTime();
 		this.goodsHeadline = exportOrderList.getGoodsHeadline();
 		this.shopName = exportOrderList.getShopName();
+		this.courierNum = exportOrderList.getCourierNum();
 		this.exportTime = exportOrderList.getExportTime()!=0 ? DateUtil.toString(exportOrderList.getExportTime()):"";
 		User user = UserDAO.getInstance().load(exportOrderList.getExportor());
 		this.exportor = user!=null ? user.getName():"";
 	}
 	
+	public String getCourierNum() {
+		return courierNum;
+	}
+
+	public void setCourierNum(String courierNum) {
+		this.courierNum = courierNum;
+	}
+
 	public int getId() {
 		return id;
 	}

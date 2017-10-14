@@ -172,6 +172,15 @@
 								<span class="sub-title">订单查询</span>
 							</a>
 						</li>
+						<li>
+							<div class="showtitle" style="width: 100px;">
+								<img src="../img/leftimg.png" />开票处理
+							</div> 
+							<a href="/admin/drawBill.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">开票处理</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 				<div class="sBox">

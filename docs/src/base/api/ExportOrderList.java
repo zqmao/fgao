@@ -16,7 +16,7 @@ public class ExportOrderList {
 	private String consigneeName;//收货人姓名
 	private String address;//收货地址
 	private String phoneNum;//手机号码
-	
+	private String courierNum;//快递单号
 	private String orderCreateTime;//订单创建时间
 	private String orderTime;//订单付款时间
 	private String goodsHeadline;//宝贝标题
@@ -28,6 +28,12 @@ public class ExportOrderList {
 	private long exportTime;//数据导入时间
 	private int exportor;//数据导入者
 	
+	public String getCourierNum() {
+		return courierNum;
+	}
+	public void setCourierNum(String courierNum) {
+		this.courierNum = courierNum;
+	}
 	public int getId() {
 		return id;
 	}

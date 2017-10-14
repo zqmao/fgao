@@ -21,9 +21,16 @@ public class DrawBill {
 	private String remark;//备注
 	private int Drawingor;//开票人员
 	private long billTime;//开票时间
+	private String billRemark;//开票备注;
 	private int status;//处理状态:1已处理；0未处理
 	
 	
+	public String getBillRemark() {
+		return billRemark;
+	}
+	public void setBillRemark(String billRemark) {
+		this.billRemark = billRemark;
+	}
 	public String getMoney() {
 		return money;
 	}
