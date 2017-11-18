@@ -163,6 +163,38 @@ public class PermissionUtil {
 		}
 	}
 	/*
+	 * 是否具有导入售前记录的权限
+	 */
+	public static boolean checkImportPreSale(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getImportPreSale()!= 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	/*
+	 * 是否是财务
+	 */
+	public static boolean checkFinance(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getFinance()!= 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	/*
 	 * 是否是管理员
 	 */
 	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response){

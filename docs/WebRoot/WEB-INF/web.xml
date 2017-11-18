@@ -225,6 +225,16 @@
 		<servlet-name>SignRecordServlet</servlet-name>
 		<url-pattern>/signRecordServlet.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<description>PreSaleRecordServlet</description>
+		<display-name>PreSaleRecordServlet</display-name>
+		<servlet-name>PreSaleRecordServlet</servlet-name>
+		<servlet-class>base.servlet.PreSaleRecordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PreSaleRecordServlet</servlet-name>
+		<url-pattern>/preSaleRecordServlet.do</url-pattern>
+	</servlet-mapping>
 	
 	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>

@@ -58,7 +58,7 @@
                     url: "../drawBillServlet.do?sign=list",
                     queryParams:{billHead : billHead, Drawingor : Drawingor, creatorId:creatorId, tfn : tfn,
                     	shopName : shopName, goodsName : goodsName, orderNum : orderNum, emailOrPhone : emailOrPhone, status :status},
-                    frozenColumns: [[
+                    columns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 60},
                             {title: '创建人员', field: 'creatorId', width: 90, align: 'center'},

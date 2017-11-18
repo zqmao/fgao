@@ -181,6 +181,15 @@
 								<span class="sub-title">开票处理</span>
 							</a>
 						</li>
+						<li>
+							<div class="showtitle" style="width: 100px;">
+								<img src="../img/leftimg.png" />售前考核
+							</div> 
+							<a href="/admin/preSaleReocrdList.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
+								<span class="sub-title">售前考核</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 				<div class="sBox">

@@ -23,6 +23,8 @@ public class User {
 	private int export;//是否有导入csv文件的权限
 	private int editor;//是否有编辑知识库的权限
 	private int drawBill;//是否有开发票的权限
+	private int importPreSale;//是否具有导入售前记录的权限
+	private int finance;//是否是财务
 	
 	
 	public int getDrawBill() {
@@ -121,6 +123,18 @@ public class User {
 	}
 	public void setEditor(int editor) {
 		this.editor = editor;
+	}
+	public int getImportPreSale() {
+		return importPreSale;
+	}
+	public void setImportPreSale(int importPreSale) {
+		this.importPreSale = importPreSale;
+	}
+	public int getFinance() {
+		return finance;
+	}
+	public void setFinance(int finance) {
+		this.finance = finance;
 	}
 	
 }
