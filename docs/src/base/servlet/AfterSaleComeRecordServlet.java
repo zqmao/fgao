@@ -47,7 +47,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
 			String allSearch = (String) request.getParameter("allSearch");
-			String wangwang = (String) request.getParameter("wangwang");
 			String bounceType = (String) request.getParameter("bounceType");
 			String courierNum = (String) request.getParameter("courierNum");
 			String expressName = (String) request.getParameter("expressName2");
@@ -132,9 +131,7 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 						if (phoneNum != null && phoneNum.length() != 0) {
 							builder.eq("phoneNum", phoneNum);
 						}
-						if (wangwang != null && wangwang.length() != 0){
-							builder.eq("wangwang", wangwang);
-						}
+						
 						if (afterSaTor != null && afterSaTor.length() != 0){
 							builder.eq("afterSaTor", afterSaTor);
 						}
@@ -178,7 +175,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			String shopName = (String) request.getParameter("shopName");
 			String goodsName = (String) request.getParameter("goodsName");
 			String checkResult = (String) request.getParameter("checkResult");
-			String wangwang = (String) request.getParameter("wangwang");
 			String phoneNum = (String) request.getParameter("phoneNum");
 			String orderNum = (String) request.getParameter("orderNum");
 			String afterSaTor = (String) request.getParameter("afterSaTor");
@@ -252,7 +248,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 				if("自己发货".equals(changeStatus)){
 					expressReissue.setShopName(shopName);
 					expressReissue.setOrderNum(orderNum);
-					expressReissue.setWangwang(wangwang);
 					expressReissue.setExpressName(reissueExpressName);
 					expressReissue.setCourierNum(reissueCourierNum);
 					expressReissue.setGoodsName(reissueGoodsName);
@@ -281,7 +276,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 					reissueGoodsName = (String) request.getParameter("reissueGood");
 					expressReissue.setShopName(shopName);
 					expressReissue.setOrderNum(orderNum);
-					expressReissue.setWangwang(wangwang);
 					expressReissue.setAfterSaTor(afterSaTor);
 					expressReissue.setRemark(remark);
 					/*if ("已处理".equals(status)) {
@@ -309,7 +303,6 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			afterSaleComeRecord.setShopName(shopName);
 			afterSaleComeRecord.setGoodsName(goodsName);
 			afterSaleComeRecord.setCheckResult(checkResult);
-			afterSaleComeRecord.setWangwang(wangwang);
 			afterSaleComeRecord.setPhoneNum(phoneNum);
 			afterSaleComeRecord.setOrderNum(orderNum);
 			afterSaleComeRecord.setAfterSaTor(afterSaTor);
@@ -368,33 +361,19 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			}
 			responseSuccess2("新建售后记录成功");
 		}else if("SearchExportList".equals(sign)){
-			
-			response.setContentType("text/xml;charset=utf-8");
-			//response.setCharacterEncoding("GB2312");
-			
 			String allSearch = request.getParameter("orderNumE");
-			
-			allSearch = URLDecoder.decode(allSearch , "utf-8");
 			long total = ExportOrderListDAO.getInstance().count(allSearch);
-			
-				List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
-				List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
-				for (ExportOrderList reissue : result) {
-					ExportOrderListVO vo = new ExportOrderListVO(reissue);
-					vos.add(vo);
-				}
-				JSONObject obj = new JSONObject();
-				obj.put("total", JSON.toJSON(total));
-				obj.put("rows", JSON.toJSON(vos));
-				//responseSuccess(JSON.toJSON(obj));
-				//responseSuccess("-------------");
-				response.setContentType("text/html");  
-		        PrintWriter out = response.getWriter();  
-		
-		        out.println(JSON.toJSON(obj));  
-		        out.close();  
-				
+			List<ExportOrderList> result = ExportOrderListDAO.getInstance().listALL(allSearch);
+			List<ExportOrderListVO> vos = new ArrayList<ExportOrderListVO>();
+			for (ExportOrderList reissue : result) {
+				ExportOrderListVO vo = new ExportOrderListVO(reissue);
+				vos.add(vo);
 			}
+			JSONObject obj = new JSONObject();
+			obj.put("total", JSON.toJSON(total));
+			obj.put("rows", JSON.toJSON(vos));
+			responseSuccess(JSON.toJSON(obj));
+		}
 	}
 
 }

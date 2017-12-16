@@ -1,7 +1,9 @@
 package base.api.vo;
 
 import base.api.AfterSaleComeRecord;
+import base.api.ExportOrderList;
 import base.api.User;
+import base.dao.ExportOrderListDAO;
 import base.dao.UserDAO;
 import base.util.DateUtil;
 
@@ -18,7 +20,7 @@ public class AfterSaleComeRecordVO {
 	private String shopName;//商店名称
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
-	private String wangwang;//用户旺旺
+	
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
 	private String afterSaTor;//售后人员
@@ -35,6 +37,9 @@ public class AfterSaleComeRecordVO {
 	private String reissueGoodsName;//补发物品名称
 	private String reissueAddress;//补发地址
 */	
+	
+	private String wangWang;
+	
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
 		this.id = afterSaleComeRecord.getId();
 		this.courierNum = afterSaleComeRecord.getCourierNum();
@@ -43,7 +48,7 @@ public class AfterSaleComeRecordVO {
 		this.goodsName = afterSaleComeRecord.getGoodsName();
 		
 		this.checkResult = afterSaleComeRecord.getCheckResult();
-		this.wangwang = afterSaleComeRecord.getWangwang();
+
 		this.phoneNum = afterSaleComeRecord.getPhoneNum();
 		this.orderNum = afterSaleComeRecord.getOrderNum();
 		this.afterSaTor = afterSaleComeRecord.getAfterSaTor();
@@ -57,6 +62,16 @@ public class AfterSaleComeRecordVO {
 		this.unpackor = user != null ? user.getName() : "";
 		this.bounceType = afterSaleComeRecord.getBounceType();
 		
+		if(null == orderNum){
+			this.wangWang = "未知";
+		}else{
+			ExportOrderList order = ExportOrderListDAO.getInstance().query(orderNum);
+			if(null != order){
+				this.wangWang = order.getWangwang();
+			}else{
+				this.wangWang = "未知";
+			}
+		}
 	}
 	
 	public String getAfterSaTor() {
@@ -138,13 +153,9 @@ public class AfterSaleComeRecordVO {
 		this.checkResult = checkResult;
 	}
 
-	public String getWangwang() {
-		return wangwang;
-	}
+	
 
-	public void setWangwang(String wangwang) {
-		this.wangwang = wangwang;
-	}
+	
 
 	public String getPhoneNum() {
 		return phoneNum;
@@ -184,6 +195,14 @@ public class AfterSaleComeRecordVO {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getWangWang() {
+		return wangWang;
+	}
+
+	public void setWangWang(String wangWang) {
+		this.wangWang = wangWang;
 	}
 
 }

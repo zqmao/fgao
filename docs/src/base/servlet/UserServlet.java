@@ -40,6 +40,7 @@ public class UserServlet extends BaseServlet {
 			//password = MdUtil.MD5(password);
 			// 先根据登陆名查找是否存在
 			User dbUser = UserDAO.getInstance().query(name);
+			
 			if (dbUser == null) {
 				responseError("用户名不存在");
 			} else {
@@ -53,6 +54,7 @@ public class UserServlet extends BaseServlet {
 				}
 			}
 		} else if ("list".equals(sign)) {// 查询列表
+			
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
 			long total = UserDAO.getInstance().queryCount();
@@ -63,6 +65,7 @@ public class UserServlet extends BaseServlet {
 			obj.put("total", total);
 			obj.put("rows", JSON.toJSON(result));
 			responseSuccess(JSON.toJSON(obj));
+			
 		} else if ("add".equals(sign)) {// 注册用户
 			String name = (String) request.getParameter("name");
 			String loginName = (String) request.getParameter("loginName");

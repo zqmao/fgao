@@ -144,7 +144,7 @@ public class ExpressReissueServlet extends BaseServlet {
 			String afterSaTor = (String) request.getParameter("afterSaTor");
 			String remark = (String) request.getParameter("remark");
 			String id = (String) request.getParameter("erlistId");
-			Pattern p = Pattern.compile("^[0-9]{16,17}$");
+			Pattern p = Pattern.compile("^[0-9]{16,21}$");
 			Matcher m = p.matcher(orderNum);
 			/*if (m.find()){
 				String id = (String) request.getParameter("erlistId");

@@ -13,7 +13,6 @@ public class AfterSaleComeRecord {
 	private String shopName;//商店名称
 	private String goodsName;//物品名称
 	private String checkResult;//检测结果
-	private String wangwang;//用户旺旺
 	private String phoneNum;//手机号
 	private String orderNum;//订单号
 	private String afterSaTor;//售后人员
@@ -99,12 +98,6 @@ public class AfterSaleComeRecord {
 	}
 	public void setCheckResult(String checkResult) {
 		this.checkResult = checkResult;
-	}
-	public String getWangwang() {
-		return wangwang;
-	}
-	public void setWangwang(String wangwang) {
-		this.wangwang = wangwang;
 	}
 	public String getPhoneNum() {
 		return phoneNum;

@@ -135,7 +135,7 @@ public class DrawBillServlet extends BaseServlet {
 			String remark = (String) request.getParameter("remark");
 			String tfn = (String) request.getParameter("tfn");
 			String id = (String) request.getParameter("drawBillId");
-			Pattern p = Pattern.compile("^[0-9]{16,17}$");
+			Pattern p = Pattern.compile("^[0-9]{16,21}$");
 			Matcher m = p.matcher(orderNum);
 					DrawBill drawBill = null;
 					if (id == null || id.length() == 0) {

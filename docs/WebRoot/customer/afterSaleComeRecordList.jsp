@@ -174,7 +174,7 @@
                             {title: '店铺名称', field: 'shopName', width: 100, align: 'center'},
                             {title: '快递名称', field: 'expressName', width: 50, align: 'center'},
                             {title: '检查结果', field: 'checkResult', width: 100, align: 'center'},
-                            {title: '旺旺', field: 'wangwang', width: 100, align: 'center'},
+                            {title: '旺旺', field: 'wangWang', width: 100, align: 'center'},
                             {title: '售后人员', field: 'afterSaTor', width: 100, align: 'center'},
                             {title: '手机号', field: 'phoneNum', width: 90, align: 'center'},
                             {title: '订单号', field: 'orderNum', width: 100, align: 'center'},
@@ -237,7 +237,7 @@
                                     shopName:row[0].shopName,
                                     goodsName: row[0].goodsName,
                                     checkResult: row[0].checkResult,
-                                    wangwang: row[0].wangwang,
+                                    wangWang: row[0].wangWang,
                                     afterSaTor: row[0].afterSaTor,
                                     phoneNum: row[0].phoneNum,
                                     orderNum: row[0].orderNum,
@@ -326,15 +326,24 @@
                 }
                 return ids;
             }
-            function changeGoods(){
-            	//var value  = $('input[name="bounceType"]:checked').val(); //获取被选中Radio的Value值
-            	$("#displayId").show();
-            	$("#handleSelf").show();
-            	//$('input:radio').eq(6).attr('checked', 'true');
-            	
-            	//$('#courierNum3').attr("disabled",true); 
-            	//var Num3 = $('#courierNum3').html();
-            }
+            function changeGoods(required){
+             	//var value  = $('input[name="bounceType"]:checked').val(); //鑾峰彇琚«閫変腑Radio鐨刅alue鍊¼
+             	$("#displayId").show();
+             	$("#handleSelf").show();
+             	//$('input:radio').eq(6).attr('checked', 'true');
+             	
+             	//$('#courierNum3').attr("disabled",true); 
+             	//var Num3 = $('#courierNum3').html();
+            	if(required){
+            		$('#orderNO').validatebox({
+                        required: true
+                    });
+            	}else{
+            		$('#orderNO').validatebox({
+                        required: false
+                    });
+            	}
+             }
             //自己发货
             function handleSf(){
             	$("#handleOth").hide();
@@ -350,23 +359,29 @@
             	$("#handleSelf").hide();
             	$("#handleOth").hide();
             }
-            function changeDisplay(){
-            	$("#displayId").hide();
-            	$("#displayId").form("clear");
-            	$("#handleSelf").hide();
-            	$("#handleOth").hide();
-            	$("#handleSelf").form("clear");
-            	$("#handleOth").form("clear");
-            }
+            function changeDisplay(required){
+             	$("#displayId").hide();
+             	$("#displayId").form("clear");
+             	$("#handleSelf").hide();
+             	$("#handleOth").hide();
+             	$("#handleSelf").form("clear");
+             	$("#handleOth").form("clear");
+            	if(required){
+            		$('#orderNO').validatebox({
+                        required: true
+                    });
+            	}else{
+            		$('#orderNO').validatebox({
+                        required: false
+                    });
+            	}
+             }
             //查询
             function submitSearch(){
-            	//$("#courierNumA").val("");
             	courierNum = $("#courierNum").val();
-            	
             	goodsName = $("#goodsName").val();
             	orderNum = $("#orderNum").val();
             	phoneNum = $("#phoneNum").val();
-            	wangwang = $("#wangwang").val();
             	afterSaTor = $("#afterSaTor").val();
             	bounceType = $("#bounceType").val();
             	creator = $("#creator").val();
@@ -378,47 +393,17 @@
             	queryParams.goodsName = goodsName;
             	queryParams.orderNum = orderNum;
             	queryParams.phoneNum = phoneNum;
-            	queryParams.wangwang = wangwang;
             	queryParams.afterSaTor = afterSaTor;
             	queryParams.bounceType = bounceType;
             	queryParams.creator = creator;
             	queryParams.shopName = shopName;
             	queryParams.allSearch = allSearch;
             	queryParams.expressName2 = expressName2;
-            	$("#searchAscrForm").form("submit",{
-            		url:"../afterSaleComeRecordServlet.do?sign=search",
-            		success:function(result){
-				    	var data = eval('(' + result + ')');
-				    	if(data.result == 0){
-				    		alert(data.reason);
-				    	}else{
-							/* $("#searchAscrForm").form("clear"); */
-        					$("#ascrGrid").datagrid("reload");
-        					
-				    	}
-				    }		
-            	});
+            	$("#ascrGrid").datagrid("reload");
             	
             }
-           /*  function addMessage(){
-            	var bounceVal = $('input[name="bounceType"]:checked').val();
-            	if("换货"==bounceVal){
-            		var rcn = $("#reissueCourierNum").val();
-            		var rgn = $("#reissueGoodsName").val();
-            		//var opt = $("#option_express3").val();   ||(opt==null || opt.length==0)
-            		if((rcn==null || rcn.length==0) || (rgn==null || rgn.length==0)){
-            			 $.messager.alert('提示', '当选择换货时，快递单号和货品名称不能为空', 'Warning');
-            			/*  alert("当选择换货时，快递名称和快递单号不能为空"); 
-            		}else{
-            			submitAdd();
-            		}
-            	}else{
-            		submitAdd();
-            	}
-            } */
               
             function submitAdd() {
-            	
             	courierNumA = $("#courierNumA").val();
             	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
             	queryParams.courierNumA = courierNumA;
@@ -430,6 +415,10 @@
             			$.messager.alert('提示', '请填写订单号', 'Warning');
             			//$("#ascrGrid").datagrid("reload");
             		}else {
+						if(orderNOM.length < 10){
+            				$.messager.alert('提示', '请填写正确的订单号', 'Warning');
+            				return;
+            			}
             			if("换货"==bounceVal){
             				
             			
@@ -472,24 +461,6 @@
             		}
             		
             	}else{
-            	
-				/* $("#addAscrForm").form("submit", {
-				    url:"../afterSaleComeRecordServlet.do?sign=add",
-				    success:function(result){
-				    	courierNumA = "";
-				    	var data = eval('(' + result + ')');
-				    	if(data.result == 0){
-				    		alert(data.reason);
-				    	}else{
-				    		$("#handleSelf").hide();
-			            	$("#handleOth").hide();
-				    		$("#displayId").hide();
-				    		$("#courierNumA").val("");
-							$("#addAscrForm").form("clear");
-        					$("#ascrGrid").datagrid("reload");
-				    	}
-				    }
-				}); */
             		submitAddMethod();
             	}
 			}
@@ -541,8 +512,8 @@
             		data:"orderNumE="+orderNumE,
             		success:function(result){
 						var data=eval('('+result+')');   
-            			var row = data.rows;
-            			totalE = data.total;
+            			var row = data.data.rows;
+            			totalE = data.data.total;
             			if(totalE==0){
 			    			$("#serverResponse").hide();
 			    			alert("没有查到数据");	
@@ -554,7 +525,6 @@
 			    		shopNameE = row[0].shopName;
 			    		orderNumE = row[0].orderNum;
 			    		goodsHeadlineE = row[0].goodsHeadline;
-			    		wangwangE = row[0].wangwang;
 			    		phoneNumE = row[0].phoneNum;
 			    		consigneeNameE = row[0].consigneeName;
 			    		
@@ -562,7 +532,6 @@
             			//document.getElementById("total").innerHTML="共搜到"+totalE+"条数据";
             			$("#addressE").html("地址为:"+addressE);
             			$("#goodsHeadlineE").html("宝贝标题为:"+goodsHeadlineE);
-            			$("#wangwangE").html("旺旺号为:"+wangwangE);
             			$("#exportorE").html("数据导入者为:"+exportorE);
             			$("#shopNameE").html("商店名称为:"+shopNameE);
             			$("#orderNumE").html("订单编号为:"+orderNumE);
@@ -571,66 +540,6 @@
             		}
             	});
             	
-            	
-            	 //xmlhttp=new XMLHttpRequest();
-    /*         	  if(window.ActiveXOject)  
-    {  
-     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  
-    }  
-    else if(window.XMLHttpRequest)  
-    {  
-      xmlhttp = new XMLHttpRequest();  
-    }  
-            	 var orderNumE = $("#orderNumE").val();
-            	 orderNumE = encodeURI(orderNumE);  //需要通过两次编码
-            	xmlhttp.onreadystatechange=function()
-            	{	
-            		//alert("111"+xmlhttp.readyState);
-            		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            		{
-            			//alert("222"+xmlhttp.readyState);
-            			var result = xmlhttp.responseText;
-            			//alert(xmlhttp.responseText+"--");
-            			var data=eval('('+result+')');   
-            			
-            			var row = data.rows;
-            			totalE = data.total;
-			    		
-			    		if(totalE==0){
-			    			$("#serverResponse").hide();
-			    			alert("没有查到数据");	
-			    		}else{
-			    			$("#serverResponse").show();
-			    		}
-			    		addressE = row[0].address;
-			    		exportorE = row[0].exportor;
-			    		shopNameE = row[0].shopName;
-			    		orderNumE = row[0].orderNum;
-			    		goodsHeadlineE = row[0].goodsHeadline;
-			    		wangwangE = row[0].wangwang;
-			    		phoneNumE = row[0].phoneNum;
-			    		consigneeNameE = row[0].consigneeName;
-			    		
-			    		$("#total").html("共搜到"+totalE+"条数据");
-            			//document.getElementById("total").innerHTML="共搜到"+totalE+"条数据";
-            			$("#addressE").html("地址为:"+addressE);
-            			$("#goodsHeadlineE").html("宝贝标题为:"+goodsHeadlineE);
-            			$("#wangwangE").html("旺旺号为:"+wangwangE);
-            			$("#exportorE").html("数据导入者为:"+exportorE);
-            			$("#shopNameE").html("商店名称为:"+shopNameE);
-            			$("#orderNumE").html("订单编号为:"+orderNumE);
-            			$("#phoneNumE").html("手机号码为:"+phoneNumE);
-            			$("#consigneeNameE").html("收货人姓名:"+consigneeNameE);
-            			//var cow = xmlhttp.responseText.cows;exportorshopNameEorderNumEphoneNumE
-            			
-            			//alert(xmlhttp.responseText+"写入成功");
-            		} else{
-            			//alert("333"+xmlhttp.readyState);
-            		}
-            	}
-            	xmlhttp.open("GET","../afterSaleComeRecordServlet.do?sign=SearchExportList&orderNumE="+encodeURI(orderNumE),false);
-            	xmlhttp.send();  */
-            	 
             }
             
         </script>
@@ -657,10 +566,10 @@
 				    <tr >
 						<td>退件类型:</td>
 						<td>
-							<input type="radio" name="bounceType" value="退货" id="returnGood" onclick="changeDisplay()" /><label for="returnGood">退货</label>
-							<input type="radio" name="bounceType" value="换货" id="changeGood" onclick="changeGoods()" /><label for="changeGood">换货</label>
-							<input type="radio" name="bounceType" value="拦截件" id="intercept" onclick="changeDisplay()" /><label for="intercept">拦截件</label>
-							<input type="radio" name="bounceType" value="无信息" id="noMessage" onclick="changeDisplay()" checked="checked"/><label for="noMessage">无信息</label> 
+							<input type="radio" name="bounceType" value="退货" id="returnGood" onclick="changeDisplay(true)" /><label for="returnGood">退货</label>
+							<input type="radio" name="bounceType" value="换货" id="changeGood" onclick="changeGoods(true)" /><label for="changeGood">换货</label>
+							<input type="radio" name="bounceType" value="拦截件" id="intercept" onclick="changeDisplay(true)" /><label for="intercept">拦截件</label>
+							<input type="radio" name="bounceType" value="无信息" id="noMessage" onclick="changeDisplay(false)" checked="checked"/><label for="noMessage">无信息</label>
 							<!-- <input type="radio" name="status" value="已处理" />已处理
 							<input type="radio" name="status" value="待处理" checked="checked" />待处理 -->
 						<td>
@@ -688,10 +597,6 @@
 						<td><input class="easyui-validatebox" name="orderNum" id="orderNO" type="text" style="width: 250px;" /><td>
 				    </tr>
 				    <tr >
-						<td>旺旺:</td>
-						<td><input class="easyui-validatebox" name="wangwang" type="text" style="width: 250px;"/><td>
-				    </tr>
-				    <tr >
 						<td>手机号:</td>
 						<td><input class="easyui-validatebox" name="phoneNum" type="text" style="width: 250px;"/><td>
 				    </tr>
@@ -711,7 +616,7 @@
 						<td>
 				    </tr> -->
 			    </table>
-			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 340px; background-color: #eeeeee;">
+			    <table id="displayId" style="position:absolute;margin-top: -307px;margin-left: 360px; background-color: #eeeeee;">
 			    	  <tr >
 						<td>处理方式:</td>
 						<td>
@@ -722,7 +627,7 @@
 				    </tr>
 				   </table>
 				   
-				   <table id="handleSelf" style="position:absolute;margin-top: -282px;margin-left: 340px; background-color: #eeeeee;"> 
+				   <table id="handleSelf" style="position:absolute;margin-top: -282px;margin-left: 360px; background-color: #eeeeee;"> 
 			    	<tr>
 						<td>补发快递单号:</td>
 						<td><input class="easyui-validatebox" id="reissueCourierNum" name="reissueCourierNum" type="text" style="width: 223px;" /><td>
@@ -779,8 +684,9 @@
 				<table>
 					<tr >
 						<td>全文搜索:</td>
-						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/><td>
-				    </tr>
+						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/></td>
+						<em  style="color:red">注：暂不支持旺旺搜索</em>
+					</tr>
 				    <tr >
 				    	<td><br/><br/></td>
 				    </tr>
