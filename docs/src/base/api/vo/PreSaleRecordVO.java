@@ -9,8 +9,10 @@ public class PreSaleRecordVO {
 	
 	private int id;//关键字
 	private String orderNum;//订单号
+	private String wangWang;//订单表数据太多，单独存一份
 	private String doneOrderUserName;//落实下单的售前人员
 	private String donePayUserName;//落实付款的售前人员
+	private int donePayUserId;//落实付款的售前人员
 	private String remark;//备注
 	private String couponQuota;//优惠券金额
 	private String praiseMoney;//好评返现
@@ -29,11 +31,13 @@ public class PreSaleRecordVO {
 	public PreSaleRecordVO(PreSaleRecord record){
 		this.id = record.getId();
 		this.orderNum = record.getOrderNum();
+		this.wangWang = record.getWangWang();
 		this.remark = record.getRemark();
 		this.couponQuota = record.getCouponQuota();
 		this.praiseMoney = record.getPraiseMoney();
 		this.differenceMoney = record.getDifferenceMoney();
 		this.orderNum = record.getOrderNum();
+		this.donePayUserId = record.getDonePayUserId();
 		User doneOrderUser = UserDAO.getInstance().load(record.getDoneOrderUserId());
 		User donePayUser = UserDAO.getInstance().load(record.getDonePayUserId());
 		User importUser = UserDAO.getInstance().load(record.getImportUserId());
@@ -77,6 +81,14 @@ public class PreSaleRecordVO {
 
 	public void setOrderNum(String orderNum) {
 		this.orderNum = orderNum;
+	}
+
+	public String getWangWang() {
+		return wangWang;
+	}
+
+	public void setWangWang(String wangWang) {
+		this.wangWang = wangWang;
 	}
 
 	public String getDoneOrderUserName() {
@@ -205,6 +217,14 @@ public class PreSaleRecordVO {
 
 	public void setIsVirtual(String isVirtual) {
 		this.isVirtual = isVirtual;
+	}
+
+	public int getDonePayUserId() {
+		return donePayUserId;
+	}
+
+	public void setDonePayUserId(int donePayUserId) {
+		this.donePayUserId = donePayUserId;
 	}
 	
 }

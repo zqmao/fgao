@@ -25,6 +25,7 @@ public class User {
 	private int drawBill;//是否有开发票的权限
 	private int importPreSale;//是否具有导入售前记录的权限
 	private int finance;//是否是财务
+	private int instead;//是否有代自审权限
 	
 	
 	public int getDrawBill() {
@@ -135,6 +136,12 @@ public class User {
 	}
 	public void setFinance(int finance) {
 		this.finance = finance;
+	}
+	public int getInstead() {
+		return instead;
+	}
+	public void setInstead(int instead) {
+		this.instead = instead;
 	}
 	
 }

@@ -78,5 +78,40 @@ public class DateUtil {
 		c.set(Calendar.MONTH, month - 1);
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
+	
+	public static long getTimeInMillis(String time){
+		if(time == null || time.length() == 0){
+			return 0;
+		}
+		//先确定开头的年月日直接的符号"-","/","年月日"
+		String ymdStr = "yyyyMMdd";
+		if(time.indexOf("-") != -1){
+			ymdStr = "yyyy-MM-dd";
+		}else if(time.indexOf("/") != -1){
+			ymdStr = "yyyy/MM/dd";
+		}else if(time.indexOf("年") != -1 && time.indexOf("月") != -1 && time.indexOf("日") != -1){
+			ymdStr = "yyyy年MM月dd日";
+		}
+		String hmsStr = "";
+		if(time.indexOf(":") != -1){
+			if(time.indexOf(":") == time.lastIndexOf(":")){
+				//只有一个":"
+				hmsStr = "HH:mm";
+			}else{
+				//有两个及以上":"
+				hmsStr = "HH:mm:ss";
+			}
+		}else{
+			hmsStr = "HHmmss";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(ymdStr + " " + hmsStr);
+		try {
+			System.out.println("" + time);
+			return sdf.parse(time).getTime();
+		} catch (ParseException e) {
+			System.out.println("时间格式错误" + e.getMessage());
+		}
+		return 0;
+	}
 
 }

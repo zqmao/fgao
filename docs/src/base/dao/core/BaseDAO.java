@@ -150,15 +150,49 @@ public class BaseDAO<T> implements IDao<T>{
 	
 	public class QueryBuilder{
 		
-		private Map<String, Object> mParams = new HashMap<String, Object>();
+		private List<DbParam> mParamList = new ArrayList<DbParam>();
+		private Map<String, Object> mOrParams = new HashMap<String, Object>();
 		private Map<String, Boolean> mOrders = new HashMap<String, Boolean>();
 		private int mIndex = 0;
 		private int mPageSize = 0;
 		
 		
 		public QueryBuilder eq(String key, Object value) {
-			if(mParams != null) {
-				mParams.put(key, value);
+			if(mParamList != null) {
+				DbParam param = new DbParam();
+				param.contact = "=";
+				param.value = value;
+				param.key = key;
+				mParamList.add(param);
+			}
+			return this;
+		}
+		
+		public QueryBuilder gt(String key, Object value) {
+			if(mParamList != null) {
+				DbParam param = new DbParam();
+				param.contact = ">=";
+				param.value = value;
+				param.key = key;
+				mParamList.add(param);
+			}
+			return this;
+		}
+		
+		public QueryBuilder lt(String key, Object value) {
+			if(mParamList != null) {
+				DbParam param = new DbParam();
+				param.contact = "<";
+				param.value = value;
+				param.key = key;
+				mParamList.add(param);
+			}
+			return this;
+		}
+		
+		public QueryBuilder or(String key, Object value) {
+			if(mOrParams != null) {
+				mOrParams.put(key, value);
 			}
 			return this;
 		}
@@ -179,19 +213,32 @@ public class BaseDAO<T> implements IDao<T>{
 		public List<T> queryList() {
 			String sqlStr = buildQueryAllSql();
 			StringBuffer buffer = new StringBuffer(sqlStr);
-			Set<String> keySet = mParams.keySet();
-			Object[] values = new Object[keySet.size() + 2];
-			if(!mParams.isEmpty()) {
+			Set<String> orKeySet = mOrParams.keySet();
+			Object[] values = new Object[mParamList.size() + orKeySet.size() + 2];
+			if(null != mParamList && !mParamList.isEmpty()) {
 				buffer.append(" where ");
 			}
 			int index = 0;
-			for(String key : mParams.keySet()) {
-				buffer.append(" " + key + "=? and");
-				values[index] = mParams.get(key);
+			for(DbParam param : mParamList) {
+				buffer.append(" " + param.key + param.contact + "? and");
+				values[index] = param.value;
 				index ++;
 			}
-			if(buffer.toString().endsWith("and")) {
-				sqlStr = buffer.substring(0, buffer.length() - 3);
+			if(null == orKeySet || orKeySet.size() == 0){
+				if(buffer.toString().endsWith("and")) {
+					sqlStr = buffer.substring(0, buffer.length() - 3);
+				}
+			}else{
+				buffer.append(" (");
+				for(String key : orKeySet) {
+					buffer.append(" " + key + "=? or");
+					values[index] = mOrParams.get(key);
+					index ++;
+				}
+				if(buffer.toString().endsWith("or")) {
+					sqlStr = buffer.substring(0, buffer.length() - 2);
+				}
+				sqlStr = sqlStr + ")";
 			}
 			
 			String orders = "";
@@ -209,8 +256,8 @@ public class BaseDAO<T> implements IDao<T>{
 			
 			if(mPageSize != 0) {
 				sqlStr += " limit ?,? ";
-				values[keySet.size()] = mIndex;
-				values[keySet.size() + 1] = mPageSize;
+				values[index] = mIndex;
+				values[index + 1] = mPageSize;
 			}
 			return JDBCUtil.queryObjectList(sqlStr, entityClass, values);
 		}
@@ -218,19 +265,32 @@ public class BaseDAO<T> implements IDao<T>{
 		public long queryCount() {
 			String sqlStr = buildQueryCountSql();
 			StringBuffer buffer = new StringBuffer(sqlStr);
-			Set<String> keySet = mParams.keySet();
-			Object[] values = new Object[keySet.size() + 2];
-			if(!mParams.isEmpty()) {
+			Set<String> orKeySet = mOrParams.keySet();
+			Object[] values = new Object[mParamList.size() + orKeySet.size() + 2];
+			if(null != mParamList && !mParamList.isEmpty()) {
 				buffer.append(" where ");
 			}
 			int index = 0;
-			for(String key : mParams.keySet()) {
-				buffer.append(" " + key + "=? and");
-				values[index] = mParams.get(key);
+			for(DbParam param : mParamList) {
+				buffer.append(" " + param.key + param.contact + "? and");
+				values[index] = param.value;
 				index ++;
 			}
-			if(buffer.toString().endsWith("and")) {
-				sqlStr = buffer.substring(0, buffer.length() - 3);
+			if(null == orKeySet || orKeySet.size() == 0){
+				if(buffer.toString().endsWith("and")) {
+					sqlStr = buffer.substring(0, buffer.length() - 3);
+				}
+			}else{
+				buffer.append(" (");
+				for(String key : orKeySet) {
+					buffer.append(" " + key + "=? or");
+					values[index] = mOrParams.get(key);
+					index ++;
+				}
+				if(buffer.toString().endsWith("or")) {
+					sqlStr = buffer.substring(0, buffer.length() - 2);
+				}
+				sqlStr = sqlStr + ")";
 			}
 			
 			return JDBCUtil.queryCount(sqlStr, values);

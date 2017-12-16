@@ -9,6 +9,9 @@ public class PreSaleRecord {
 	
 	private int id;//关键字
 	private String orderNum;//订单号
+	private String wangWang;//订单表数据太多，单独存一份
+	private long orderCreateTime;
+	private long orderPayTime;
 	private int doneOrderUserId;//落实下单的售前人员
 	private int donePayUserId;//落实付款的售前人员
 	private String remark;//备注
@@ -25,6 +28,11 @@ public class PreSaleRecord {
 	private String financeCheckRemark;//财审备注
 	private int financeCheck;//财审 0未审核；1审核通过；2审核未通过
 	private int isVirtual;//是否刷单
+	private int selfCheckUserId;//自审人员id
+	private long selfCheckTime;//自审时间
+	private int financeCheckUserId;//财审人员id
+	private long financeCheckTime;//财审时间
+	
 	
 	public int getId() {
 		return id;
@@ -37,6 +45,24 @@ public class PreSaleRecord {
 	}
 	public void setOrderNum(String orderNum) {
 		this.orderNum = orderNum;
+	}
+	public String getWangWang() {
+		return wangWang;
+	}
+	public void setWangWang(String wangWang) {
+		this.wangWang = wangWang;
+	}
+	public long getOrderCreateTime() {
+		return orderCreateTime;
+	}
+	public void setOrderCreateTime(long orderCreateTime) {
+		this.orderCreateTime = orderCreateTime;
+	}
+	public long getOrderPayTime() {
+		return orderPayTime;
+	}
+	public void setOrderPayTime(long orderPayTime) {
+		this.orderPayTime = orderPayTime;
 	}
 	public int getDoneOrderUserId() {
 		return doneOrderUserId;
@@ -133,6 +159,30 @@ public class PreSaleRecord {
 	}
 	public void setIsVirtual(int isVirtual) {
 		this.isVirtual = isVirtual;
+	}
+	public int getSelfCheckUserId() {
+		return selfCheckUserId;
+	}
+	public void setSelfCheckUserId(int selfCheckUserId) {
+		this.selfCheckUserId = selfCheckUserId;
+	}
+	public long getSelfCheckTime() {
+		return selfCheckTime;
+	}
+	public void setSelfCheckTime(long selfCheckTime) {
+		this.selfCheckTime = selfCheckTime;
+	}
+	public int getFinanceCheckUserId() {
+		return financeCheckUserId;
+	}
+	public void setFinanceCheckUserId(int financeCheckUserId) {
+		this.financeCheckUserId = financeCheckUserId;
+	}
+	public long getFinanceCheckTime() {
+		return financeCheckTime;
+	}
+	public void setFinanceCheckTime(long financeCheckTime) {
+		this.financeCheckTime = financeCheckTime;
 	}
 	
 }

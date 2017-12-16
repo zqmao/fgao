@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import base.api.User;
 import base.api.vo.PreSaleRecordVO;
 import base.dao.PreSaleRecordDAO;
 import base.dao.UserDAO;
+import base.util.DateUtil;
 
 public class PreSaleRecordServlet extends BaseServlet {
 
@@ -64,6 +66,12 @@ public class PreSaleRecordServlet extends BaseServlet {
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
 			String select = request.getParameter("selectUser");
+			String selfCheck = request.getParameter("selfCheck");
+			String orderNum = request.getParameter("orderNum");
+			String orderCreateStartTime = request.getParameter("orderCreateStartTime");
+			String orderCreateEndTime = request.getParameter("orderCreateEndTime");
+			String orderPayStartTime = request.getParameter("orderPayStartTime");
+			String orderPayEndTime = request.getParameter("orderPayEndTime");
 			int selectUser = 0;
 			if (select == null || select.length() == 0) {
 				selectUser = currentUser.getId();
@@ -72,8 +80,8 @@ public class PreSaleRecordServlet extends BaseServlet {
 			}
 			int index = (page - 1) * rows;
 			List<PreSaleRecordVO> result = new ArrayList<PreSaleRecordVO>();
-			long total = PreSaleRecordDAO.getInstance().listCount(selectUser);
-			List<PreSaleRecord> records = PreSaleRecordDAO.getInstance().list(selectUser, index, rows);
+			long total = PreSaleRecordDAO.getInstance().listCount(selectUser, selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime);
+			List<PreSaleRecord> records = PreSaleRecordDAO.getInstance().list(selectUser, selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime, index, rows);
 			for (PreSaleRecord record : records) {
 				PreSaleRecordVO vo = new PreSaleRecordVO(record);
 				result.add(vo);
@@ -101,6 +109,8 @@ public class PreSaleRecordServlet extends BaseServlet {
 				record.setSpecialGift(specialGift);
 				record.setSelfCheckRemark(selfCheckRemark);
 				record.setSelfCheck(1);
+				record.setSelfCheckUserId(currentUser.getId());
+				record.setSelfCheckTime(System.currentTimeMillis());
 			}
 			PreSaleRecordDAO.getInstance().saveOrUpdate(record);
 			responseSuccess("自审完成");
@@ -116,6 +126,8 @@ public class PreSaleRecordServlet extends BaseServlet {
 			if (record != null) {
 				record.setFinanceCheckRemark(financeCheckRemark);
 				record.setFinanceCheck(Integer.parseInt(financeCheck));
+				record.setFinanceCheckUserId(currentUser.getId());
+				record.setFinanceCheckTime(System.currentTimeMillis());
 			}
 			PreSaleRecordDAO.getInstance().saveOrUpdate(record);
 			responseSuccess("自审完成");
@@ -280,6 +292,9 @@ public class PreSaleRecordServlet extends BaseServlet {
 				}
 				i++;
 				String orderNum = reader.get(0);
+				String wangWang = reader.get(1);
+				String orderCreateTime = reader.get(4);
+				String orderPayTime = reader.get(5);
 				String doneOrderUserName = reader.get(6);
 				String donePayUserName = reader.get(7);
 				if (null == donePayUserName || donePayUserName.length() == 0) {
@@ -294,6 +309,9 @@ public class PreSaleRecordServlet extends BaseServlet {
 					record.setImportUserId(currentUser.getId());
 				}
 				record.setOrderNum(orderNum);
+				record.setWangWang(wangWang);
+				record.setOrderCreateTime(DateUtil.getTimeInMillis(orderCreateTime));
+				record.setOrderPayTime(DateUtil.getTimeInMillis(orderPayTime));
 				User doneOrderUser = UserDAO.getInstance().query(doneOrderUserName);
 				if (doneOrderUserName != null && donePayUserName.equals(doneOrderUserName)) {
 					if (null == doneOrderUser) {

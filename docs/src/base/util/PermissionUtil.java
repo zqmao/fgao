@@ -179,6 +179,22 @@ public class PermissionUtil {
 		}
 	}
 	/*
+	 * 是否有代别人自审的权限
+	 */
+	public static boolean checkInstead(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getInstead()!= 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	/*
 	 * 是否是财务
 	 */
 	public static boolean checkFinance(HttpServletRequest request, HttpServletResponse response){
