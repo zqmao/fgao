@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2017-11-18 20:23:49
+Date: 2017-12-17 12:57:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,6 @@ CREATE TABLE `t_after_sale_come_record` (
   `shopName` varchar(255) DEFAULT NULL,
   `goodsName` varchar(255) DEFAULT NULL,
   `checkResult` varchar(255) DEFAULT NULL,
-  `wangwang` varchar(255) DEFAULT NULL,
   `phoneNum` varchar(255) DEFAULT NULL,
   `orderNum` varchar(255) DEFAULT NULL,
   `unpackId` int(11) DEFAULT NULL,
@@ -37,7 +36,7 @@ CREATE TABLE `t_after_sale_come_record` (
   `createTime` bigint(20) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=476 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=496 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_after_sale_entry
@@ -198,7 +197,7 @@ CREATE TABLE `t_draw_bill` (
   `billTime` bigint(20) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_export_order_list
@@ -257,7 +256,7 @@ CREATE TABLE `t_express_reissue` (
   `issuRemark` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_goods
@@ -331,6 +330,7 @@ DROP TABLE IF EXISTS `t_pre_sale_record`;
 CREATE TABLE `t_pre_sale_record` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderNum` varchar(255) DEFAULT NULL,
+  `wangWang` varchar(20) DEFAULT NULL,
   `doneOrderUserId` int(11) DEFAULT NULL,
   `donePayUserId` int(11) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
@@ -347,8 +347,15 @@ CREATE TABLE `t_pre_sale_record` (
   `financeCheckRemark` varchar(255) DEFAULT NULL,
   `financeCheck` int(11) DEFAULT NULL,
   `isVirtual` int(11) unsigned zerofill DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+  `selfCheckUserId` int(20) DEFAULT NULL,
+  `selfCheckTime` bigint(20) DEFAULT NULL,
+  `financeCheckUserId` int(20) DEFAULT NULL,
+  `financeCheckTime` bigint(20) DEFAULT NULL,
+  `orderCreateTime` bigint(20) DEFAULT NULL COMMENT '订单创建时间',
+  `orderPayTime` bigint(20) DEFAULT NULL COMMENT '订单付款时间',
+  PRIMARY KEY (`id`),
+  KEY `PRE_SALE_ORDER_NUM` (`orderNum`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=83999 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_sign_record
@@ -385,10 +392,11 @@ CREATE TABLE `t_user` (
   `export` int(11) DEFAULT '0',
   `editor` int(11) DEFAULT NULL,
   `drawBill` int(11) DEFAULT '0' COMMENT '是否有开发票的权限 1有，0无',
-  `importPreSale` int(10) unsigned zerofill DEFAULT NULL,
-  `finance` int(10) unsigned zerofill DEFAULT NULL,
+  `importPreSale` int(10) unsigned zerofill DEFAULT NULL COMMENT '导入售前表格权限',
+  `finance` int(10) unsigned zerofill DEFAULT NULL COMMENT '财审权限',
+  `instead` int(11) DEFAULT NULL COMMENT '代替他人自审权限',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_user_category
