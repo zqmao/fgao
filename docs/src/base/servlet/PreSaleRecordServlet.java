@@ -38,6 +38,7 @@ import base.api.User;
 import base.api.vo.PreSaleRecordVO;
 import base.dao.PreSaleRecordDAO;
 import base.dao.UserDAO;
+import base.util.Constant;
 import base.util.CsvUtil;
 import base.util.DateUtil;
 
@@ -197,13 +198,10 @@ public class PreSaleRecordServlet extends BaseServlet {
 			String orderCreateEndTime = request.getParameter("orderCreateEndTime");
 			String orderPayStartTime = request.getParameter("orderPayStartTime");
 			String orderPayEndTime = request.getParameter("orderPayEndTime");
-			List<PreSaleRecordVO> result = new ArrayList<PreSaleRecordVO>();
 			int total = (int)PreSaleRecordDAO.getInstance().listCount(Integer.parseInt(select), selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime);
 			List<PreSaleRecord> records = PreSaleRecordDAO.getInstance().list(Integer.parseInt(select), selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime, 0, total);
 			String fileName = "/pre_sale_record_export_" + System.currentTimeMillis() + ".csv";
-			String txtPath = "http://" + request.getLocalAddr() + ":"
-					+ request.getLocalPort() + "/"
-					+ request.getContextPath() + "/upload/preSale/" + fileName;
+			String txtPath = Constant.PRE_SALE_UPLOAD_PATH + fileName;
 			createAndExport(records, fileName);
 			responseSuccess(txtPath);
 		}
@@ -400,6 +398,6 @@ public class PreSaleRecordServlet extends BaseServlet {
 			item.add(record.getRemark());
 			data.add(item);
 		}
-		CsvUtil.createCSVFile(head, data, request.getRealPath("/upload/preSale"), fileName);
+		CsvUtil.createCSVFile(head, data, request.getRealPath(Constant.PRE_SALE_UPLOAD_PATH), fileName);
 	}
 }

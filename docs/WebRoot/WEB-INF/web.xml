@@ -235,7 +235,16 @@
 		<servlet-name>PreSaleRecordServlet</servlet-name>
 		<url-pattern>/preSaleRecordServlet.do</url-pattern>
 	</servlet-mapping>
-	
+	<servlet>
+		<description>DownloadServlet</description>
+		<display-name>DownloadServlet</display-name>
+		<servlet-name>DownloadServlet</servlet-name>
+		<servlet-class>base.servlet.DownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadServlet</servlet-name>
+		<url-pattern>/downloadServlet.do</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>

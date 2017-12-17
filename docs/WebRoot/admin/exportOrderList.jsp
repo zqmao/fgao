@@ -263,7 +263,7 @@
  				    		alert(data.reason);
  				    	}else{
  				    		var path = data.data;
- 				    		$("#textPath").attr("href",path);
+ 				    		$("#textPath").attr("href","../downloadServlet.do?path=" + path);
  				    	}
  				    }
  				});

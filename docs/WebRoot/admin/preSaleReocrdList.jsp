@@ -32,6 +32,7 @@
 			var isFinanceCheck = false;
 			var status = "0";
             $(function() {
+            	$("#exportDownload").dialog('close');
             	$("#option_user").combobox({
                     url:'../userServlet.do?sign=select',
                     valueField:'id',
@@ -271,10 +272,17 @@
                     data: "selectUser=" + queryParams.selectUser + "&selfCheck=" + queryParams.selfCheck + "&orderNum=" + queryParams.orderNum
                     + "&orderCreateStartTime=" + queryParams.orderCreateStartTime + "&orderCreateEndTime=" + queryParams.orderCreateEndTime
                     + "&orderPayStartTime=" + queryParams.orderPayStartTime+ "&orderPayEndTime=" + queryParams.orderPayEndTime,
-                    success: function(msg) {
+                    success: function(result) {
                     	MaskUtil.unmask(); 
                         //弹出一个dialog上面是下载地址
-                        
+                    	$("#exportDownload").dialog({top:200,modal:true}).dialog('open');
+                    	var data = eval('(' + result + ')');
+ 				    	if(data.result == 0){
+ 				    		alert(data.reason);
+ 				    	}else{
+ 				    		var path = data.data;
+ 				    		$("#textPath").attr("href","../downloadServlet.do?path=" + path);
+ 				    	}
                     },
                     error: function(msg) {
                     	MaskUtil.unmask(); 
@@ -384,6 +392,9 @@
 		</table>
 		<div title="售前记录" class="easyui-panel" style="width: 100%">
 			<table id="preSaleRecordGrid" style="height: 600px;"></table>
+		</div>
+		<div id="exportDownload" class="easyui-dialog" title="下载" style="width:300px;height:100px;padding-top: 20px;padding-left: 50px;">
+		    <a id="textPath" target="_blank" href="#">点击下载导出结果</a>
 		</div>
 	</body>
 	<script type="text/javascript">
