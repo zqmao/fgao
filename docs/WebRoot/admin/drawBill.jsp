@@ -32,15 +32,15 @@
             	$("#copySuccess").hide();
             	/* $("#displayId").hide();  */
             	$("#addBilllist").panel({
-            		title: '添加发票记录',
+            		title: '添加发票记录'
             		
             		});
             	$("#searchBilllist").panel({
-            		title: '搜索',
+            		title: '搜索'
             		
             	});
             	$("#courierNumAscr").panel({
-            		title: '处理发票记录',
+            		title: '处理发票记录'
             		
             	});
             	if(<%=drawBill%>){
@@ -118,7 +118,7 @@
                                     orderNum: row[0].orderNum,
                                     emailOrPhone: row[0].emailOrPhone,
                                     tfn: row[0].tfn,
-                                    remark:row[0].remark,
+                                    remark:row[0].remark
                                 });
                             }
                         }

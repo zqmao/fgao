@@ -32,15 +32,15 @@
             $(function() {
             	/* $("#displayId").hide();  */
             	 $("#addOrderlist").panel({
-            		title: '添加记录',
+            		title: '添加记录'
             		
             		}); 
             	$("#searchOrderlist").panel({
-            		title: '搜索',
+            		title: '搜索'
             		
             	});
             	$("#courierNumAscr").panel({
-            		title: '补发快递记录',
+            		title: '补发快递记录'
             		
             	});
             	if(<%=export%>){
@@ -145,7 +145,7 @@
                                     orderNum: row[0].orderNum,
                                     courierNum: row[0].courierNum,
                                     expressName:row[0].expressName,
-                                    remark:row[0].remark,
+                                    remark:row[0].remark
                                     /* bounceType:row[0].bounceType
                                     status: row[0].status,
                                     issueDocumentor:row[0].issueDocumentor,

@@ -34,15 +34,15 @@
             	$("#copySuccess").hide();
             	/* $("#displayId").hide();  */
             	$("#addErlist").panel({
-            		title: '添加需要补发记录',
+            		title: '添加需要补发记录'
             		
             		});
             	$("#searchErlist").panel({
-            		title: '搜索',
+            		title: '搜索'
             		
             	});
             	$("#courierNumAscr").panel({
-            		title: '补发快递记录',
+            		title: '补发快递记录'
             		
             	});
             	/* 获取快递名称 */
@@ -297,7 +297,7 @@
                                     orderNum: row[0].orderNum,
                                     courierNum: row[0].courierNum,
                                     expressName:row[0].expressName,
-                                    remark:row[0].remark,
+                                    remark:row[0].remark
                                 });
                             }
                         }

@@ -145,18 +145,21 @@
                             {title: '录入时间', field: 'createTime', width: 150, align: 'center',formatter:jsonYearMonthDay},
                             {title: '旺旺', field: 'wangwang', width: 120, align: 'center'},
                             {title: '产品型号', field: 'goods', width: 120, align: 'center'},
-                            {title: '类别', field: 'category', width: 120, align: 'center'},
-                            {title: '标题', field: 'title', width: 200,formatter:formatCellTooltip},
-                            {title: '描述', field: 'createRemark', width: 200,formatter:formatCellTooltip},
-                            {title: '创建者', field: 'createrName', width: 100, align: 'center'},
-                            {title: '当前处理人员', field: 'currentName', width: 100, align: 'center'},
-                            {title: '完成者', field: 'finisherName', width: 100, align: 'center'},
-                            {title: '备注', field: 'finishRemark', width: 100, align: 'center',formatter:formatCellTooltip},
-                            {title: '详情', field: 'opt', width: 100, align: 'center',
-                            	formatter: function(value, rowData, rowIndex) {
-                                	return "<a href='bugDetail.jsp?bugId="+rowData.id+"' target='_blank' style='color:red'>查看详情</a>";
-                            	}
-                            }
+                            
+                        ]],
+                        columns:[[    
+							{title: '类别', field: 'category', width: 120, align: 'center'},
+							{title: '标题', field: 'title', width: 200,formatter:formatCellTooltip},
+							{title: '描述', field: 'createRemark', width: 200,formatter:formatCellTooltip},
+							{title: '创建者', field: 'createrName', width: 100, align: 'center'},
+							{title: '当前处理人员', field: 'currentName', width: 100, align: 'center'},
+							{title: '完成者', field: 'finisherName', width: 100, align: 'center'},
+							{title: '备注', field: 'finishRemark', width: 100, align: 'center',formatter:formatCellTooltip},
+							{title: '详情', field: 'opt', width: 100, align: 'center',
+								formatter: function(value, rowData, rowIndex) {
+							    	return "<a href='bugDetail.jsp?bugId="+rowData.id+"' target='_blank' style='color:red'>查看详情</a>";
+								}
+							}
                         ]],
                     loadFilter: function(data){
                    		if (data.data){

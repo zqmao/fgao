@@ -130,7 +130,7 @@
 						//loadTableData();
 					}
 					first = 0;
-				},
+				}
 				/* onBeforeLoad: function(data){
                 	//如果是在全部或者我的分类下面，不能创建文章，因为category是虚拟的
                 	if(categoryId == '-1' || categoryId == '-2'){

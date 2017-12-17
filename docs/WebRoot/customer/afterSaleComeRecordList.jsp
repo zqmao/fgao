@@ -78,15 +78,15 @@
             	
             	
             	$("#addAscr").panel({
-            		title: '添加拆包记录',
+            		title: '添加拆包记录'
             		
             		});
             	$("#searchAscr").panel({
-            		title: '搜索',
+            		title: '搜索'
             		
             	});
             	$("#courierNumAscr").panel({
-            		title: '收货记录',
+            		title: '收货记录'
             		
             	});
             	 if(<%=after%>){
@@ -243,7 +243,7 @@
                                     orderNum: row[0].orderNum,
                                     remark: row[0].remark,
                                    // status: row[0].status,
-                                    bounceType: row[0].bounceType,
+                                    bounceType: row[0].bounceType
                                 });
                                /*  $('#courierNumA').attr("disabled",true); 
                             	$('#orderNO').attr("disabled",true);  */
