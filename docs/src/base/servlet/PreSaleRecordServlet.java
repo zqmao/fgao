@@ -38,6 +38,7 @@ import base.api.User;
 import base.api.vo.PreSaleRecordVO;
 import base.dao.PreSaleRecordDAO;
 import base.dao.UserDAO;
+import base.util.CsvUtil;
 import base.util.DateUtil;
 
 public class PreSaleRecordServlet extends BaseServlet {
@@ -184,6 +185,27 @@ public class PreSaleRecordServlet extends BaseServlet {
 				e.printStackTrace();
 			}
 
+		}else if ("export".equals(sign)) {
+			if (currentUser == null) {
+				responseError("需要登录");
+				return;
+			}
+			String select = request.getParameter("selectUser");
+			String selfCheck = request.getParameter("selfCheck");
+			String orderNum = request.getParameter("orderNum");
+			String orderCreateStartTime = request.getParameter("orderCreateStartTime");
+			String orderCreateEndTime = request.getParameter("orderCreateEndTime");
+			String orderPayStartTime = request.getParameter("orderPayStartTime");
+			String orderPayEndTime = request.getParameter("orderPayEndTime");
+			List<PreSaleRecordVO> result = new ArrayList<PreSaleRecordVO>();
+			int total = (int)PreSaleRecordDAO.getInstance().listCount(Integer.parseInt(select), selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime);
+			List<PreSaleRecord> records = PreSaleRecordDAO.getInstance().list(Integer.parseInt(select), selfCheck, orderNum, orderCreateStartTime, orderCreateEndTime, orderPayStartTime, orderPayEndTime, 0, total);
+			String fileName = "/pre_sale_record_export_" + System.currentTimeMillis() + ".csv";
+			String txtPath = "http://" + request.getLocalAddr() + ":"
+					+ request.getLocalPort() + "/"
+					+ request.getContextPath() + "/upload/preSale/" + fileName;
+			createAndExport(records, fileName);
+			responseSuccess(txtPath);
 		}
 
 	}
@@ -343,4 +365,41 @@ public class PreSaleRecordServlet extends BaseServlet {
 		}
 	}
 
+	private void createAndExport(List<PreSaleRecord> records, String fileName){
+		List<Object> head = new ArrayList<Object>();
+		head.add("订单编号");
+		head.add("旺旺名");
+		head.add("订单标题");
+		head.add("优惠券金额");
+		head.add("好评返现");
+		head.add("返差价");
+		head.add("退款金额");
+		head.add("特殊快递");
+		head.add("特殊礼物");
+		head.add("自审备注");
+		head.add("自审状态");
+		head.add("财审状态");
+		head.add("财审备注");
+		head.add("备注");
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(PreSaleRecord record : records){
+			List<Object> item = new ArrayList<Object>();
+			item.add(record.getOrderNum());
+			item.add(record.getWangWang() != null ? record.getWangWang() : "");
+			item.add(record.getOrderNum());
+			item.add(record.getCouponQuota() != null ? record.getCouponQuota() : "");
+			item.add(record.getPraiseMoney() != null ? record.getPraiseMoney() : "");
+			item.add(record.getDifferenceMoney() != null ? record.getDifferenceMoney() : "");
+			item.add(record.getReturnMoney() != null ? record.getReturnMoney() : "");
+			item.add(record.getSpecialExpress() != null ? record.getSpecialExpress() : "");
+			item.add(record.getSpecialGift() != null ? record.getSpecialGift() : "");
+			item.add(record.getSelfCheckRemark() != null ? record.getSelfCheckRemark() : "");
+			item.add(record.getSelfCheck() == 0 ? "未自审" : "完成自审");
+			item.add(record.getFinanceCheck() == 0 ? "未财审" : (record.getFinanceCheck() == 1 ? "财审通过" : "财审不通过"));
+			item.add(record.getFinanceCheckRemark() != null ? record.getFinanceCheckRemark() : "");
+			item.add(record.getRemark());
+			data.add(item);
+		}
+		CsvUtil.createCSVFile(head, data, request.getRealPath("/upload/preSale"), fileName);
+	}
 }

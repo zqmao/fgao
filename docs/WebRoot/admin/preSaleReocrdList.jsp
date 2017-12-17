@@ -254,6 +254,34 @@
             	queryParams.orderPayEndTime = $("#orderPayEndTime").val();
             	$("#preSaleRecordGrid").datagrid("reload");
             }
+          	//导出
+            function submitExport(){
+            	var queryParams =$("#preSaleRecordGrid").datagrid("options").queryParams;
+            	queryParams.selectUser = $("#option_user").val();
+            	queryParams.selfCheck = $("#option_status").val();
+            	queryParams.orderNum = $("#orderNum").val();
+            	queryParams.orderCreateStartTime = $("#orderCreateStartTime").val();
+            	queryParams.orderCreateEndTime = $("#orderCreateEndTime").val();
+            	queryParams.orderPayStartTime = $("#orderPayStartTime").val();
+            	queryParams.orderPayEndTime = $("#orderPayEndTime").val();
+            	MaskUtil.mask();
+				$.ajax({
+                    type: "POST",
+                    url: "../preSaleRecordServlet.do?sign=export",
+                    data: "selectUser=" + queryParams.selectUser + "&selfCheck=" + queryParams.selfCheck + "&orderNum=" + queryParams.orderNum
+                    + "&orderCreateStartTime=" + queryParams.orderCreateStartTime + "&orderCreateEndTime=" + queryParams.orderCreateEndTime
+                    + "&orderPayStartTime=" + queryParams.orderPayStartTime+ "&orderPayEndTime=" + queryParams.orderPayEndTime,
+                    success: function(msg) {
+                    	MaskUtil.unmask(); 
+                        //弹出一个dialog上面是下载地址
+                        
+                    },
+                    error: function(msg) {
+                    	MaskUtil.unmask(); 
+                        alert(msg.toString());
+                    }
+                });
+            }
           	
             function submitUpload(){
             	MaskUtil.mask();
@@ -324,6 +352,9 @@
 							</td>
 							<td class="manage-detail-con" >
 								<a class="custom" onclick="submitSearch();">搜索</a>
+							</td>
+							<td class="manage-detail-con" >
+								<a class="custom" onclick="submitExport();">导出</a>
 							</td>
 						</tr>
 					</table>
