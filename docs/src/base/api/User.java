@@ -24,6 +24,7 @@ public class User {
 	private int editor;//是否有编辑知识库的权限
 	private int drawBill;//是否有开发票的权限
 	private int importPreSale;//是否具有导入售前记录的权限
+	private int exportPreSale;//是否具有导出售前记录的权限
 	private int finance;//是否是财务
 	private int instead;//是否有代自审权限
 	
@@ -130,6 +131,12 @@ public class User {
 	}
 	public void setImportPreSale(int importPreSale) {
 		this.importPreSale = importPreSale;
+	}
+	public int getExportPreSale() {
+		return exportPreSale;
+	}
+	public void setExportPreSale(int exportPreSale) {
+		this.exportPreSale = exportPreSale;
 	}
 	public int getFinance() {
 		return finance;

@@ -179,6 +179,22 @@ public class PermissionUtil {
 		}
 	}
 	/*
+	 * 是否具有导出售前记录的权限
+	 */
+	public static boolean checkExportPreSale(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("loginUser");
+		if(user == null){
+			redirectLogin(request, response);
+			return false;
+		}else{
+			if(user.getExportPreSale()!= 1){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	/*
 	 * 是否有代别人自审的权限
 	 */
 	public static boolean checkInstead(HttpServletRequest request, HttpServletResponse response){

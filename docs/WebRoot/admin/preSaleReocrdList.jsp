@@ -6,6 +6,10 @@
 	if(userId != 0){
 		importPreSale = PermissionUtil.checkImportPreSale(request, response);
 	}
+	boolean exportPreSale = false;
+	if(userId != 0){
+		exportPreSale = PermissionUtil.checkExportPreSale(request, response);
+	}
 	boolean instead = false;
 	if(userId != 0){
 		instead = PermissionUtil.checkInstead(request, response);
@@ -62,6 +66,11 @@
             		$("#uploadPreSaleRecord").show();
             	}else{
             		$("#uploadPreSaleRecord").hide();
+            	}
+            	if(<%=exportPreSale%>){
+            		$("#exportPreSaleTd").show();
+            	}else{
+            		$("#exportPreSaleTd").hide();
             	}
             });
             
@@ -361,7 +370,7 @@
 							<td class="manage-detail-con" >
 								<a class="custom" onclick="submitSearch();">搜索</a>
 							</td>
-							<td class="manage-detail-con" >
+							<td id="exportPreSaleTd" class="manage-detail-con" >
 								<a class="custom" onclick="submitExport();">导出</a>
 							</td>
 						</tr>
