@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2017-12-17 13:11:28
+Date: 2017-12-23 10:21:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -395,6 +395,7 @@ CREATE TABLE `t_user` (
   `importPreSale` int(10) unsigned zerofill DEFAULT NULL COMMENT '导入售前表格权限',
   `finance` int(10) unsigned zerofill DEFAULT NULL COMMENT '财审权限',
   `instead` int(11) DEFAULT NULL COMMENT '代替他人自审权限',
+  `exportPreSale` int(10) unsigned zerofill DEFAULT '0000000000' COMMENT '是否有导出售前记录权限',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
