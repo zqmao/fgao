@@ -32,13 +32,14 @@ public class AfterSaleComeRecordVO {
 	//private String status;//处理状态
 	
 	private String bounceType;//退件类型
+	
+	private String wangwang;
+	
 	/*private String reissueCourierNum;//补发快递单号
 	private String reissueExpressName;//补发快递名称
 	private String reissueGoodsName;//补发物品名称
 	private String reissueAddress;//补发地址
 */	
-	
-	private String wangWang;
 	
 	public AfterSaleComeRecordVO(AfterSaleComeRecord afterSaleComeRecord){
 		this.id = afterSaleComeRecord.getId();
@@ -61,15 +62,16 @@ public class AfterSaleComeRecordVO {
 		user = UserDAO.getInstance().load(afterSaleComeRecord.getUnpackId());
 		this.unpackor = user != null ? user.getName() : "";
 		this.bounceType = afterSaleComeRecord.getBounceType();
+		//this.wangwang = afterSaleComeRecord.getWangwang();
 		
 		if(null == orderNum){
-			this.wangWang = "未知";
+			this.wangwang = "未知";
 		}else{
 			ExportOrderList order = ExportOrderListDAO.getInstance().query(orderNum);
 			if(null != order){
-				this.wangWang = order.getWangwang();
+				this.wangwang = order.getWangwang();
 			}else{
-				this.wangWang = "未知";
+				this.wangwang = "未知";
 			}
 		}
 	}
@@ -197,12 +199,12 @@ public class AfterSaleComeRecordVO {
 		this.remark = remark;
 	}
 
-	public String getWangWang() {
-		return wangWang;
+	public String getWangwang() {
+		return wangwang;
 	}
 
-	public void setWangWang(String wangWang) {
-		this.wangWang = wangWang;
+	public void setWangwang(String wangwang) {
+		this.wangwang = wangwang;
 	}
 
 }

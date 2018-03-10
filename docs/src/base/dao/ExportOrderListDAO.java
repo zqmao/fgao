@@ -2,6 +2,8 @@ package base.dao;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+
 import base.api.ExportOrderList;
 import base.dao.core.BaseDAO;
 import base.dao.core.JDBCUtil;
@@ -74,6 +76,31 @@ public class ExportOrderListDAO extends BaseDAO<ExportOrderList>{
 		String thirdMonth = month.substring(0, 4) + "-" + monthInt;
 		String sql = "select * from t_export_order_list where courierNum=? and (orderCreateTime like '"+month+"%' or orderCreateTime like '"+otherMonth+"%' or orderCreateTime like '"+thirdMonth+"%')";
 		return JDBCUtil.queryObject(sql, ExportOrderList.class, courierNum);
+	}
+	
+	//售后根据旺旺查询
+	@SuppressWarnings("null")
+	public String queryByWang(String wangwang){
+		String sql = "select orderNum,wangwang from t_export_order_list where wangwang LIKE '%"+wangwang+"%'; ";
+		List<ExportOrderList> objs = JDBCUtil.queryObjectList(sql, ExportOrderList.class);
+		
+		System.out.println(JSON.toJSON(objs).toString());
+		
+		 if(objs != null){
+			 return "";
+		 }else{
+			 StringBuffer orderNumIn = new StringBuffer(" OrderNum IN (");
+			 for(ExportOrderList el : objs){
+				 orderNumIn.append("'"+el.getOrderNum()+"',");
+			 }
+			 orderNumIn.deleteCharAt(orderNumIn.length() - 1);
+			 
+			 orderNumIn.append(")");
+			 System.out.println(orderNumIn.toString());
+			 
+			 return orderNumIn.toString();
+		 }
+		
 	}
 
 }

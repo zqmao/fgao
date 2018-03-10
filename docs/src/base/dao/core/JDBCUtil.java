@@ -26,7 +26,7 @@ public class JDBCUtil {
 	 */
 	@SuppressWarnings("resource")
 	public static int updateOrSave(String sqlStr, List<Object> values) {
-		//System.out.println("JDBCUtil SQL: " + sqlStr);
+		System.out.println("JDBCUtil SQL: " + sqlStr);
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -119,6 +119,44 @@ public class JDBCUtil {
 			rs = getResultSet(ps, sqlStr, params);
 			while (rs.next()) {
 				objs.add(getObject(rs, clazz));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free(rs, ps, con);
+		}
+		return objs;
+	}
+	
+	/**
+	 * 这个函数查询出来的将查出来的所有列的值放在list里面 每一条list记录有很多Object,用数组存储
+	 * 
+	 * @param sqlStr
+	 * @param params
+	 *            参数值
+	 * @return
+	 */
+	public static <T> List<T> querySQL(String sqlStr) {
+		System.out.println("JDBCUtil SQL: " + sqlStr);
+		List objs = new ArrayList();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ResultSetMetaData rsd = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(sqlStr);
+			rs = ps.executeQuery(sqlStr);
+			while (rs.next()) {
+				
+				rsd = rs.getMetaData();
+				int cols = rsd.getColumnCount();// 所有列数
+				JSONObject obj = new JSONObject();
+				for (int i = 0; i < cols; i++) {
+					String columnName = rsd.getColumnName(i + 1);
+					obj.put(columnName, rs.getObject(i + 1));
+				}
+				objs.add(JSON.parseObject(obj.toJSONString()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

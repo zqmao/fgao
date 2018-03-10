@@ -25,6 +25,8 @@ public class AfterSaleComeRecord {
 	
 	private String bounceType;//退件类型
 	
+	private String wangwang;
+	
 	/*private String reissueCourierNum;//补发快递单号
 	private String reissueExpressName;//补发快递名称
 	private String reissueGoodsName;//补发物品名称
@@ -128,5 +130,13 @@ public class AfterSaleComeRecord {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getWangwang() {
+		return wangwang;
+	}
+
+	public void setWangwang(String wangwang) {
+		this.wangwang = wangwang;
 	}
 }

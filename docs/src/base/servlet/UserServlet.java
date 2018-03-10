@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import base.api.User;
 import base.dao.UserDAO;
+import base.listener.OnlineUserBindingListener;
 
 public class UserServlet extends BaseServlet {
 
@@ -49,6 +50,10 @@ public class UserServlet extends BaseServlet {
 				if(dbPassword.equals(password)){
 					responseSuccess(JSON.toJSON(dbUser));
 					request.getSession().setAttribute("loginUser", dbUser);
+					
+					// 把用户名放入在线列表
+					request.getSession().setAttribute("onlineUserBindingListener", new OnlineUserBindingListener(dbUser.getLoginName()));
+					
 				}else{
 					responseError("登录失败,密码错误");
 				}
@@ -115,7 +120,17 @@ public class UserServlet extends BaseServlet {
 				array.add(obj);
 			}
 			responseSuccess(JSON.toJSON(array));
-		} else if ("edit".equals(sign)) {// 查询列表
+		} else if ("selected".equals(sign)) {// 查询列表
+			List<User> result = UserDAO.getInstance().queryForAll();
+			JSONArray array = new JSONArray();
+			for(User user : result){
+				JSONObject obj = new JSONObject();
+				obj.put("id", user.getId());
+				obj.put("text", user.getName());
+				array.add(obj);
+			}
+			returnJson(JSON.toJSON(array));
+		}else if ("edit".equals(sign)) {// 查询列表
 			if(currentUser == null){
 				responseError("需要登录");
 				return;

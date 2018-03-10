@@ -17,17 +17,8 @@
 	<script type="text/javascript" src="../easyUi/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyUi/easyui-lang-zh_CN.js"></script>
 	<style type="text/css">
-				.mask{ 
-				background: #000;
-				opacity: .6;
-				filter:alpha(opacity=60);
-				position:absolute;
-				left:0;
-				top:0;
-				width:100%;
-				height:100%;/*动态获取，这里设置高度是为了测试*/
-				z-index:1000;
-				}
+			.mask{ background: #000;opacity: .6;filter:alpha(opacity=60);position:absolute;left:0;top:0;width:100%;
+				height:100%;/*动态获取，这里设置高度是为了测试*/z-index:1000;}
 </style>
 	<link rel="stylesheet" type="text/css" href="../css/templatecss.css"/>
 	<script type="text/javascript">
@@ -127,12 +118,13 @@
                  );
             	
             	 /* 查询时获取快递名称*/
-            	 $("#option_express2").combobox({
+            /* 	 $("#option_express2").combobox({
                      url:'../expressReissueServlet.do?sign=select',
                      valueField:'text',
                      textField:'text',
                      loadFilter: function(data){
                     		if (data.data){
+                    			console.log(data.data);
                     			$("#option_express2").combobox('select',"全部");
                     			return data.data;
                     		} else {
@@ -140,7 +132,7 @@
                     		}
                     	}
                  }
-                 );
+                 ); */
             	 /* 查询时获取快递名称 */
             	 $("#reissueExpressName").combobox({
                      url:'../expressReissueServlet.do?sign=select',
@@ -164,8 +156,6 @@
                     checkOnSelect: true,
                     pagination: true,
                     url: "../afterSaleComeRecordServlet.do?sign=list",
-                    queryParams:{selectExpress : expressName2, courierNum : courierNum,courierNumA:courierNumA, bounceType:bounceType,afterSaTor:afterSaTor,
-                    	shopName : shopName, goodsName : goodsName, orderNum : orderNum, phoneNum : phoneNum,wangwang :wangwang,creator : creator,allSearch : allSearch},
                     frozenColumns: [[
                             {field: 'ck', checkbox: true},
                             {title: '编号', field: 'id', width: 50},
@@ -174,13 +164,12 @@
                             {title: '店铺名称', field: 'shopName', width: 100, align: 'center'},
                             {title: '快递名称', field: 'expressName', width: 50, align: 'center'},
                             {title: '检查结果', field: 'checkResult', width: 100, align: 'center'},
-                            {title: '旺旺', field: 'wangWang', width: 100, align: 'center'},
+                            {title: '旺旺', field: 'wangwang', width: 100, align: 'center'},
                             {title: '售后人员', field: 'afterSaTor', width: 100, align: 'center'},
                             {title: '手机号', field: 'phoneNum', width: 90, align: 'center'},
                             {title: '订单号', field: 'orderNum', width: 100, align: 'center'},
                             {title: '创建人员', field: 'creator', width: 90, align: 'center'},
                             {title: '退件类型', field: 'bounceType', width: 90, align: 'center'},
-                            
                             {title: '拆包人员', field: 'unpackor', width: 90, align: 'center'},
                             {title: '拆包时间', field: 'createTime', width: 130, align: 'center'},
                             {title: '收件时间', field: 'entryTime', width: 130, align: 'center'},
@@ -378,28 +367,20 @@
              }
             //查询
             function submitSearch(){
-            	courierNum = $("#courierNum").val();
-            	goodsName = $("#goodsName").val();
-            	orderNum = $("#orderNum").val();
-            	phoneNum = $("#phoneNum").val();
-            	afterSaTor = $("#afterSaTor").val();
-            	bounceType = $("#bounceType").val();
-            	creator = $("#creator").val();
-            	shopName = $("#shopName").val();
-            	allSearch = $("#allSearch").val();
-            	expressName2 = $("#option_express2").val();
-            	var queryParams =$("#ascrGrid").datagrid("options").queryParams;
-            	queryParams.courierNum = courierNum;
-            	queryParams.goodsName = goodsName;
-            	queryParams.orderNum = orderNum;
-            	queryParams.phoneNum = phoneNum;
-            	queryParams.afterSaTor = afterSaTor;
-            	queryParams.bounceType = bounceType;
-            	queryParams.creator = creator;
-            	queryParams.shopName = shopName;
-            	queryParams.allSearch = allSearch;
-            	queryParams.expressName2 = expressName2;
-            	$("#ascrGrid").datagrid("reload");
+  
+            	$('#ascrGrid').datagrid('load',{
+             		li_courierNum: $("#courierNum").val(),
+             		li_goodsName : $("#goodsName").val(),
+	            	li_orderNum : $("#orderNum").val(),
+	            	li_phoneNum : $("#phoneNum").val(),
+	            	li_afterSaTor : $("#afterSaTor").val(),
+	            	li_bounceType : $("#bounceType").val(),
+	            	li_creator : $("#creator").val(),
+	            	li_shopName : $("#shopName").val(),	            	
+	            	li_expressName : $("#option_express2").val(),
+	            	allSearch : $("#allSearch").val(),
+	            	wangwang : $("#wangwang").val()
+             	});
             	
             }
               
@@ -542,6 +523,7 @@
             	
             }
             
+    
         </script>
 	</head>
 
@@ -685,18 +667,31 @@
 					<tr >
 						<td>全文搜索:</td>
 						<td><input class="easyui-validatebox" name="allSearch" id="allSearch" type="text" style="width: 250px;"/></td>
-						<em  style="color:red">注：暂不支持旺旺搜索</em>
+						<em  style="color:red">注：旺旺搜索较慢~</em>
 					</tr>
 				    <tr >
 				    	<td><br/><br/></td>
 				    </tr>
 					<tr >
 						<td>快递单号:</td>
-						<td><input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/><td>
+						<td>
+						<input class="easyui-validatebox" name="courierNum2" type="text" style="width: 250px;" id="courierNum"/>
+						
+						<td>
 				    </tr>
 				    <tr >
 				        <td><label for="option_express2" style="font-size: 16px;">快递名称:</label></td>
-				        <td><input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" /></td>
+				        <td>
+				        				        
+				        <input class="easyui-combobox" id="option_express2" style="width:250px;margin-left:5px;" name="expressName2" 
+								data-options="
+										url:'../expressReissueServlet.do?sign=select',
+										method:'post',
+										valueField:'text',
+										textField:'text',
+										panelHeight:'auto'
+								">
+				        </td>
 				    </tr>
 				    <tr >
 						<td>商铺名称:</td>

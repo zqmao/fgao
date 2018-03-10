@@ -10,22 +10,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import base.api.FreshOrder;
-import base.api.Goods;
-import base.api.vo.FreshOrderVO;
-import base.api.vo.GoodsVO;
-import base.dao.FreshOrderDAO;
-import base.dao.GoodsDAO;
+import base.api.GoodsLink;
+import base.api.vo.GoodsLinkVO;
+import base.dao.GoodsLinkDAO;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-public class GoodsServlet extends BaseServlet {
+public class GoodsLinkServlet extends BaseServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	public GoodsServlet() {
+	public GoodsLinkServlet() {
 		super();
 	}
 	
@@ -41,10 +38,6 @@ public class GoodsServlet extends BaseServlet {
 			
 			int page = Integer.parseInt(request.getParameter("page"));
 			int rows = Integer.parseInt(request.getParameter("rows"));
-			String bm = request.getParameter("bm");
-			String name = request.getParameter("name");
-			String specName = request.getParameter("specName");
-			
 			
 			long total = 0;
 			int index = (page - 1) * rows;
@@ -54,14 +47,13 @@ public class GoodsServlet extends BaseServlet {
 			try {
 				sqlStr = returnSqlstr(paramMap);
 				
-	
-				List<Goods> result;
-				total = GoodsDAO.getInstance().queryCount(sqlStr);
-				result = GoodsDAO.getInstance().list(index, rows,sqlStr);
+				List<GoodsLink> result;
+				total = GoodsLinkDAO.getInstance().queryCount(sqlStr);
+				result = GoodsLinkDAO.getInstance().list(index, rows,sqlStr);
 				
-				List<GoodsVO> objs = new ArrayList<GoodsVO>();
-				for(Goods record : result){
-					GoodsVO vo = new GoodsVO(record);
+				List<GoodsLinkVO> objs = new ArrayList<GoodsLinkVO>();
+				for(GoodsLink record : result){
+					GoodsLinkVO vo = new GoodsLinkVO(record);
 					objs.add(vo);
 				}
 				JSONObject obj = new JSONObject();
@@ -81,39 +73,38 @@ public class GoodsServlet extends BaseServlet {
 			String imgLink = (String) request.getParameter("imgLink");
 			
 			
-			Goods goods = null;
+			GoodsLink goodslink = null;
 			if(id == null || id.length() == 0){
-				goods = new Goods();
-				goods.setStock(0);
+				goodslink = new GoodsLink();
 			}else{
-				goods = GoodsDAO.getInstance().load(Integer.parseInt(id));
+				goodslink = GoodsLinkDAO.getInstance().load(Integer.parseInt(id));
 			}
-			goods.setShopId(Integer.parseInt(shopId));
-			goods.setTitle(title);
-			goods.setTid(tid);
-			goods.setImgLink(imgLink);
+			goodslink.setShopId(Integer.parseInt(shopId));
+			goodslink.setTitle(title);
+			goodslink.setTid(tid);
+			goodslink.setImgLink(imgLink);
 	
-			if (goods.getId() == 0) {
-				GoodsDAO.getInstance().saveOrUpdate(goods);
+			if (goodslink.getId() == 0) {
+				GoodsLinkDAO.getInstance().saveOrUpdate(goodslink);
 				responseSuccess("添加成功");
 			} else {
-				GoodsDAO.getInstance().saveOrUpdate(goods);
+				GoodsLinkDAO.getInstance().saveOrUpdate(goodslink);
 				responseSuccess("修改成功");
 			}
 		} else if ("delete".equals(sign)) {// 删除
-			String goodsIds = (String) request.getParameter("goodsIds");
+			String goodsIds = (String) request.getParameter("id");
 			for(String goodsId : goodsIds.split(",")){
-				GoodsDAO.getInstance().delete(Integer.parseInt(goodsId));
+				GoodsLinkDAO.getInstance().delete(Integer.parseInt(goodsId));
 				//后面可能需要删除所有和货物有关的
 			}
 			responseSuccess("删除成功");
 		} else if ("select".equals(sign)) {// 查询列表
-			List<Goods> result = GoodsDAO.getInstance().queryForAll();
+			List<GoodsLink> result = GoodsLinkDAO.getInstance().queryForAll();
 			JSONArray array = new JSONArray();
-			for(Goods goods : result){
+			for(GoodsLink goods : result){
 				JSONObject obj = new JSONObject();
 				obj.put("id", goods.getId());
-				obj.put("text", goods.getName());
+				obj.put("text", goods.getTitle());
 				array.add(obj);
 			}
 			responseSuccess(JSON.toJSON(array));

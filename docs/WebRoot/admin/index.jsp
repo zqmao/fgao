@@ -96,13 +96,12 @@
 			<div class="subNavBox">
 				<div class="sBox">
 					<div class="subNav sublist-down">
-						<span class="title-icon glyphicon glyphicon-chevron-down"></span><span
-							class="sublist-title">工作相关</span>
+						<span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">工作相关</span>
 					</div>
 					<ul class="navContent" style="display: block">
 						<li>
 							<div class="showtitle" style="width: 100px;">
-								<img src="../img/leftimg.png" />评论搜集
+								<img src="../img/leftimg.png" />
 							</div> 
 							<a href="/customer/commentList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
@@ -111,7 +110,7 @@
 						</li>
 						<li>
 							<div class="showtitle" style="width: 100px;">
-								<img src="../img/leftimg.png" />待办管理
+								<img src="../img/leftimg.png" />
 							</div> 
 							<a href="/admin/bugList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
@@ -125,15 +124,6 @@
 							<a href="/admin/articleList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
 								<span class="sub-title">知识库</span>
-							</a>
-						</li>
-						<li>
-							<div class="showtitle" style="width: 100px;">
-								<img src="../img/leftimg.png" />进销存系统
-							</div> 
-							<a href="/admin/goods.jsp" target="content">
-								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
-								<span class="sub-title">进销存系统</span>
 							</a>
 						</li>
 						<li>
@@ -188,6 +178,12 @@
 							<a href="/admin/preSaleReocrdList.jsp" target="content">
 								<span class="sublist-icon glyphicon glyphicon-credit-card"></span>
 								<span class="sub-title">售前考核</span>
+							</a>
+						</li>
+						<li>
+							<a href="/admin/freshOrder.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-inbox"></span>
+								<span class="sub-title">操作管理</span>
 							</a>
 						</li>
 					</ul>
@@ -245,12 +241,51 @@
 						</li>
 					</ul>
 				</div>
+				<div class="sBox">
+				<div class="subNav sublist-up">
+						<span class="title-icon glyphicon glyphicon-chevron-up"></span><span
+							class="sublist-title">进销存系统</span>
+					</div>
+					<ul class="navContent" style="display:none;">
+						<li>
+							<a href="/admin/shop.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-compressed"></span>
+								<span class="sub-title">店铺管理</span>
+							</a>
+						</li>
+						<li>
+							<a href="/admin/goods.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-subtitles"></span>
+								<span class="sub-title">产品管理</span>
+							</a>
+						</li>
+						<li>
+							<a href="/admin/records.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-subtitles"></span>
+								<span class="sub-title">统计报表</span>
+							</a>
+						</li>
+						<li>
+							<a href="/admin/goods.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-shopping-cart"></span>
+								<span class="sub-title">采购管理</span>
+							</a>
+						</li>
+						<li>
+							<a href="/admin/goods.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-eye-open"></span>
+								<span class="sub-title">盘点管理</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+							
 			</div>
 		</div>
 		<div class="right-product my-index right-full">
-			<div class="container-fluid">
+			<div class="container-fluid" style="padding:0px;">
 				<iframe id="content" name="content" src="../default.jsp"
-					style="width: 100%; height: 1500px; border: 1px; background-color: #eceff3;" >
+					style="width: 100%;height: 1500px;border: none;padding:0px;" >
 				</iframe>
 			</div>
 		</div>

@@ -1,7 +1,9 @@
 package base.api.vo;
 
+import base.api.ExportOrderList;
 import base.api.ExpressReissue;
 import base.api.User;
+import base.dao.ExportOrderListDAO;
 import base.dao.UserDAO;
 import base.util.DateUtil;
 
@@ -33,7 +35,20 @@ public class ExpressReissueVO {
 		this.shopName = expressReissue.getShopName();
 		this.goodsName = expressReissue.getGoodsName();
 		this.orderNum = expressReissue.getOrderNum();
-		this.wangwang = expressReissue.getWangwang();
+		
+		if(null == orderNum){
+			this.wangwang = "未知";
+		}else{
+			ExportOrderList order = ExportOrderListDAO.getInstance().query(orderNum);
+			if(null != order){
+				this.wangwang = order.getWangwang();
+			}else{
+				this.wangwang = "未知";
+			}
+		}
+		
+		//this.wangwang = expressReissue.getWangwang();
+		
 		this.remark = expressReissue.getRemark()!=null ? expressReissue.getRemark(): "";
 		
 		user = UserDAO.getInstance().load(expressReissue.getIssueDocumentor());

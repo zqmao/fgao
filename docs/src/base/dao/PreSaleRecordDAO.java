@@ -26,7 +26,9 @@ public class PreSaleRecordDAO extends BaseDAO<PreSaleRecord>{
 	
 	public List<PreSaleRecord> list(int userId, String status, String orderNum, String orderCreateStartTime, String orderCreateEndTime, 
 			String orderPayStartTime, String orderPayEndTime, int index, int pagesize) {
+		
 		BaseDAO<PreSaleRecord>.QueryBuilder builder = new QueryBuilder();
+		
 		if (orderNum != null && orderNum.length() != 0) {
 			builder.eq("orderNum", orderNum);
 		}
@@ -59,7 +61,9 @@ public class PreSaleRecordDAO extends BaseDAO<PreSaleRecord>{
 	}
 	
 	public long listCount(int userId, String status, String orderNum, String orderCreateStartTime, String orderCreateEndTime, String orderPayStartTime, String orderPayEndTime) {
+		
 		BaseDAO<PreSaleRecord>.QueryBuilder builder = new QueryBuilder();
+		
 		if (orderNum != null && orderNum.length() != 0) {
 			builder.eq("orderNum", orderNum);
 		}

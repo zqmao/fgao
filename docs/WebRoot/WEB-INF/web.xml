@@ -112,6 +112,39 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>GoodsLinkServlet</description>
+		<display-name>GoodsLinkServlet</display-name>
+		<servlet-name>GoodsLinkServlet</servlet-name>
+		<servlet-class>base.servlet.GoodsLinkServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoodsLinkServlet</servlet-name>
+		<url-pattern>/goodsLinkServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>ShopServlet</description>
+		<display-name>ShopServlet</display-name>
+		<servlet-name>ShopServlet</servlet-name>
+		<servlet-class>base.servlet.ShopServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShopServlet</servlet-name>
+		<url-pattern>/shopServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>FreshOrderServlet</description>
+		<display-name>FreshOrderServlet</display-name>
+		<servlet-name>FreshOrderServlet</servlet-name>
+		<servlet-class>base.servlet.FreshOrderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FreshOrderServlet</servlet-name>
+		<url-pattern>/freshOrderServlet.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<description>GoodsOutServlet</description>
 		<display-name>GoodsOutServlet</display-name>
 		<servlet-name>GoodsOutServlet</servlet-name>

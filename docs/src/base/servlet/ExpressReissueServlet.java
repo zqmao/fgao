@@ -247,7 +247,9 @@ public class ExpressReissueServlet extends BaseServlet {
 				obj.put("text", express.getExpressName());
 				array.add(obj);
 			}
-			responseSuccess(JSON.toJSON(array));
+			//responseSuccess(JSON.toJSON(array));
+			returnJson(array);
+				
 		} else if ("search".equals(sign)) {
 			responseSuccess("查询成功");
 		}else if("export".equals(sign)){//导出

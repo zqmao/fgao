@@ -190,6 +190,12 @@
 								<span class="sub-title">售前考核</span>
 							</a>
 						</li>
+						<li>
+							<a href="/admin/freshOrder.jsp" target="content">
+								<span class="sublist-icon glyphicon glyphicon-inbox"></span>
+								<span class="sub-title">操作管理</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 				<div class="sBox">

@@ -3,8 +3,10 @@ package base.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,12 +20,15 @@ import com.alibaba.fastjson.JSONObject;
 import base.api.AfterSaleComeRecord;
 import base.api.ExportOrderList;
 import base.api.ExpressReissue;
+import base.api.FreshOrder;
 import base.api.User;
 import base.api.vo.AfterSaleComeRecordVO;
 import base.api.vo.ExportOrderListVO;
+import base.api.vo.FreshOrderVO;
 import base.dao.AfterSaleComeRecordDAO;
 import base.dao.ExportOrderListDAO;
 import base.dao.ExpressReissueDAO;
+import base.dao.FreshOrderDAO;
 import base.dao.UserDAO;
 import base.dao.core.BaseDAO;
 
@@ -46,120 +51,57 @@ public class AfterSaleComeRecordServlet extends BaseServlet {
 			throws ServletException, IOException {
 		super.doPost(request, response);
 		if ("list".equals(sign)) {// 查询列表
-			String allSearch = (String) request.getParameter("allSearch");
-			String bounceType = (String) request.getParameter("bounceType");
-			String courierNum = (String) request.getParameter("courierNum");
-			String expressName = (String) request.getParameter("expressName2");
-			String afterSaTor = (String) request.getParameter("afterSaTor");
-			String shopName = (String) request.getParameter("shopName");
-			String goodsName = (String) request.getParameter("goodsName");
-			String orderNum = (String) request.getParameter("orderNum");
-			String phoneNum = (String) request.getParameter("phoneNum");
-			String creator = (String) request.getParameter("creator");
-			
-			/*String courierNumA = (String) request.getParameter("courierNumA");
-			System.out.println("courierNumA"+courierNumA);
-			if(courierNumA!=null&&courierNumA.length()!=0){
-			List<AfterSaleComeRecord> ascr = AfterSaleComeRecordDAO.getInstance().queryList(courierNumA);
-			System.out.println("ascr"+ascr);
-			int page = Integer.parseInt(request.getParameter("page"));
-			int rows = Integer.parseInt(request.getParameter("rows"));
-			long total = 0;
-			int index = (page - 1) * rows;
-			if(ascr!=null){
-			
-			}else{
+		
+				int page = Integer.parseInt(request.getParameter("page"));
+				int rows = Integer.parseInt(request.getParameter("rows"));
 				
-				List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
-				total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
-				result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
+				String wangwang = request.getParameter("wangwang");
+				String allSearch = request.getParameter("allSearch");
 				
-				List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
-				for (AfterSaleComeRecord record : result) {
-					AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
-					vos.add(vo);
-				}
-				JSONObject obj = new JSONObject();
-				obj.put("total", total);
-				obj.put("rows", JSON.toJSON(vos));
-	
-				responseSuccess(JSON.toJSON(obj));
-			}
+				long total = 0;
+				int index = (page - 1) * rows;
 			
-			}else{
-			*/
-					if ("全部".equals(expressName)) {
-						expressName = "";
+				Map<String, String[]> paramMap = request.getParameterMap();
+				String sqlStr;
+				try {
+					sqlStr = returnSqlstr(paramMap);
+					
+			
+					
+					List<AfterSaleComeRecord> result;
+					total = AfterSaleComeRecordDAO.getInstance().queryCount(sqlStr);
+					
+					System.out.println(wangwang);
+					if(wangwang != null && !wangwang.isEmpty()){
+						result = AfterSaleComeRecordDAO.getInstance().list(index, rows,sqlStr,wangwang);
+					}else{
+						result = AfterSaleComeRecordDAO.getInstance().list(index, rows,sqlStr);
 					}
-					if ("全部".equals(shopName)) {
-						shopName = "";
+					
+					if(allSearch != null && !allSearch.isEmpty()){
+						result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index, rows);
 					}
-					int page = Integer.parseInt(request.getParameter("page"));
-					int rows = Integer.parseInt(request.getParameter("rows"));
-					long total = 0;
-					int index = (page - 1) * rows;
-					List<AfterSaleComeRecord> result = new ArrayList<AfterSaleComeRecord>();
-					if (allSearch == null || allSearch.length() == 0) {
-						User user = new User();
-						int creatorId = 0;
-						if(creator!=null && creator.length()>0){
-							//creatorId = (Integer) (UserDAO.getInstance().query(creator)!=null? UserDAO.getInstance().query(creator).getId():-1);
-							user = UserDAO.getInstance().query(creator);
-							System.out.println(user);
-							if(user!=null){
-								creatorId = user.getId();
-							}
-						}
-						
-						BaseDAO<AfterSaleComeRecord>.QueryBuilder builder = AfterSaleComeRecordDAO
-								.getInstance().new QueryBuilder();
-						if ((courierNum != null && courierNum.length() != 0)) {
-							builder.eq("courierNum", courierNum);
-						}
-						if (expressName != null && expressName.length() != 0) {
-							builder.eq("expressName", expressName);
-						}
-						if (shopName != null && shopName.length() != 0) {
-							builder.eq("shopName", shopName);
-						}
-						if (goodsName != null && goodsName.length() != 0) {
-							builder.eq("goodsName", goodsName);
-						}
-						if (orderNum != null && orderNum.length() != 0) {
-							builder.eq("orderNum", orderNum);
-						}
-						if (phoneNum != null && phoneNum.length() != 0) {
-							builder.eq("phoneNum", phoneNum);
-						}
-						
-						if (afterSaTor != null && afterSaTor.length() != 0){
-							builder.eq("afterSaTor", afterSaTor);
-						}
-						if (bounceType != null && bounceType.length() != 0){
-							builder.eq("bounceType", bounceType);
-						}
-						if (creator !=null && creator.length() != 0) {
-							builder.eq("creatorId", creatorId);
-						}
-						builder.orderBy("id", true);
-						builder.limit(index, rows);
-						total = builder.queryCount();
-						result = builder.queryList();
-					} else {
-						total = AfterSaleComeRecordDAO.getInstance().count(allSearch);
-						result = AfterSaleComeRecordDAO.getInstance().list(allSearch,index,rows);
-					}
-					List<AfterSaleComeRecordVO> vos = new ArrayList<AfterSaleComeRecordVO>();
-					for (AfterSaleComeRecord record : result) {
+					//result = AfterSaleComeRecordDAO.getInstance().list(index, rows,sqlStr);
+
+					List<AfterSaleComeRecordVO> objs = new ArrayList<AfterSaleComeRecordVO>();
+					for(AfterSaleComeRecord record : result){
 						AfterSaleComeRecordVO vo = new AfterSaleComeRecordVO(record);
-						vos.add(vo);
+						objs.add(vo);
+						
 					}
+					
 					JSONObject obj = new JSONObject();
 					obj.put("total", total);
-					obj.put("rows", JSON.toJSON(vos));
-		
-					responseSuccess(JSON.toJSON(obj));
-		//}
+					obj.put("rows", objs);
+					
+					returnJson(obj);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+
 			} else if ("add".equals(sign)) {// 新增纪录
 			if (currentUser == null) {
 				responseError("需要登录");
